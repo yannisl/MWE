@@ -1,7 +1,7 @@
 % Short MWE to demonstrate use of creating a 
 % layout suitable for letterheads
 % Dr Y. Lazarides
-% 
+% See 
 \documentclass[a4paper]{article}
 \usepackage{graphicx}
 \graphicspath{{./img/}}
@@ -11,9 +11,11 @@
 \definecolor{darkgrey}{HTML}{333333}
 \usepackage[paperwidth=130mm,top=-5pt, paperheight=3.4cm,left=0.5cm,right=0.5cm]{geometry}
 \parindent0pt
+% adds a byline of text. Kerns 2pt to the right for visual correction
 \def\addslogan#1{%
-  \fbox{\kern2pt \sloganfonthook #1}
+  \fbox{\sloganfonthook\kern2pt#1}
 }
+% macro for changing fonts for slogan text
 \def\sloganfonthook{\large\sffamily \color{darkgrey}}
 \pagestyle{empty}
 \begin{document}
@@ -27,7 +29,6 @@
 \addslogan{Everything  about typesetting with \TeX\ and friends}
 \end{document}
 
-For code that you might encounter many times, is best to write macros.
 
 
 
