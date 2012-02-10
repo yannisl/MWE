@@ -1,0 +1,17 @@
+\documentclass{article}
+\usepackage{lipsum}
+\usepackage{xcolor}
+\definecolor{red}{HTML}{555555}
+%\def\par{ \P~}
+\newcounter{parcount}
+\setcounter{parcount}{1025}
+\def\inc{\stepcounter{parcount}\theparcount}
+\begin{document}
+
+\fboxsep0pt
+\fboxrule0pt
+\def\Paragraph{\leavevmode \hskip-38pt\hskip-\parindent\fbox{\hbox to 37pt{\fbox{\color{red}\P\inc}}}}
+\Paragraph \lipsum*[1]
+
+\Paragraph\lipsum[1-2]
+\end{document}
