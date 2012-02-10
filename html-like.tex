@@ -1,0 +1,34 @@
+% Short MWE to demonstrate use of creating a 
+% layout suitable for letterheads
+% Dr Y. Lazarides
+% 
+\documentclass[a4paper]{article}
+\usepackage{graphicx}
+\graphicspath{{./img/}}
+\usepackage{color}
+\usepackage{xcolor}
+\definecolor{grey}{HTML}{F4F4F4}
+\definecolor{darkgrey}{HTML}{333333}
+\usepackage[paperwidth=130mm,top=-5pt, paperheight=3.4cm,left=0.5cm,right=0.5cm]{geometry}
+\parindent0pt
+\def\addslogan#1{%
+  \fbox{\kern2pt \sloganfonthook #1}
+}
+\def\sloganfonthook{\large\sffamily \color{darkgrey}}
+\pagestyle{empty}
+\begin{document}
+\pagecolor{grey}
+\fboxsep0pt
+\fboxrule0pt
+\fbox{\vbox to 0pt{\hbox to 12cm{\hfill \fbox{\includegraphics[height=3cm]{./graphics/amato}}}}}
+\vskip30pt
+\fbox{\vbox{\fbox{\Large\textcolor{darkgrey}{\textbf{OUR COMPANY Inc.}}}\par
+}}
+\addslogan{Everything  about typesetting with \TeX\ and friends}
+\end{document}
+
+For code that you might encounter many times, is best to write macros.
+
+
+
+Your suggestion that the code is longer than html/css/javascript is doubtful. I understand you coming from float:right, but you forgot all about having to clear divs etc. When he actually based a lot of his research on TeX. Like learning anew language you need to spend a bit of time to develop your style and base knowledge. And the almost impossible way to vertically center elements in html/css.
