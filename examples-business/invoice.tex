@@ -1,0 +1,44 @@
+% Typeset an invoice
+% TeX can typeset it but I am not sure if this is the best of
+% all worlds.
+% http://tex.stackexchange.com/posts/44216/edit
+% Dr Y Lazarides
+% 
+\documentclass[a4paper,10pt]{article}
+\usepackage[frenchb]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathpazo}
+\usepackage[nomessages]{fp}
+\usepackage{booktabs}
+\usepackage{ragged2e}
+\usepackage{longtable}
+\newcounter{cnt}
+\setcounter{cnt}{0}
+\def\inc{\stepcounter{cnt}\thecnt}
+\gdef\TotalHT{0}
+\newcommand{\product}[3]{%
+\inc &#1  &#2   &#3  &\FPmul\temp{#2}{#3}\FPround\temp{\temp}{2}\temp 
+%% Totalize
+\FPadd\total{\TotalHT}{\temp}%
+\FPround\total{\total}{2}%
+\global\let\TotalHT\total%
+\\ }
+\newcommand{\totalttc}{
+   \TotalHT  }
+\begin{document}
+\RaggedRight
+\begin{longtable}{cp{4.2cm}rrr}
+\toprule
+Item   &Description & Price & Qty & Total\\
+\midrule
+    \product{Computer peripherals}{1000.00}{1}
+    \product{Harddisk 2000E}{2000}{1}
+    \product{The \TeX book}{100.00}{100}
+    \product{Product Four}{5000.00}{1}
+    \product{Product Five}{5000.00}{2}
+\midrule
+    &&&& Total \totalttc\\
+\bottomrule
+\end{longtable}
+\end{document}
