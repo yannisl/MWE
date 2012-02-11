@@ -1,0 +1,14 @@
+% How can I add a name on every page
+% from a list of names?
+% http://tex.stackexchange.com/questions/44187/automatic-generation-of-pages-with-variable-fields
+% Dr. Yiannis Lazarides
+\documentclass{article}
+\usepackage{lipsum}
+\begin{document}
+\makeatletter
+\def\names{Jon Mac, Yiannis Laz, Filip, Mary}
+\@for\next:=\names\do{%
+  \textbf{\next}\par\lipsum[1]\pagebreak
+}
+\makeatother
+\end{document}
