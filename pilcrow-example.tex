@@ -2,10 +2,10 @@
 \usepackage{lipsum}
 \usepackage{xcolor}
 \definecolor{red}{HTML}{555555}
-%\def\par{ \P~}
 \newcounter{parcount}
 \setcounter{parcount}{1025}
 \def\inc{\stepcounter{parcount}\theparcount}
+\parskip3pt
 \begin{document}
 
 \fboxsep0pt
@@ -14,4 +14,22 @@
 \Paragraph \lipsum*[1]
 
 \Paragraph\lipsum[1-2]
+
+
+This is my first paragraph
+\P
+This is my second paragraph and so on.
 \end{document}
+
+I have seen documents you describe, but mostly are really historical documents or some from of biblical texts.
+
+If you are going to join the paragraphs the easiest way to handle it and distinguish them is writing your text as
+
+This is my first paragraph
+\P
+This is my second paragraph and so on.
+
+It is more common to find them as marking paragraphs. 
+
+None of them really belonging to twenty first century typesetting.
+

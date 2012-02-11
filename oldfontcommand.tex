@@ -1,8 +1,10 @@
 % Declaring old font type commands
 % See http://tex.stackexchange.com/a/44125/963
 % Dr Y Lazarides
-\documentclass{article}
+\documentclass{standalone}
+\usepackage{graphicx}
 \DeclareOldFontCommand{\mytt}{\sffamily\slshape}{\mathtt}
 \begin{document}
 {\mytt this is a test} and this is normal. 
+\includegraphics{oldfontcommand}
 \end{document}
