@@ -1,0 +1,56 @@
+\documentclass{article}
+\usepackage{lstdoc,booktabs}
+\begin{document}
+\makeatletter
+\let\alist\@empty
+
+\def\addtolist#1#2{%
+  \lst@lAddTo#1{#2}
+}
+
+\def\RA#1|#2|#3|#4;{%
+  \addtolist{\alist}{#1#2,}%
+  \expandafter\gdef\csname#1#2\endcsname{\textit{#1}&#2&#3&#4\cr\relax}
+  \lst@BubbleSort{\alist}
+}
+
+\def\RB#1|#2|#3|#4;{%
+   \addtolist{\alist}{#2#1,}%
+   \expandafter\gdef\csname#2#1\endcsname{\textit{#1}&#2&#3&#4\cr\relax}
+   \lst@BubbleSort{\alist}
+}
+
+%% adding the data now
+\RA Lactarius fallax      | velvety milk cap |edible |potentially risky;  
+\RA Lactarius camphoratus | candy cap        |edible |aromatic qualities;
+\RA Suillus pungens       | slippery Jack    |edible |poor taste;
+\RA Lactarius affinis     | kindred milk     |edible |unpalatable;
+\RA Calocybe carnea       | pink fairhead    |edible |potentially risky;
+\RA Amateta ocreata       | death angel      |inedible |highly poisonous;   
+
+%% typesetting the table
+\newsavebox{\tempbox}
+\savebox{\tempbox}{
+\centering
+\begin{tabular}{llll}
+  \toprule[1pt]
+  Species & Common name & Edibility & Remarks\\
+  \midrule
+  \@for\i:=\alist \do{\csname\i\endcsname}
+  \vspace{-14pt}\\\bottomrule
+\end{tabular}
+}
+
+\begin{table}
+\usebox{\tempbox}
+\caption{Some mushrooms from Wikipedia}
+\end{table}
+\end{document}
+
+
+
+
+
+
+
+
