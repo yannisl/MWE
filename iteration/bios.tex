@@ -1,0 +1,34 @@
+% Add a list of Bios
+% See http://tex.stackexchange.com/a/15338/963
+% Dr Y Lazarides 
+\documentclass[11pt]{book}
+\usepackage{lstdoc,lipsum}
+\begin{document}
+\makeatletter
+\def\alist{}
+
+\let\sort\lst@BubbleSort 
+\def\addtolist#1#2{
+  \lst@lAddTo\alist{#2}
+}
+
+\long\gdef\addPerson#1#2{\addtolist\alist{#1,}}
+
+\def\AddBio#1#2{%
+\long\expandafter\gdef\csname#1\endcsname{\textbf{#1}: #2}
+\addPerson{#1}{#2}
+\sort\alist
+}
+
+\def\PrintBios{%
+  \@for \i:=\alist\do{%
+  \csname\i\endcsname}
+}
+%example
+\AddBio{Yiannis}{\lipsum[2]}
+\AddBio{Mary}{\lipsum[3]}
+\AddBio{Ann}{\lipsum[1]}
+% print the biographies
+\PrintBios
+\makeatother
+\end{document}
