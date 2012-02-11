@@ -1,0 +1,38 @@
+% LaTeX3 Example posted by Frank Mittelbach
+% at http://tex.stackexchange.com/a/44159/963
+% suspiciously looking like a \put() from the
+% picture environment
+\documentclass{article}
+\usepackage{xcolor} \definecolor{darkgrey}{HTML}{333333}
+\usepackage{xcoffins}
+\begin{document}
+  \NewCoffin \result
+  \NewCoffin \aaa
+  \NewCoffin \bbb
+  \NewCoffin \ccc
+  \NewCoffin \ddd
+
+\SetHorizontalCoffin \result {}
+
+\SetHorizontalCoffin \aaa {\Large\color{darkgray}\bfseries Our Company}
+\SetHorizontalCoffin \bbb {\Large\color{darkgray}\bfseries Our Slogan}
+\SetHorizontalCoffin \ccc  {\color{red}\rule{1.5cm}{3cm}}
+\SetHorizontalCoffin \ddd {\small\color{blue}\sf\bfseries HTML}
+
+% put \aaa into \result
+\JoinCoffins \result \aaa
+
+% align bottom-right of \aaa with top-right of \bbb (with 8pt vertical offset)
+\JoinCoffins \result [\aaa-b,\aaa-r]  \bbb [t,r](0pt,-8pt)
+
+% align vertical-center-left of current \result with vertical-center-right of \ccc (offset by \textwidth)
+\JoinCoffins \result [vc,l]  \ccc [vc,r](\textwidth,0pt)
+
+% center the word HTML directly on top of the logo 
+\JoinCoffins \result [\ccc-t,\ccc-hc] \ddd [b,hc]
+
+\noindent\TypesetCoffin \result
+
+some sample text some sample text some sample text some sample text some sample text
+
+\end{document}
