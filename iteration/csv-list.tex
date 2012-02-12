@@ -1,0 +1,21 @@
+% Iteration over a list of names
+% http://tex.stackexchange.com/questions/44187/automatic-generation-of-pages-with-variable-fields/44188#44188
+% code shows two methods, the first one uses \@for from the LaTeX kernel and
+% the second one uses etoolbox docsvlist
+\documentclass{article}
+\usepackage{lipsum}
+\usepackage{etoolbox}
+\begin{document}
+\parindent0pt
+\makeatletter
+\def\Laz{Lazarides}%
+\def\names{John Mac,{\Laz, Yiannis},Filip,Mary}
+\@for\next:=\names\do{%
+   \textbf\bgroup\next\egroup\par\lipsum[1]\pagebreak
+}
+\makeatother
+% using docvlist from etoolbox
+\renewcommand*{\do}[1]{%
+  \textbf{#1}\par\lipsum[1-2]\pagebreak}
+\docsvlist{Jon Mac, Yiannis Laz, Filip, Mary}
+\end{document}
