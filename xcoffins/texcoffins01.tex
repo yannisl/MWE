@@ -1,0 +1,132 @@
+% !TEX TS-program = xelatex
+% !TEX encoding = UTF-8
+\documentclass[11pt,a4paper]{article} 
+\usepackage[a4paper,margin=0pt,left=0mm]{geometry}
+\usepackage[T1]{fontenc} 
+\usepackage{times}
+\usepackage[grid=true,subgridcolor=green!20,	% grid used only in draft mode
+                   gridcolor=gray!80, texcoord=true, 
+                   gridunit=cm]{eso-pic}
+\usepackage{times}
+\usepackage{xcolor,rotating}
+\usepackage{graphicx} 
+\makeatletter
+\newif\if@debug
+\@debugfalse
+\if@debug
+   \def\rulecolor{gray}%
+   \fboxsep-0.2pt 
+  \fboxrule0.2pt
+\else
+  \fboxsep0pt
+  \fboxrule0pt
+\fi
+\parskip0pt
+\lineskip0pt
+\topskip0pt
+\parindent0pt
+\newlength\xgrid
+\newlength\ygrid
+\def\hopx#1{\hspace*{#1\xgrid\relax}}
+\def\hopy#1{\vspace*{#1\ygrid\relax}}
+\def\offsetX#1{\hspace*{\dimexpr #1\relax}}
+\def\offsetY#1{\vspace*{\dimexpr #1\relax}}
+
+\setlength\xgrid{54.15pt} % this is possibly correct
+\setlength\ygrid{20mm}   % this not sure does not look right
+\def\rulei {{\color{red}\rule{6.5in}{1pc}}}
+\def\ruleii {{\color{red}\rule{1pc}{23.5cm}}}
+\def\ruleiii{{\color{black}\rule{152pt}{10pt}}}
+
+
+\begin{document}
+\makeatletter
+
+
+\def\C{\hspace*{\dimexpr\xgrid-7pt}\turnbox{90}{\fbox{\fontsize{52}{50}\sffamily\bfseries typographische}}}
+
+
+
+
+\def\BOX#1{%
+  \ifcsname #1\endcsname
+     \else
+   \global\expandafter\newbox\csname #1\endcsname
+\fi
+\expandafter\setbox\csname #1\endcsname\hbox to 6.5in{%
+{\fontsize{52}{50}\sffamily\bfseries% 
+\vbox to 20mm{\vspace*{2pt}
+\rulei\leavevmode\par
+\vspace*{-6pt}
+  \hbox to 6.5in{\hfill \hbox{mitteilungen}}}}}
+  \expandafter\protected@xdef\csname#1@wd\endcsname{\the\wd\csname #1\endcsname}
+  \expandafter\protected@xdef\csname #1@ht\endcsname{\the\ht\@nameuse{#1}}
+  \expandafter\protected@xdef\csname #1@dp\endcsname{\the\dp\@nameuse{#1}}
+  % add poles here tr tl br bl lc rc center of object
+}
+
+\vspace*{20pt}
+\BOX{BBB}
+
+\@nameuse{BBB@dp}
+
+%% Mitteilungen
+%\offsetY{2\ygrid}
+%\offsetX{20pt+1pt\relax}
+%\copy\BBB
+
+\end{document}
+\end{document}
+% Vertical red stripe
+
+\hspace*{10mm}\vbox to 23.5cm{\fbox{\hbox to \dimexpr 2\xgrid{\hfill\ruleii}}}%
+
+% add typographie
+\vspace*{-10.35cm}\hskip2\xgrid\hskip10mm\C 
+
+\vspace{-7.52cm}
+\hopx{4}\hspace{4mm}
+\fbox{\parbox{180pt}
+                 {\raggedleft
+                         \fontsize{28}{20}\sffamily sonderheft
+                         \vspace{1cm}
+
+                         \fontsize{31}{36}\sffamily\bfseries 
+                      elementare\\
+                      typographie}}
+
+\vspace*{1.15in}
+\hopx{7.5}
+\fbox{\parbox{140pt}
+                 {\raggedright \fontsize{13}{14}\sffamily\bfseries 
+                       natan altman \\
+                       otto baumberger \\
+                       herbert mayer \\
+                       max burchartz \\
+                       el lissitzky \\
+                       ladislaus moholy-nagy \\
+                       moln\'ar f.~farkas \\
+                       jahannes molzahn \\
+                       kurt schwitters \\
+                       mart stam \\
+                       ivan tschichold}}
+
+\def\ccc {\fontsize{12}{10}\sffamily 
+                      \quad zeitschrift des bildungsverbandes der
+                      deutschen buchdrucker leipzig 
+                     \textbullet{} oktoberheft 1925}
+
+\let\div\hbox%
+%\vspace*{-25.4cm}
+\hopy{-12.5}
+\hopx{10}\hspace*{15pt}
+ \div{\hbox to 23.5cm{{\turnbox{-90}{\fbox{\div{\ccc\kern 3cm\ruleiii}}}}}}
+\end{document}
+
+\PutCoffin[relative={boxA, pole=tr}, pos={2\xgrid, 5\ygrid}, align=bl, rotate=90, offsetx=2pt,  offsety=1pt]{boxB}
+
+
+
+
+
+
