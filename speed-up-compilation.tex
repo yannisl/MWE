@@ -1,0 +1,52 @@
+\documentclass{article}
+\usepackage[a4paper,top=2cm,bottom=2cm,left=1.5cm,right=1.5cm]{geometry}
+\newcounter{ctr}
+\usepackage{longtable, booktabs, multirow, tabu}
+\usepackage{caption}
+\usepackage{dcolumn}
+\usepackage{longtable}
+\usepackage{tabu}
+\newcolumntype{d}[1]{D{.}{.}{#1}}   
+\newcommand{\mc}[1]{\multicolumn{1}{c}{#1}}
+\newcommand{\mr}[1]{\multirow{2}{*}{#1}}
+\begin{document}
+\def\boxit#1{\hbox to 0.95cm{#1}}
+
+\long\gdef\row{\hbox{\leavevmode\par  \boxit{\thectr\stepcounter{ctr}}  \boxit{0.85}
+\boxit{Pass} \boxit{0.78}
+\boxit{Pass}
+\boxit{0.01}  
+\boxit{Pass}
+\boxit{0.29}
+\boxit{Pass}
+\boxit{0.15}
+\boxit{Pass}}\par}
+
+\noindent\begin{tabular}{cd{3.2}cd{3.2}cd{3.2}cd{3.2}cd{3.2}l}
+\toprule
+    \mc{\mr{LoadCase}} & \multicolumn{2}{c}{$N$} & \multicolumn{2}{c}{$V_{in}$} & \multicolumn{2}{c}{$V_{out}$} & \multicolumn{2}{c}{$M_{in}$} & \multicolumn{2}{c}{$M_{out}$} \\
+    \cmidrule(rl){2-3} \cmidrule(rl){4-5} \cmidrule(rl){6-7} \cmidrule(rl){8-9} \cmidrule(rl){10-11}
+    &\mc{UF} & State & \mc{UF} & State & \mc{UF} & State & \mc{UF} & State & \mc{UF} & State \\
+\midrule
+\end{tabular}
+
+\def\toprule{%
+%\hrule
+\vskip5pt}
+
+\def\bottomrule{\vskip5pt\hrule}
+% save some typing
+\long\def\many{\row\row\row\row\row\row\row\row\row\row\row\row\row\row
+\row\row\row\row\row\row\row\row\row\row\row\row\row\row
+\row\row\row\row\row\row\row\row\row\row\row\row\row\row
+\row\row\row\row\row\row\row\row\row\row\row\row\row\row
+\row\row\row\row\row\row\row\row\row\row\row\row\row\row
+\row\row\row\row\row\row\row\row\row\row\row\row\row\row}
+
+\long\def\manymore{\many\many\many\many\many\many\many
+\many}
+% the table
+\toprule
+\manymore
+\bottomrule
+\end{document}
