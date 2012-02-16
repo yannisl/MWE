@@ -1,0 +1,80 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Interlude:  Set up PRINTING (default) or SCREEN VIEWING %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ForPrinting=true (default)            false
+% Asymmetric margins                   Symmetric margins
+% Black hyperlinks                          Blue hyperlinks
+% Start Preface, ToC, etc. recto       No blank verso pages
+%
+% Chapter-like ``Sections'' start both recto and verso in the scanned
+% book. This behavior has been retained.
+\RequirePackage{ifthen}
+\newboolean{ForPrinting}
+
+%% UNCOMMENT the next line for a PRINT-OPTIMIZED VERSION of the text %%
+%\setboolean{ForPrinting}{true}
+
+%% Initialize values to ForPrinting=false
+\newcommand{\Margins}{hmarginratio=1:1}     % Symmetric margins
+\newcommand{\HLinkColor}{blue}              % Hyperlink color
+\newcommand{\PDFPageLayout}{SinglePage}
+
+\newcommand{\TransNoteText}{%
+  \TransNoteCommon
+
+  This PDF file is optimized for screen viewing, but may easily be
+  recompiled for printing. Please see the preamble of the \LaTeX\
+  source file for instructions.
+}
+%% Re-set if ForPrinting=true
+\ifthenelse{\boolean{ForPrinting}}{%
+  \renewcommand{\Margins}{hmarginratio=2:3} % Asymmetric margins
+  \renewcommand{\HLinkColor}{black}         % Hyperlink color
+  \renewcommand{\PDFPageLayout}{TwoPageRight}
+  \renewcommand{\TransNoteText}{%
+    \TransNoteCommon
+
+    This PDF file is optimized for printing, but may easily be
+    recompiled for screen viewing. Please see the preamble of the
+    \LaTeX\ source file for instructions.
+  }
+}{% If ForPrinting=false, don't skip to recto
+  \renewcommand{\cleardoublepage}{\clearpage}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  End of PRINTING/SCREEN VIEWING code; back to packages  %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifthenelse{\boolean{ForPrinting}}{%
+  \setlength{\paperwidth}{8.5in}%
+  \setlength{\paperheight}{11in}%
+  \usepackage[body={5.5in,7.33in},\Margins]{geometry}[2002/07/08]
+}{%
+  \setlength{\paperwidth}{6in}%
+  \setlength{\paperheight}{8.5in}%
+  \usepackage[body={5.5in,7.33in},\Margins,includeheadfoot]{geometry}[2002/07/08]
+}
+
+\usepackage[pdftex,
+  hyperfootnotes=false,
+  pdftitle={Your book title here},
+  pdfauthor={Yiannis Lazarides},
+  pdfkeywords={maths, table of equations},
+  pdfstartview=Fit,    % default value
+  pdfstartpage=1,      % default value
+  pdfpagemode=UseNone, % default value
+  bookmarks=true,      % default value
+  linktocpage=false,   % default value
+  pdfpagelayout=\PDFPageLayout,
+  pdfdisplaydoctitle,
+  pdfpagelabels=true,
+  bookmarksopen=true,
+  bookmarksopenlevel=0,
+  colorlinks=true,
+  linkcolor=\HLinkColor]{hyperref}[2007/02/07]
+
+% Re-crop screen-formatted version, accommodating wide displays
+\ifthenelse{\boolean{ForPrinting}}
+  {}
+  {\hypersetup{pdfpagescrop= 0 30 612 765}}

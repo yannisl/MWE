@@ -1,0 +1,83 @@
+% MWE to demonstrate inclusion of a Table of Formulae
+% The package sethyprref
+% is uded to provide the relevant settings for screen viewing
+% it shrinks the screen size. 
+% Dr Yiannis Lazarides 2012
+% Version 1.0
+\documentclass{book}
+\usepackage{longtable,fancyhdr,xcolor,lipsum}
+\usepackage{amsmath}[2000/07/18] 
+\usepackage{amssymb}[2002/01/22] 
+\newcommand{\DittoMark}{``}%''
+\newcommand{\Ditto}{\quad\DittoMark\quad}
+\newcommand{\Headings}[1]{\textbf{\small#1}}
+\usepackage{sethyperref}
+\begin{document}
+\setcounter{secnumdepth}{-3}
+\tableofcontents
+\part*{First part}
+\makeatletter
+
+
+\makeatother
+\chapter{General}
+\lipsum[1-2]
+
+\label{aref}%
+ \[e= \frac{2}{a}
+             \sqrt{s(s-a)(s-b)(s-c)} \] 
+
+\chapter{TABLE OF FORMULAS.}
+\markboth{\Headings{PLANE GEOMETRY.}}{\Headings{TABLE OF FORMULAS.}}%
+
+\subsection{PLANE FIGURES.}
+
+\subsection{NOTATION.}
+
+\begin{tabular}{r@{~}c@{~}l}
+$P$ &=& perimeter. \\
+$h$ &=& altitude. \\
+$b$ &=& lower base. \\
+$b'$ &=& upper base. \\
+$R$ &=& radius of circle. \\
+$D$ &=& diameter of circle. \\
+$C$ &=& circumference of circle. \\
+$r$ &=& apothem of regular polygon. \\
+$a$, $b$, $c$ &=& sides of triangle. \\
+$s$ &=& \( \frac{1}{2}(a+b+c) \). \\
+$p$ &=& perpendicular of triangle. \\
+$m,n$ &=& segments of third side of triangle adjacent to \\
+&& sides $b$ and $a$, respectively. \\
+$S$ &=& area. \\
+$\pi$ &=& 3.1416.
+\end{tabular}
+
+\newpage
+\subsection{FORMULAS.}
+
+\noindent\begin{longtable}{lr@{~}c@{~}l@{\qquad}r}
+\multicolumn{5}{l}{\hspace{-2ex}\textbf{Line Values.}} \\
+\multicolumn{5}{r}{\tiny PAGE}\\
+\multicolumn{4}{l}{Altitude of triangle on side $a$,} \\
+& $h$ &=& \( \displaystyle \frac{2}{a}
+             \sqrt{s(s-a)(s-b)(s-c)} \) & \pageref{aref} \\
+\multicolumn{4}{l}{Median of triangle on side $a$,} \\
+& $m$ &=& \( \frac{1}{2} \sqrt{2(b^2+c^2) - a^2} \) & \pageref{aref} \\
+\multicolumn{5}{l}{\hspace{-2ex}\textbf{Areas.}} \\
+Rectangle,     & $S$ &=& $b\times h$ & \pageref{aref} \\
+Square,        & $S$ &=& $b^2$ & \pageref{aref} \\
+\end{longtable}
+
+
+\appendix
+\chapter{Experimental Data}
+\section{First section}
+\lipsum[1]
+\subsection{First subsection}
+\lipsum[1]
+\chapter{Experimental Errors}
+\section{First section}
+\lipsum[1]
+\subsection{First subsection}
+\lipsum[1]
+\end{document}
