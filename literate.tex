@@ -1,0 +1,16 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{listings}
+\begin{document}
+\lstset{literate={:=}{{$\gets$}}1 {<=}{{$\leq$}}1 {>=}{{$\geq$}}1 {<>}{{$\neq$}}1}
+\begin{lstlisting}
+var i:integer;
+if (i<=0) i := 1;
+if (i>=0) i := 0;
+if (i<>0) i := 0;
+\end{lstlisting}
+\end{document}
+
+See also http://ctan.um.ac.ir/info/epslatex/english/epslatex.pdf
+
+page 48 of manual
