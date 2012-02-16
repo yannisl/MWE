@@ -1,0 +1,58 @@
+% A magazine style. We build the layout using
+% minipages. We center them and then adjust a bit.
+% Modify to suit your requirements. This was a quick hack
+% and a slightly easier layout is  possible
+% Dr Y Lazarides 2012
+\documentclass[a4paper]{book}
+\usepackage[top=0cm,
+                   margin=1.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{ragged2e}
+\usepackage{mathpazo}
+\pagestyle{empty}
+\fboxsep0pt
+\fboxrule0pt
+\newcommand\lorem{Fusce adipiscing justo nec ante. Nullam in enim.
+ Pellentesque felis orci, sagittis ac, malesuada et, facilisis in,
+ ligula. Nunc non magna sit amet mi aliquam dictum. In mi. Curabitur
+ sollicitudin justo sed quam et quadd. \par}
+\newcommand\heading{{\leavevmode\par% 
+      \huge{\centering \textsf{\bfseries The \\Trouble With\\ Being Elfrida\\}}}}
+\newcommand\byline{{\leavevmode\par\bfseries 
+       \large{\textsf{Rich But Tense, Champion, can relax only if she loses.\\}}}}
+\begin{document}
+
+\begin{minipage}{\textwidth}
+\vspace{-0.5cm}
+\fbox{%
+   \begin{minipage}[c][22cm][t]{0.3\textwidth}
+      \vspace*{2cm}
+      \underline{\textsf{PERSONALITY}}\par
+     \bigskip
+     \heading\par
+     \medskip
+     \byline
+     \lorem\lorem\lorem\lorem\lorem
+     \hfill\hfill
+\end{minipage}}%
+\hspace{25pt}%
+%% Second column
+\begin{minipage}[c][25cm][t]{0.70\textwidth}
+\fbox{%
+   \centering
+  \begin{minipage}[t]{0.70\textwidth}
+      \centering
+      \includegraphics[width=0.5\textheight]{elfrida-top}
+  \end{minipage}}\par
+  \smallskip\par
+   {\tiny \bfseries \textsf{\hskip1cm  ON TV ELFRIDA VON NARDROFF 
+   PONDERS MUSIC (ABOVE). PREPARES (BELOW) TO ANSWER}}\par\smallskip
+   \fbox{%
+   \hspace{.8cm}\begin{minipage}[c]{0.7\textwidth}
+     \includegraphics[height=.5\textheight]{elfrida-bottom}
+   June, 23, 1958
+   \end{minipage}}%
+   \end{minipage}%
+\end{minipage}%
+\end{document}
