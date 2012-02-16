@@ -1,6 +1,6 @@
 \documentclass{article}
 \usepackage{lipsum}
-\usepackage[final]{graphicx,xcolor}
+\usepackage[final]{graphicx}
 \usepackage{marginnote}
 \usepackage{ragged2e}
 \fboxsep0pt
@@ -10,16 +10,8 @@
                   labelfont={bf, footnotesize}, 
                   textfont={footnotesize},position=bottom]{caption}
 \usepackage[paperwidth=170mm, paperheight=240mm, left=40pt, top=40pt, textwidth=260pt, marginparsep=20pt, marginparwidth=100pt, textheight=560pt, footskip=40pt]{geometry}
-\DeclareRobustCommand\putgraphic[3][1.5\textwidth]{%
- % \fbox{%
-         \parbox[b]{\dimexpr\textwidth+\marginparsep\relax}{%
-               \includegraphics[width=#1]{#2}%
-         }% 
-        \vspace{0pt}
-          \parbox[b]{\textwidth}{%
-          \vbox{\color{gray}#3}
-        }%
-  % }%
+\DeclareRobustCommand\putgraphic[3][8cm]{%
+\fbox{\hbox{\parbox[b]{\dimexpr\textwidth+\marginparsep\relax}{\hfill\includegraphics[width=#1]{#2}\hfill\hfill\hfil} \parbox[b]{\marginparwidth}{\captionof{figure}{#3}}}}
 }
 \begin{document}
 Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. 
@@ -31,19 +23,10 @@ Pellentesque habitant morbi tris- tique senectus et netus et malesuada fames ac 
 Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. 
 
 \begin{figure}[h]
-\putgraphic{./graphics/cardtrick}{\captionof{figure}{\hsize13.5cm This is your caption that you need to place as a sidenote. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc.This is your caption that you need to place as a sidenote. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc}}
-
+\putgraphic{./graphics/hitler}{This is your caption that you need to place as a sidenote. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc.}
 \end{figure}
 
 This is another test \marginpar{This could be a couple of references and other sidenotes.}
 Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. 
 \lipsum*[3]
 \end{document}
-
-One way to partially overcome the problem (which is intratable in many cases), is to ensure that when an image is placed, there is an adequate space left for the caption. 
-
-
-
-
-
-
