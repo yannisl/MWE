@@ -1,0 +1,13 @@
+% Rotating graphics
+% The \includegraphics key value parameters are interpreted from left to right
+% and the the order in  which the angle and size are speciﬁed makes a difference. 
+% For example
+\documentclass{article}
+\usepackage[demo]{graphicx}
+\begin{document}
+\begin{center}
+\includegraphics[angle=90,totalheight=1cm]{filename}
+\includegraphics[totalheight=1cm,angle=90]{filename}
+\includegraphics{filename}
+\end{center}
+\end{document}
