@@ -1,0 +1,52 @@
+% SRS
+% http://tex.stackexchange.com/questions/42602/software-requirements-specification-with-latex/42618#42618
+\documentclass{scrreprt}
+\usepackage{listings}
+\usepackage{underscore}
+\usepackage[bookmarks=true]{hyperref}
+\hypersetup{
+    bookmarks=false,    % show bookmarks bar?
+    pdftitle={Software Requirement Specification},    % title
+    pdfauthor={Yiannis Lazarides},                     % author
+    pdfsubject={TeX and LaTeX},                        % subject of the document
+    pdfkeywords={TeX, LaTeX, graphics, images}, % list of keywords
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=blue,       % color of internal links
+    citecolor=black,       % color of links to bibliography
+    filecolor=black,        % color of file links
+    urlcolor=purple,        % color of external links
+    linktoc=page            % only page is linked
+}%
+\def\myversion{1.0 }
+\title{%
+\flushright
+\rule{16cm}{5pt}\vskip1cm
+\Huge{SOFTWARE REQUIREMENTS\\ SPECIFICATION}\\
+\vspace{2cm}
+for\\
+\vspace{2cm}
+Materials Ordering System\\
+\vspace{2cm}
+\LARGE{Release 1.0\\}
+\vspace{2cm}
+\LARGE{Version \myversion approved\\}
+\vspace{2cm}
+Prepared by Dr. Yiannis Lazarides\\
+\vfill
+\rule{16cm}{5pt}
+}
+\date{}
+\usepackage{hyperref}
+\begin{document}
+\maketitle
+\tableofcontents
+\chapter*{Revision History}
+\chapter{Introduction}
+\section{Purpose}
+\section{Project Scope and Product Features}
+\section{References}
+\chapter{Overall Description}
+\section{Product Perspective}
+\section{User Classes and Characteristics}
+%% add other chapters and sections to suit
+\end{document}
