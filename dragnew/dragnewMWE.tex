@@ -1,3 +1,10 @@
+% This was one of the better templates that I used for the tex.stackexchange.com
+% competition. Based on minipages and a bit of pulling and pushing. If you want to
+% get fussy, some improvements in kerning are necessary. The left
+% bottom caption was pushed using a rule. Set the rule height to 1pt to see
+% how it was done.
+% Dr Y Lazarides 2012
+% 
 \documentclass[imperial]{octavo}
 \usepackage[top=1cm,right=1cm,left=1cm]{geometry}
 \usepackage{graphicx}
@@ -23,7 +30,7 @@
 University of Pensylvania medical students for \$750. But Thomas Eskins became so interested that he painted an entire cancer operation, with portraits of student spectators thrown in.
 \end{multicols}
 
-\rule{1.9cm}{1pt}\llap{\note}\fbox{%
+\rule{1.9cm}{0pt}\llap{\note}\fbox{%
 \begin{minipage}[t]{0.9\textwidth}
 \begin{minipage}[t]{0.45\textwidth}
 \includegraphics[width=1\textwidth]{celloplayer}\par\vspace*{-8pt}%
