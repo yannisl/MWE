@@ -1,0 +1,19 @@
+% http://tex.stackexchange.com/questions/15911/how-to-typeset-large-numbers/15914#15914
+% use of a mersenne number code to show formatting
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{numprint}
+\usepackage{bigintcalc}
+\begin{document}
+ \npthousandsep{ }
+\def\Mersenne#1{%
+  \begingroup
+  \par\noindent\parindent=0pt
+  $M_{#1}=$\par
+  \def\exponent##1{\bigintcalcPow{2}{##1}}%
+  \numprint{\bigintcalcSub{\exponent{#1}}{1}}
+  \endgroup
+}
+
+\Mersenne{1279}
+\end{document}
