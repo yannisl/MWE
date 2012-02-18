@@ -1,0 +1,68 @@
+%  Converting from one set of units 
+%  to another. F->C etc.
+% Use fp  package for calculations
+% version 1.0
+% Dr. Yiannis  Lazarides
+\documentclass{article}
+\usepackage{fp}
+\usepackage{siunitx}
+% Default three decimal places
+\gdef\numdec{3}
+
+\begin{document}
+%\SetConversion{C}{K}{273.15}
+\def\CtoK#1{\FPadd\result{#1}{273.15}%
+\FPround\result{\result}{2}%
+\sisetup{
+  fixed-exponent = 2,
+ scientific-notation = false}
+ \num{\result}}
+
+
+%% Convert Centigrate to Fahreneit
+\def\CtoF#1{\FPdiv\resulta{9}{5}%
+\FPmul\resultb{\resulta}{#1}%
+\FPadd\resultc{\resultb}{32}%
+\FPround\resultc{\resultc}{3}%
+ \num{\resultc}%
+\sisetup{%
+fixed-exponent = 0,
+scientific-notation = false}
+}
+
+%% Convert Fahreneit to Centigrade
+\def\FtoC#1{\FPdiv\resulta{5}{9}%
+\FPsub\resultb{#1}{32}%
+\FPmul\resultc{\resultb}{\resulta}%
+\FPround\resultc{\resultc}{\numdec}%
+\sisetup{%
+fixed-exponent = 0,
+scientific-notation = false}
+\num{\resultc}%
+}
+
+%% Convert Fahreneit to Rankine
+\def\FtoRa#1{\FPmul\result{#1}{9}%
+\FPdiv\result{\result}{5}%
+\FPround\result{\result}{\numdec}%
+\result%
+}
+
+%% Convert Kelvin to Rankine
+\def\KtoRa#1{\FPadd\result{#1}{459.67}%
+\FPround\result{\result}{\numdec}\result}
+
+%% Convert Rankine to Celcius
+\def\RtoC#1{\FPsub\result{#1}{459.67}% to fahreneit
+\FtoC{\result}}
+
+
+%% Testing a few numbers
+\FtoC{32}
+
+\FtoC{212}
+
+\CtoF{0}
+
+
+\end{document}

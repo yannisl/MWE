@@ -1,0 +1,252 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{multicol}
+\makeatletter
+%    \begin{macrocode}
+\def\csn#1{\csname#1\endcsname}%
+\def\ece#1#2{\expandafter#1\csname#2\endcsname}%
+\def\setproperty#1#2#3{\ece\edef{#1@p#2}{#3}}%
+\def\setpropertyglobal#1#2#3{\ece\xdef{#1@p#2}{#3}}%
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+
+% \begin{macro}{\getproperty}
+%  Used as |\getproperty|\marg{property}\marg{atom}
+%    \begin{macrocode}
+\def\getproperty#1#2{%
+  \expandafter\ifx\csname#1@p#2\endcsname\relax
+% then \empty
+  \else \csname#1@p#2\endcsname
+  \fi
+}%
+%    \end{macrocode}
+% \end{macro}
+\begin{document}
+
+\def\alist{fig167,fig168,fig169,fig176,%
+fig180,fig181,fig182,fig183,fig185,fig186,fig187,fig188}
+
+%% create a macro to create new lists
+\def\newDB#1{%
+    \expandafter\gdef\csname#1\endcsname{}
+}
+
+%% add an image to the DB, use the LaTeX macro
+%% \g@addto@macro to store them at the DB location
+\def\addtoDB#1#2{%
+  \ifx\@empty#1
+     \g@addto@macro{#1}{#2}
+  \else
+     \g@addto@macro#1{,#2}
+  \fi
+}
+
+
+%% internal macro, saves the image to the DB
+%% #1 is the image database 
+%% #2 is the image file name
+%% #3 is the image long caption.
+\def\DB{alist}
+
+\long\def\addimageDB#1#2#3#4{%
+%\def\captionname{caption}
+% adds to DB #1, the image name #2
+    \expandafter\addtoDB\expandafter{\csname#1\endcsname}{#2}			 
+%% set the caption property, set us imagename.caption.data
+    \setproperty{#2}{caption}{#3}
+%% set the date 
+    \setproperty{#2}{date}{#4}
+%% makes a label property for use later on fig:name
+    \setproperty{#2}{label}{fig:#2}
+}
+
+%% get the caption of the image
+%% #1 database name (not macro)
+%% #2 image file
+%% sugar for DB terminology
+\def\getfield#1#2{%
+    \getproperty{#1}{#2}
+}
+
+% Example code
+
+ \addimageDB{alist}{fig145}{This is the caption\par for image fig145.\par Testing a paragraph.}{1920}
+ \addimageDB{alist}{fig165}{This is the caption for image fig165.}{1942}
+ \addimageDB{alist}{fig166}{This is the caption for image fig166.}{1940}
+
+\end{document}
+ \newDB{rockwell}
+ \addimageDB{rockwell}{scout}{``The American Way,'', showing soldier feeding a war orphan, is another
+Norman Rockwell best-seller.  During World War II, Norman Rockwell specialized in patriotic
+calendars and posters.}{1940}
+ \addimageDB{rockwell}{soldier}{}{1940}
+ \addimageDB{rockwell}{runaway}{``Runaway'', painted for the Saturday Evening Post.}{1958}
+
+
+ \getfield{fig145}{caption}
+
+ \getfield{fig166}{caption}
+
+\getfield{fig166}{date}
+
+\getfield{scout}{caption}
+
+\rockwell
+
+\makeatother
+
+\Large{DEVELOPING A TEX IMAGE DB}
+\normalsize
+\begin{multicols}{2}
+\lettrine{O}{ne} useful tool, which I often use,  is the ability of TeX to store information on the fly. In a way this can be leveraged to develop a small image database. Although there are a number of packages that can be used to develop a database in TeX such as DBTools\footnote{ctan.org}. I prefer to quickly develop a specific database rather than to move one more level of abstraction. Also using these packages one has to go through a steep learning curve. 
+
+\parindent1em
+
+\begin{center}
+\begin{minipage}{0.8\linewidth}
+\fboxsep0pt\fboxrule0pt
+\makeatletter
+\@for \next:=\alist\do {%
+   {\it\expandafter{\putgraphic{\next}}}
+}
+\captionof{figure}{Weaving and pottery artifacts from Arizona.}
+\label{fig:arizona}
+\makeatother
+\end{minipage}
+\end{center}
+\columnbreak
+
+
+Consider that you are writing a document, where you may have anything up to a few hundred images. Managing these images, their captions and perhaps, having to show them in a few places under different typesetting conditions can be tedious and prone to mistakes. You may also collect or develop your own images, but you do not necessarily want to use them immediately in your book. We will develop some macros that will enable us us to store, images in a \latex database and then use them for the production of a figure such as shown in Figure\ref{fig:arizona}. First you will need to develop a number of routines. Inserting them using the subfig routines will create lengthy and verbose code.
+\begin{teXXX}
+\makeatletter
+\def\alist{fig145,fig161,fig162,fig163,
+    fig164,fig165,fig166,fig167...}
+\@for \next:=\alist\do{%
+   \expandafter\putgraphic{\next}}
+\makeatother
+\end{teXXX}
+It is preferable to actually create a little command factory, that can create these
+commands.
+\begin{teXXX}
+\def\commandfactory#1#2{%
+  \expandafter\def\csname #1\endcsname{#1}
+  \expandafter\def\csname #1@capt\endcsname{#2}
+\end{teXXX}
+
+
+We have also developed a short routine to place images, using a key value interface. As the code is quite lengthy I refer you to the listing of the package. We can use it as such to produce, Figure~ref.
+\smallskip
+
+\end{multicols}
+
+%
+%\vfill\vfill
+%
+
+\clearpage
+{\centering
+\includegraphics[width=0.8\linewidth]{./graphics/runaway}\par
+%\captionof{figure}{\getfield{runaway}{caption}}
+
+}
+\begin{multicols}{2}
+Consider the type of both the display of the image, as well as the data that it may contain. If you observe the captions for the two paintings by Norman Rockwell, shown in figures, in order to capture all the necessary information, we need to define ``fields'', for the name of the painting, the caption, perhaps the date. For more traditional images for paintings or for photographs, we may want to also capture and credit the source and the physical dimensions of the image. The simple macros, that we have defined so far will not be adequate.
+\end{multicols}
+
+\begin{multicols}{2}
+\includegraphics[width=\linewidth]{./graphics/scout}\par
+%\captionof{figure}{\getfield{scout}{caption}}
+
+
+
+%\includegraphics[width=\linewidth, decodearray={1 0.1 1 .1 1 0.0}]{./graphics/soldier}
+
+\includegraphics[width=\linewidth, decodearray={1 0 1 .1 .1 0.9}]{./graphics/soldier}
+\captionof{figure}{The American Way, showing soldier feeding a war orphan, is another
+Norman Rockwell best-seller.  During World War II, Norman Rockwell specialized in patriotic
+calendars and posters.}
+\end{multicols}
+
+\begin{multicols}{2}
+Before we even start to code, we need to give a bit of thought if we want to keep all the images in one database or in multiple databases, and nothing stops us from having a macro to display all available databases, which we can also create in the form of a list. In this example and for my own personal use I like to keep all the images in a central folder named \texttt{graphics} and to keep individual image sets within different directories within this folder. For example the above two images are kept in a folder called \texttt{normanrockwell}, amongst a number of other images and photographs, by the same artist. We can view our database, being a collection of images from this folder, plus additional data for the individual images. This makes life easier for a naming scheme of our macros, this can  help with remembering the names as well. Whatever you decide, just be consistent, everything will still work, but being consistent will make it easier for an older you to remember what the younger do, programmed!
+
+\begin{teXXX}
+\normanrockwell@boyscout@caption
+\normarockwell@boyscout@year
+\normanrockwell@boyscout@credit
+\end{teXXX}
+
+This is not very different from the |\commandfactory|, we defined earlier, except we have added a few extra macros to hold the additional properties. If you are familiar with Lisp, or object orientated programming, our commands are similar to an object orientated syntax, 
+\begin{Verbatim}
+\normanrockwell.americanway.caption
+\normanrockwell.americanway.year
+\normanrockwell.americanway.credit
+\end{Verbatim}
+
+just replace the |\@| with a dot, and you will see the pattern, as a matter of fact we can also write macros like this using TeX, but I personally feel they will be alien to the synatx of TeX.
+
+\textbf{Defining macros to store the properties.}\quad 
+
+We first define two macros to set the properties, and a short macro to abbreviate the |expandafter| and the |csname|, definitions, as they come up an awful lot and we save typing with the following\footnote{The \latex kernel also offers two macros as well. I prefer to redefine them in order to make the display in narrow columns easier as well.}. (The extra macro expansion does take time, so we don't use them in frequently-executed code\footnote{A similar approach was defined in \texttt{eplain} for bibliographies.}),
+\end{multicols}
+
+\topline
+\begin{teXXX}
+\def\csn#1{\csname#1\endcsname}%
+\def\ece#1#2{\expandafter#1\csname#2\endcsname}%
+
+\def\setproperty#1#2#3{\ece\edef{#1@p#2}{#3}}%
+\def\setpropertyglobal#1#2#3{\ece\xdef{#1@p#2}{#3}}%
+\end{teXXX}
+
+The property name is much easier and we simply expand the macro, if not empty:
+\begin{teXXX}
+\def\getproperty#1#2{%
+  \expandafter\ifx\csname#1@p#2\endcsname\relax
+  % then \empty
+  \else \csname#1@p#2\endcsname
+  \fi
+}%
+\end{teXXX}
+\medskip
+
+\setproperty{americanway}{caption}{This is the caption for the painting ...}
+We can use them as follows:
+
+|\setproperty{americanway}{caption}{This is the caption ... }|
+
+and typing, |\getproperty{americanway}{caption}|, produces:
+
+{\it \getproperty{americanway}{caption}}
+
+If you notice, and is quite easy we have not added the DB name, I prefer to have this set globally, in order to minimize the typing while entering the image details in the database. For this we define a new macro:
+
+\begin{teXXX}
+\global\def\setDB#1{#1}
+\end{teXXX}
+
+
+\clearpage
+\begin{multicols}{2}
+\includegraphics[width=0.45\textwidth]{./graphics/perpetualmotion}
+\columnbreak
+
+{\small \textbf{Perpetual Motion.}\quad This image by Rockwell, appeared in the 1920, October issue of the \textit{Popular Science}, monthly magazine to accompany an article on perpetual motion machines.}
+\end{multicols}
+\bottomline
+
+\begin{multicols}{2}
+All that is now left to do, is to define some author commands for formatting the image displays and the captions and other data. Since this will be easier to do using a key, value interface, we will do this in the chapter dealing with key value interfaces. If you have difficulty following the code here, revisit the macros chapter and especially the section for iteration and |csname|.
+
+\textbf{Summary.}\quad This was rather a long section with code. What we have done, we have used a comma delimited list to hold image names. While we adding elements to the list, we automatically defined macros using |\csname|\ldots|\endcsname| to hold data for these images. Once all the information is stored we can then, define helper macros to typeset one or more images from the database. We gave consideration to the author by minimizing the commands they need to remember. We also package the code in a small package called |imageDB|, which we make available to ctan. This is described in the section for developing packages.
+\end{multicols}
+
+\end{document}
+
+
