@@ -1,0 +1,30 @@
+% Assigning key value pairs
+%http://tex.stackexchange.com/questions/37094/what-is-the-recommended-way-to-assign-a-value-to-a-variable-and-retrieve-it-for/37096#37096
+\documentclass{article}
+\makeatletter
+%  Properties a la Lisp.
+\def\ece#1#2{\expandafter#1\csname#2\endcsname}%
+% \setproperty{ATOM}{PROPNAME}{VALUE} defines the property PROPNAME on the
+% ``atom'' ATOM to have VALUE.
+% 
+\def\setproperty#1#2#3{\ece\protected@edef{#1@p#2}{#3}}%
+\def\setpropertyglobal#1#2#3{\ece\protected@xdef{#1@p#2}{#3}}%
+%
+% 
+% \getproperty{ATOM}{PROPNAME} expands to the value of the property
+% PROPNAME on ATOM, or to nothing (i.e., \empty), if the property isn't
+% present.
+% 
+\def\getproperty#1#2{%
+  \expandafter\ifx\csname#1@p#2\endcsname\relax
+  % then \empty
+  \else \csname#1@p#2\endcsname
+  \fi
+}%
+%
+\makeatother
+
+\begin{document}
+\setproperty{test}{aproperty}{19}
+\getproperty{test}{aproperty}
+\end{document}

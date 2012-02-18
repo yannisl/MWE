@@ -1,0 +1,42 @@
+\documentclass[twocolumn]{article}
+\usepackage[listings,theorems]{tcolorbox}
+\usepackage{longtable}
+\tcbset{before={\par\medskip\pagebreak[0]\noindent},after={\par\medskip}}%
+\begin{document}
+\section{Table of Equations}
+\newcounter{texercise}[section]
+\begin{tcolorbox}[colback=blue!5,colframe=blue!50!black,arc=0mm,
+theorem={Equation}{texercise}{Summation}{myMarker}]{Summation of Numbers}{summation}
+  For all natural number $n$ it holds:\\[2mm]
+  \[\displaystyle\sum\limits_{i=1}^n i = \frac{n(n+1)}{2}\]
+\end{tcolorbox}
+\begin{tcolorbox}[colback=blue!5,colframe=blue!50!black,arc=0mm,
+theorem={Equations}{texercise}{More on summation}{myMarker}]{Summation of Numbers}{summation}
+  For all natural number $n$ it holds:\\[2mm]
+   \[\displaystyle\sum\limits_{i=1}^n i = \frac{n(n+1)}{2}\]
+  \[\displaystyle\sum\limits_{i=1}^n i = \frac{n(n+1)}{2}+ \frac{n(n+1)}{2}\]
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=blue!5,colframe=blue!50!black,arc=0mm,
+theorem={Equations}{texercise}{More on summation}{myMarker}]{Summation of Numbers}{summation}
+\medskip
+
+\begin{tabular}{lr@{~}c@{~}l@{\qquad}r}
+\multicolumn{5}{l}{\hspace{-2ex}\textbf{Line Values.}} \\
+\multicolumn{5}{r}{}\\
+\multicolumn{4}{l}{Altitude of triangle on side $a$,} \\
+& $h$ &=& \( \displaystyle \frac{2}{a}
+             \sqrt{s(s-a)(s-b)(s-c)} \) & \\
+%
+\multicolumn{4}{l}{Median of triangle on side $a$,} \\
+& $m$ &=& \( \frac{1}{2} \sqrt{2(b^2+c^2) - a^2} \) & \ \\
+\multicolumn{5}{l}{\hspace{-2ex}\textbf{Areas.}} \\
+%
+Rectangle,     & $S$ &=& $b\times h$ &  \\
+Square,         & $S$ &=& $b^2$        &  \\
+\end{tabular}
+\end{tcolorbox}
+\end{document}
+
+I would rather forget about stripes, they are really meant to be left to zebras and not mathematical books. If you want to have a bit more of a modern look, use the excellent tcolorbox package by Prof. Thomas F. Sturm
+«LATEX – Einführung in das Textsatzsystem» who now kindly provided also documentation in English.
