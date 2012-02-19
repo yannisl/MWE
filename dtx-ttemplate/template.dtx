@@ -5,16 +5,14 @@
 %<*readme>
 ----------------------------------------------------------------
 template --- short description
-E-mail: stacey@math.ntnu.no
+E-mail: yannislaz@gmail.com
 Released under the LaTeX Project Public License v1.3c or later
 See http://www.latex-project.org/lppl.txt
 ----------------------------------------------------------------
-
-Sentence-long description.
+This file provides a template for defining a class.
 %</readme>
 %<*TODO>
-Some todo notes
-add checkcharacters
+add tcolorbox support
 %</TODO>
 %<*internal>
 \fi
@@ -30,7 +28,7 @@ add checkcharacters
 \preamble
 ----------------------------------------------------------------
 template --- short description.
-E-mail: stacey@math.ntnu.no
+E-mail: yannislaz@gmail.com
 Released under the LaTeX Project Public License v1.3c or later
 See http://www.latex-project.org/lppl.txt
 ----------------------------------------------------------------
@@ -38,7 +36,7 @@ See http://www.latex-project.org/lppl.txt
 \endpreamble
 \postamble
 
-Copyright (C) 2011 by Andrew Stacey <stacey@math.ntnu.no>
+Copyright (C) 2011 by Dr. Yiannis Lazarides <yannislaz@gmail.com>
 
 This work may be distributed and/or modified under the
 conditions of the LaTeX Project Public License (LPPL), either
@@ -48,7 +46,7 @@ version.  The latest version of this license is in the file:
 http://www.latex-project.org/lppl.txt
 
 This work is "maintained" (as per LPPL maintenance status) by
-Andrew Stacey.
+Dr. Yiannis Lazarides.
 
 This work consists of the file  template.dtx
 and the derived files           template.ins,
@@ -83,17 +81,19 @@ and the derived files           template.ins,
 \else
   \expandafter\endgroup
 \fi
-%</internal>
+
 %<*package>
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{template}[2011/06/03 v1.0 Description]
 %</package>
 %<*driver>
-\documentclass{ltxdoc}
+\documentclass{ltxdockit}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 %\usepackage{morefloats}
 \usepackage{tikz}
+\usepackage[listings,theorems]{tcolorbox}
+\tcbset{before={\par\medskip\pagebreak[0]\noindent},after={\par\medskip}}%
 \usepackage{\jobname}
 \usepackage[numbered]{hypdoc}
 \definecolor{lstbgcolor}{rgb}{0.9,0.9,0.9} 
@@ -103,7 +103,7 @@ and the derived files           template.ins,
 \lstset{breakatwhitespace=true,breaklines=true,language=TeX}
  
 \usepackage{fancyvrb}
-
+\newcommand*{\Lpack}[1]{\textsf {#1}}           % typeset a package
 \newenvironment{example}
   {\VerbatimEnvironment
    \begin{VerbatimOut}[gobble=2]{example.out}}
@@ -129,7 +129,7 @@ and the derived files           template.ins,
 %</driver>
 % \fi
 %
-%
+% \CheckSum{14}
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -150,12 +150,17 @@ and the derived files           template.ins,
 % \changes{1.0}{2011/05/03}{Converted to DTX file}
 %
 % \DoNotIndex{\newcommand,\newenvironment}
-%
-% \providecommand*{\url}{\texttt}
 % \GetFileInfo{template.dtx}
-% \title{The \textsf{template} package}
-% \author{Andrew Stacey \\ \url{stacey@math.ntnu.no}}
-% \date{\fileversion~from \filedate}
+% \providecommand*{\url}{\texttt}
+%  \def\fileversion{v1.0}          
+%  \def\filedate{2012/03/06}
+% \title{The \textsf{template} package.
+% \thanks{This
+%        file (\texttt{template.dtx}) has version number \fileversion, last revised
+%        \filedate.}
+% }
+% \author{Dr. Yiannis Lazarides \\ \url{yannislaz@gmail.com}}
+% \date{\filedate}
 %
 %
 % \maketitle
@@ -163,6 +168,32 @@ and the derived files           template.ins,
 % \abstract{It is always good to have an abstract at the top part} 
 % \section{Introduction}
 %
+% 
+% This manual is typeset according to the conventions of the
+% \LaTeX{} \textsc{docstrip} utility which enables the automatic
+% extraction of the \LaTeX{} macro source files~\cite{GOOSSENS94}.
+%
+% \section{Use of boxes}
+% You can use the |tcolorbox| package to create nicely formatted boxes for examples.
+%\newcounter{texercise}[section]
+%\begin{tcolorbox}[colback=blue!5,colframe=blue!50!black,arc=1mm,
+%                          theorem={Equations}{texercise}{More on summation}{myMarker}]{}{}
+%\medskip
+%
+%\begin{tabular}{lr@{~}c@{~}l@{\qquad}r}
+%\multicolumn{5}{l}{\hspace{-2ex}\textbf{Line Values.}} \\
+%\multicolumn{5}{r}{}\\
+%\multicolumn{4}{l}{Altitude of triangle on side $a$,} \\
+%& $h$ &=& \( \displaystyle \frac{2}{a}
+%             \sqrt{s(s-a)(s-b)(s-c)} \) & \\
+%%
+%\multicolumn{4}{l}{Median of triangle on side $a$,} \\
+%& $m$ &=& \( \frac{1}{2} \sqrt{2(b^2+c^2) - a^2} \) & \ \\
+%\multicolumn{5}{l}{\hspace{-2ex}\textbf{Areas.}} \\
+%Rectangle,     & $S$ &=& $b\times h$ &  \\
+%Square,         & $S$ &=& $b^2$        &  \\
+%\end{tabular}
+%\end{tcolorbox}
 % \StopEventually{}
 %
 % \section{Implementation}
@@ -202,6 +233,359 @@ and the derived files           template.ins,
 % \iffalse  
 %</test-01>
 % \fi
+% The end of the configuration file code
+%
+% \bibliographystyle{alpha}
+% \begingroup
+% \raggedright
+% \begin{thebibliography}{GMSN94A}
+%
+%
+%    \bibitem[ABH90]{bk:Impatient}
+%      Paul W.~Abrahams, Karl Berry and Kathryn A.~Hargreaves.
+%      \newblock \emph{TeX{} for the Impatient}.
+%      \newblock
+%       Addison-Wesley, Reading, Massachusetts, 1990.
+%      \newblock (Available from CTAN in \texttt{info/impatient})
+%
+% \bibitem[Ars01a]{TITLEREF}
+% Donald Arseneau.
+% \newblock \emph{\Lpack{Titleref} package (version 3.1)}.
+% \newblock April 2001.
+% \newblock (Available from CTN as
+%            \texttt{macros/latex/contrib/misc/titleref.sty})
+%
+% \bibitem[Ars01b]{CHAPTERBIB}
+% Donald Arseneau.
+% \newblock \emph{\Lpack{Chapterbib} package (version 1.9)}.
+% \newblock September 2001.
+% \newblock (Available from CTN as
+%            \texttt{macros/latex/contrib/misc/chapterbib.sty})
+%
+% \bibitem[Ars03]{FRAMED}
+% Donald Arseneau.
+% \newblock \emph{\Lpack{Framed} package (version 0.8a)}.
+% \newblock July 2003.
+% \newblock (Available from CTAN as
+%            \texttt{macros/latex/contrib/misc/framed.sty})
+%
+% \bibitem[Ars05]{PLACEINS}
+% Donald Arseneau.
+% \newblock \emph{\Lpack{Placeins} package (version 2.2)}.
+% \newblock May 2005.
+% \newblock (Available from CTN as
+%            \texttt{macros/latex/contrib/placeins/placeins.sty})
+%  
+%
+% \bibitem[ArWi00]{IFMTARG}
+% Donald Arseneau and Peter Wilson.
+% \newblock \emph{The ifmtarg package}.
+% \newblock March, 2000.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/misc})
+%
+%
+%  \bibitem[Car94]{DELARRAY}
+%  David Carlisle.
+%  \newblock \emph{The \Lpack{delarray} package}.
+%  \newblock March 1994.
+%  \newblock (Available from CTAN in
+%             \texttt{/macros/latex/required/tools})
+%
+%
+% \bibitem[Car98a]{ENUMERATE}
+% David Carlisle.
+% \newblock \emph{The enumerate package}.
+% \newblock August, 1998.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/required/tools})
+%
+% \bibitem[Car98b]{REMRESET}
+% David Carlisle.
+% \newblock \emph{The remreset package}.
+% \newblock August, 1998.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/carlisle})
+%
+%  \bibitem[Car99]{TABULARX}
+%  David Carlisle.
+%  \newblock \emph{The \Lpack{tabularx} package}.
+%  \newblock January 1999.
+%  \newblock (Available from CTAN in
+%             \texttt{/macros/latex/required/tools})
+%
+%  \bibitem[Car01]{DCOLUMN}
+%  David Carlisle.
+%  \newblock \emph{The \Lpack{dcolumn} package}.
+%  \newblock May 2001.
+%  \newblock (Available from CTAN in
+%             \texttt{/macros/latex/required/tools})
+%
+% \bibitem[Coc02]{SUBFIGURE}
+% Steven Douglas Cochran.
+% \newblock \emph{The subfigure package}.
+% \newblock March, 2002.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/subfigure})
+%
+% \bibitem[Dal99]{NATBIB}
+% Patrick W. Daly.
+% \newblock \emph{Natural Sciences Citations and References}.
+% \newblock May, 1999.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/natbib})
+%
+% \bibitem[Dow00]{PATCHCMD}
+% Michael J. Downes
+% \newblock \emph{The patchcmd package}.
+% \newblock July 2000.
+% \newblock (Available from CTAN in
+%            \texttt{/macros/latex/contrib/patchcmd})
+%
+% \bibitem[Fai98]{MOREVERB}
+% Robin Fairbairns.
+% \newblock \emph{The moreverb package}.
+% \newblock December, 1998.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/moreverb})
+%
+% \bibitem[Fai03]{FOOTMISC}
+% Robin Fairbairns.
+% \newblock \emph{\Lpack{footmisc} --- a portmanteau package for 
+%            customising footnotes in LaTeX}.
+% \newblock February 2003.
+% \newblock (Available from CTAN in
+%            \texttt{macros/latex/contrib/footmisc})
+%
+%
+%    \bibitem[Fea03]{BOOKTABS}
+%      Simon Fear.
+%      \newblock \emph{Publication quality tables in \LaTeX}.
+%       \newblock March, 2003.
+%      \newblock (Available from CTAN in 
+%                 \texttt{macros/latex/contrib/booktabs})
+%
+% \bibitem[Fra00]{CROP}
+% Melchior Franz.
+% \newblock \emph{The crop package}.
+% \newblock February, 2000.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/crop})
+%
+%
+% \bibitem[GMS94]{GOOSSENS94}
+% Michel Goossens, Frank Mittelbach, and Alexander Samarin.
+% \newblock {\em The LaTeX Companion}.
+% \newblock Addison-Wesley Publishing Company, 1994.
+%
+%
+%
+%  \bibitem[Knu84]{bk:knuth}  
+%       Donald E. Knuth.
+%  \newblock  \emph{The \TeX{}book}.
+%  \newblock
+%       Addison-Wesley, Reading, Massachusetts, 1984.
+%
+%
+% \bibitem[KWG]{TUFTE}
+% Bil Kleb, Bill Wood, and Kevin Godby.
+% \newblock \emph{Tufte LaTeX}.
+% \newblock December 2009.
+% \newblock (Available from CTAN in \texttt{macros/latex/contrib/tufte-latex/})
+% 
+%    \bibitem[Lam94]{bk:lamport} 
+%       Leslie Lamport.
+%       \newblock  \emph{\LaTeX\ --- A Document Preparation System}.
+%       \newblock
+%       Addison-Wesley, Reading, Massachusetts, 1994.
+%
+% \bibitem[LMB99]{CLASSES}
+% Leslie Lamport, Frank Mittelbach and Johannes Braams.
+% \newblock \emph{Standard Document Classes for LaTeX version 2e}.
+% \newblock September, 1999.
+% \newblock (Available from CTAN as 
+%            \texttt{/macros/latex/base/classes.dtx})
+%
+%  \bibitem[MC98]{ARRAY}
+%  Frank Mittelbach and David Carlisle.
+%  \newblock \emph{A new implementation of LaTeX's tabular and array 
+%                  environment}
+%  \newblock May 1998.
+%  \newblock (Available from CTAN in
+%             \texttt{/macros/latex/required/tools})
+%
+% \bibitem[Oos96]{FANCYHDR}
+% Piet van Oostrum.
+% \newblock \emph{Page layout in LaTeX}.
+% \newblock June, 1996.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/fancyhdr})
+%
+%
+% \bibitem[Rah01]{NAMEREF}
+% Sebastian Rahtz.
+% \newblock \emph{Section name references in LaTeX}.
+% \newblock January 2001.
+% \newblock (Available from CTAN in
+%            \texttt{/macros/latex/contrib/hyperref})
+%
+% \bibitem[Rah02]{HYPERREF}
+% Sebastian Rahtz.
+% \newblock \emph{Hypertext marks in LaTeX}.
+% \newblock March 2002.
+% \newblock (Available from CTAN in
+%            \texttt{/macros/latex/contrib/hyperref})
+%
+%
+% \bibitem[Sch98]{EVERYSHI}
+% Martin Schr\"{o}der.
+% \newblock \emph{The everyshi package}.
+% \newblock August, 1998.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/ms})
+%
+% \bibitem[SRR01]{VERBATIM}
+% Rainer Sch\"{o}pf, Bernd Raichle and Chris Rowley.
+% \newblock \emph{A new implementation of LaTeX's verbatim and verbatim*
+%                 environments}.
+% \newblock March, 2001.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/required/tools})
+%
+% \bibitem[Wil99]{TOCVSEC2}
+% Peter Wilson.
+% \newblock \emph{The tocvsec2 package}.
+% \newblock January, 1999.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/tocvsec2})
+%
+% \bibitem[Wil00a]{EPIGRAPH}
+% Peter Wilson.
+% \newblock \emph{The epigraph package}.
+% \newblock February, 2000.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/epigraph})
+%
+% \bibitem[Wil00b]{ISOCLASS}
+% Peter Wilson.
+% \newblock \emph{LaTeX files for typesetting ISO standards}.
+% \newblock February, 2000.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/isostds/iso})
+%
+% \bibitem[Wil00c]{NEXTPAGE}
+% Peter Wilson.
+% \newblock \emph{The nextpage package}.
+% \newblock February, 2000.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/misc})
+%
+% \bibitem[Wil00d]{NEEDSPACE}
+% Peter Wilson.
+% \newblock \emph{The needspace package}.
+% \newblock March, 2000.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/misc})
+%
+% \bibitem[Wil01a]{ABSTRACT}
+% Peter Wilson.
+% \newblock \emph{The abstract package}.
+% \newblock February, 2001.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/abstract})
+%
+% \bibitem[Wil01b]{CHNGPAGE}
+% Peter Wilson.
+% \newblock \emph{The chngpage package}.
+% \newblock February, 2001.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/misc})
+%
+% \bibitem[Wil01c]{APPENDIX}
+% Peter Wilson.
+% \newblock \emph{The appendix package}.
+% \newblock March, 2001.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/appendix})
+%
+% \bibitem[Wil01d]{CCAPTION}
+% Peter Wilson.
+% \newblock \emph{The ccaption package}.
+% \newblock March, 2001.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/ccaption})
+%
+% \bibitem[Wil01e]{CHNGCNTR}
+% Peter Wilson.
+% \newblock \emph{The chngcntr package}.
+% \newblock March, 2001.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/misc})
+%
+% \bibitem[Wil01f]{HANGING}
+% Peter Wilson.
+% \newblock \emph{The hanging package}.
+% \newblock March, 2001.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/hanging})
+%
+% \bibitem[Wil01g]{TITLING}
+% Peter Wilson.
+% \newblock \emph{The titling package}.
+% \newblock March, 2001.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/titling})
+%
+% \bibitem[Wil01h]{TOCBIBIND}
+% Peter Wilson.
+% \newblock \emph{The tocbibind package}.
+% \newblock April, 2001.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/tocbibind})
+%
+% \bibitem[Wil01i]{TOCLOFT}
+% Peter Wilson.
+% \newblock \emph{The tocloft package}.
+% \newblock April, 2001.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/tocloft})
+%
+% \bibitem[Wil01j]{VERSE}
+% Peter Wilson.
+% \newblock \emph{Typesetting simple verse with LaTeX}.
+% \newblock August, 2001.
+% \newblock (Available from CTAN in 
+%            \texttt{/macros/latex/contrib/verse})
+%
+%
+% \bibitem[Wil03]{LEDMAC}
+% Peter Wilson.
+% \newblock \emph{\Lpack{ledmac}: A presumptuous attempt to port EDMAC and
+%                 TABMAC to LaTeX}. 
+% \newblock August 2003.
+% \newblock (Available from CTAN in
+%            \texttt{macros/latex/contrib/ledmac})
+%
+% \bibitem[Wil07]{GLISTER07}
+% Peter Wilson.
+% \newblock `Glisterings' \emph{TUGboat}, 28(2):229--232,
+% \newblock 2007.
+%
+% \bibitem[Wil08]{GLISTER08}
+% Peter Wilson.
+% \newblock `Glisterings' \emph{TUGboat}, 29(2):324--327,
+% \newblock 2008.
+%
+%
+%
+%
+%
+% \end{thebibliography}
+% \endgroup
+%
+
+
+
 % \Finale
 \endinput
 
@@ -238,6 +622,8 @@ Writing a package with TikZ specifically in mind is mostly similar to writing ev
 \RequirePackage{array} % for |dec sep align|
 
 \endinput
+
+texdoc clsguide for a lot more information
 
 
 
