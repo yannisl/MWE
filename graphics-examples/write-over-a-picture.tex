@@ -1,0 +1,33 @@
+% Example with text over  a picture
+% using overpic
+% http://tex.stackexchange.com/questions/44806/fitting-text-into-a-box-over-a-pic
+\documentclass{article}
+\usepackage{graphicx,environ}
+\usepackage{overpic}
+\usepackage{picture}
+\usepackage{xcolor}
+\def\sampletext{Some text that will fit
+ Some text that will fit 
+ Some text that will fit
+ Some text that will fit.}
+\fboxsep=10pt
+\fboxrule=0pt
+\parindent0pt
+\begin{document}
+% #1 x position
+% #2 y position
+% #3 width
+% #4 height
+% #5 graphics
+\long\def\combo(#1,#2)#3#4#5#6{%
+   \begin{overpic}[width=#3, height=#4,  grid,tics=10]{#5}%
+    \put(#1,#2){%
+  \vbox{\leftskip5pt\rightskip5pt\hsize #3\color{white}\sffamily 
+    #6\par}%
+ }%
+\end{overpic}}
+\combo(0cm,1cm){10cm}{8cm}{cardtrick}{\large \sampletext}
+\medskip
+
+\combo(0cm,1cm){10cm}{8cm}{cardtrick}{\Large\bfseries \sampletext}
+\end{document}
