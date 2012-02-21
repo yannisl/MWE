@@ -1,0 +1,77 @@
+\documentclass{article}
+\usepackage{amsmath,fp}
+\begin{document}
+\makeatletter
+\count@=1
+\def\DecimalToFraction#1{
+%helper macro
+\FPset\zero{0}
+\FPset\X{#1}
+
+%% Set initial values
+\FPadd\X{\X}{0.0000000001} % avoid overflows and divisions by zero
+\FPset\Zi{\X}
+\FPset\Di{1}
+\FPset\Dprevious{0}
+%% begin loop
+\loop\ifnum\count@<13
+%% numerator term
+\FPtrunc\temp{\Zi}{0} 
+\FPsub\temp{\Zi}{\temp}
+%% inverse
+\FPdiv\Znext{1}{\temp}
+%% Find Dnext
+\FPtrunc\IntZnext{\Znext}{0}
+%% Di x Int{Zi+1}
+\FPmul\temp{\Di}{\IntZnext}
+\FPadd\temp{\Di}{\Dprevious}
+\FPset\Dnext{\temp}
+\FPround\Dnext{\Dnext}{0}
+
+%%% Find Ni+1
+\FPmul\temp{\X}{\Dnext}
+\FPround\temp{\temp}{0}
+\FPset\Nnext{\temp}
+
+\FPdiv\ratio{\Nnext}{\Dnext}
+
+\(Z_i=\Znext\to \Nnext/\Dnext =\ratio\)
+
+\FPset{\Dprevious}{\Dnext}
+\FPset{\Di}{\Dprevious}
+\FPset{\Zi}{\Znext}
+
+\advance\count@ by1
+\repeat
+%% end of loop
+
+\gdef\NUM{\Nnext}
+\gdef\DEN{\Dnext}
+
+\makeatother
+}
+
+\def\Test#1{%
+  \DecimalToFraction{#1}
+  %The number $#1=\frac{\NUM}{\DEN}$
+}
+
+\Test{.313}
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
