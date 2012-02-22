@@ -1,0 +1,28 @@
+% Visualize tex boxes
+% http://tex.stackexchange.com/questions/2083/how-can-i-visualize-boxes
+\documentclass{article}
+\directlua{ drawboxes = require("drawboxes")}
+\usepackage[latin,english]{babel}
+\usepackage[demo]{graphicx}
+\usepackage{atbegshi,lipsum}
+\usepackage{microtype}
+\AtBeginShipout {\directlua{drawboxes.draw()}}
+\begin{document}
+\hsize 3in
+A wonderful serenity has taken possession of my entire soul, like these sweet
+mornings of springrollrollroll which I enjoy with my whole heart.
+
+$$ e=mc^2 $$
+
+\centerline{\includegraphics[width=4cm]{cow}}
+
+
+abcdefghijklno
+
+\noindent
+\vbox to 1in{Testing}
+
+
+\hbox{\vbox{\lipsum[1]}testing all}
+
+\end{document}
