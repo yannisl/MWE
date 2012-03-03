@@ -20,10 +20,20 @@
 % #4 height
 % #5 graphics
 \long\def\combo(#1,#2)#3#4#5#6{%
-   \begin{overpic}[width=#3, height=#4,  grid, tics=10]{#5}%
+   \sbox0{\vbox{\leftskip5pt\rightskip5pt\hsize #3\color{white}\sffamily 
+    #6\par}
+   }
+   width of text = \the\wd0\\
+   height of text = \the\ht0
+   the depth of text = \the\dp0
+
+\vskip1cm
+
+\begin{overpic}[width=#3, height=#4,  grid, tics=10]{#5}%
     \put(#1,#2){%
-  \vbox{\leftskip5pt\rightskip5pt\hsize #3\color{white}\sffamily 
-    #6\par}%
+    \sbox0{\vbox{\leftskip5pt\rightskip5pt\hsize #3\color{white}\sffamily 
+    #6\par}}%
+     \box0
  }%
 \end{overpic}}
 \combo(0cm,1cm){10cm}{8cm}{cardtrick}{\large \sampletext}

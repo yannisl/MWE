@@ -1,0 +1,31 @@
+% http://tex.stackexchange.com/questions/45709/how-do-you-create-pull-quotes/45733#45733
+% I don't fancy pull quotes too much!
+% Dr. Y Lazarides
+\documentclass{article}
+\usepackage[latin]{babel}
+\usepackage{xcolor}
+\usepackage{lipsum}
+\usepackage{picture}
+\usepackage{ragged2e}
+\begin{document}
+\vbox to 0pt{\hsize 0.49\linewidth
+\hangindent=-60pt \hangafter=9
+\lipsum*[2]\par
+\begin{picture}(0,0)
+\put(3.7cm,3.8cm){\parbox[t]{4cm}{\color{purple}{\textbf{``}}\tiny\lipsum*[2]}}
+\end{picture}
+\lipsum[1]
+}
+\end{document}% remove to see full result
+\vskip-12pt\hspace{6cm}{\vbox to 0pt{\hsize 0.49\linewidth
+\hangindent=60pt \hangafter=9
+\lipsum*[2]\par
+%\begin{picture}(0,0)
+%\put(3.7cm,3.8cm){\parbox[t]{4cm}{\color{purple}{\textbf{``}}\tiny\lipsum*[2]}}
+%\end{picture}
+\lipsum[1]
+}}
+\end{document}
+
+
+
