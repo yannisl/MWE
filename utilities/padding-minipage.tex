@@ -1,0 +1,23 @@
+% http://tex.stackexchange.com/questions/45689/increasing-the-size-of-a-minipage-proportional-to-the-contain
+%
+\documentclass{article}
+\usepackage{environ}
+\usepackage{tikz}
+\usepackage{lipsum}
+\begin{document}
+\NewEnviron{Notes}{
+  \par
+  \begin{tikzpicture}
+    \node[rectangle,minimum width=0.5\textwidth] (m) {
+      \fbox{\begin{minipage} {0.5\textwidth}     
+           \color{red}\BODY
+       \end{minipage}}
+    };
+    \draw[dashed] (m.south west) rectangle (m.north east);
+  \end{tikzpicture}\\
+}
+
+\begin{Notes}
+\lipsum[1]
+\end{Notes}
+\end{document}
