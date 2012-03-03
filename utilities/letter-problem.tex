@@ -1,0 +1,28 @@
+\documentclass[11pt]{letter}
+%\address{\phantom{i}}
+\signature{James Bond}
+\makeatletter
+\renewcommand{\closing}[1]{\par\nobreak\vspace{\parskip}%
+ \stopbreaks
+ \noindent
+% \ifx\@empty\fromaddress\else
+ \hspace*{\longindentation}
+ \parbox{\indentedwidth}{\raggedright
+ \ignorespaces #1\\[6\medskipamount]%
+ \ifx\@empty\fromsig
+ \fromname
+ \else \fromsig \fi\strut}%
+\par}
+
+\begin{document}
+\begin{letter}{}
+
+\opening{To whom it may concern:}
+
+The body of the letter goes on here. 
+
+\closing{Yours sincerely,}
+
+\end{letter}
+
+\end{document}
