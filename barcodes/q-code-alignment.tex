@@ -1,0 +1,47 @@
+% LaTeX CV
+\documentclass[final,a4paper,notitlepage,10pt]{report}
+%%% Packages %%%
+\usepackage[utf8]{inputenc} % inputenc for encoding to utf8
+\usepackage{auto-pst-pdf}   % auto-pst-pdf converts pst to pdf
+\usepackage{pst-barcode}    % pst-barcode try implement QR code
+\usepackage[paper=a4paper,left=0.7cm,right=0.7cm,top=0.7cm,bottom=0.7cm,noheadfoot] {geometry}   % geometry for margins
+% for mailto command
+\newcommand{\mailto}[1]{\href{mailto:#1}{#1}}
+% Name and contact information
+\newcommand{\name}{FirstName LastName}
+\newcommand{\addr}{123 Fake Street, London, XX00 0XX, England}
+\newcommand{\phone}{            +44 123 456 6789      }
+\newcommand{\email}{\mailto{email@example.com}}
+\newcommand{\website}{\href{http://google.com}{http://google.com}}
+\setlength\parindent{0pt}
+\fboxsep0pt
+\fboxrule0pt
+\usepackage{hyperref}
+\begin{document}
+\thispagestyle{empty}   % this page does not have a header
+
+\fbox{\begin{minipage}[t]{\textwidth}
+\fbox{\begin{minipage}{1.378in}
+\begin{pspicture}(1.378in, 1.5in)
+    \psbarcode[]{2}{height=1.378 width=1.378}{qrcode}
+    {\color{white}2}
+\end{pspicture}
+\end{minipage}}\hspace{0.3cm}% adjust for horizontal spacing
+\fbox{\begin{minipage}{0.7\textwidth}
+\textbf{\LARGE \name }\\
+\textit{%
+\begin{tabular}{l l}\\
+Email: \email\ & Address: \addr \\
+Web: \website\ & Mobile: \phone \\
+\end{tabular}
+}
+{\color{orange}\rule{3pt}{39pt}}
+\end{minipage}}
+\end{minipage}}
+\end{document}
+Objective: Lorem ipsum dolor sit amet, consectetur adipisicing elit.\\
+
+\section{Lorem Ipsum Dolor}
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+\end{document}
