@@ -1,0 +1,35 @@
+%http://tex.stackexchange.com/questions/47519/stripping-a-pair-of-double-quote-characters-surrounding-a-word-and-define-it-as
+\documentclass{article}
+\usepackage{siunitx}
+\begin{filecontents*}{myinput.txt}
+0.45 "wingTaperRatio"
+12.0 "wingSpanMT"
+10.2 "wingAreaMTSquared"
+\end{filecontents*}
+
+\makeatletter
+\newread\myinput
+\def\parseline#1 "#2"{\@namedef{#2}{#1}}
+\newcommand{\parseinput}[1]{%
+  \def\@tempb{\par}%
+  \openin\myinput=#1
+  \loop\unless\ifeof\myinput
+    \read\myinput to \@tempa
+    \ifx\@tempa\@tempb\else
+      \expandafter\parseline\@tempa
+    \fi
+  \repeat
+  \closein\myinput
+}
+\makeatother
+
+\begin{document}
+%#1 file to try #2 success #3 failure
+\IfFileExists{myinp.ut.txt}{%
+    parsing... \parseinput{myinput.txt}%
+      \wingTaperRatio, \wingSpanMT, \wingAreaMTSquared 
+   }{not found}
+
+a span $b=\SI{\wingSpanMT}{\metre}$, 
+
+\end{document}

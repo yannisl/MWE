@@ -1,0 +1,32 @@
+\documentclass{article}
+\newwrite\mywr
+\immediate\openout\mywr=temp.tex
+\immediate\write\mywr{mmmaaammza}
+\immediate\closeout\mywr
+\begin{document}
+Importing the file back
+\input{temp.tex}
+
+\newenvironment{name}
+  {\trivlist\item
+   \tabular{@{}lp{3cm}@{}}}
+  {\endtabular\endtrivlist}
+\begin{name}
+First	& Mary  \\
+Second	& Jones is something of a gentleman and an officer.\\
+Nickname	& --- \\
+\end{name}
+\begin{name}
+First	& Mary  \\
+Second	& Jones \\
+Nickname	& --- \\
+\end{name}
+\begin{name}
+First	& Mary  \\
+Second	& Jones \\
+Nickname	& --- \\
+\end{name}
+\begin{trivlist}
+\item test
+\end{trivlist}
+\end{document}
