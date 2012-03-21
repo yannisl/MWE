@@ -1,0 +1,23 @@
+% utilities
+% http://tex.stackexchange.com/questions/46024/how-do-i-make-the-list-of-figures-use-an-automatically-shortened-version-of-the/46030#46030
+\documentclass{article}
+\usepackage{truncate}
+\usepackage{caption}
+\begin{document}
+\listoffigures
+
+\DeclareRobustCommand\Caption[2][130pt]{\captionof{figure}{\truncate{#1}{#2}}}
+
+\begin{figure}
+\Caption{This is my famous half a kilometer long caption that has been truncated}
+\end{figure}
+
+\DeclareRobustCommand{\Caption}[2][]{\captionof{figure}{#2}}
+
+\begin{figure}
+\Caption{This is my famous half a kilometer long caption that has not been truncated}
+\end{figure}
+
+\end{document}
+
+

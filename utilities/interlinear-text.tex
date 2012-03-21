@@ -1,0 +1,30 @@
+% Typesetting tri-linear text
+% with LaTeX
+% http://tex.stackexchange.com/questions/45520/doing-an-interlinear-text
+\documentclass{article}
+\usepackage[polutonikogreek, english]{babel}
+\usepackage{xcolor}
+\fboxrule0pt
+\fboxsep1pt
+%\parindent0pt
+\begin{document}
+
+\def\add#1|#2|#3;{%
+    \fbox{\vbox{\hbox{\sffamily\tiny{#1}}\hbox{\color{purple}\textgreek{#2}}\hbox{#3}}}}%
+
+\def\addsection#1{\fbox{\vbox to 1.1cm{\vfill\hbox to 1cm{\hfill\Large\bfseries #1}\vfill}}}
+
+\addsection{2.1}
+\add 1722-3588|  en tw| No;
+\add 1722-3588|  en tw| No;
+\add 1722-3588|  en tw| No;
+\add 1722-3588|  en tw| No;
+\add 1722-3588|  en tw| Notia;
+\add 1722-3588|  en tw| No;
+\add 1722-3588|  en tw| No;
+\add 1722-3588|  en tw| No;
+\add 1722-3588|  en tw| No;
+\add 1722-3588|  en tw| No;
+\add 1722-3588|  en tw| No;
+\add 932 | Basil'ia N'abou| de Nabou;
+\end{document}
