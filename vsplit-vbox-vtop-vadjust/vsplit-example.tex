@@ -1,0 +1,32 @@
+\documentclass{article}
+\parindent0pt
+\def\exampletext{Text Text Text Text Text Text Text Texg Texg Text Text Text 
+Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text 
+Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text }
+\fboxsep=0pt
+\fboxrule=1pt
+%\hfuzz=\maxdimen
+\gdef\afont{\bfseries\huge}
+\begin{document}
+\afont\hfuzz=\maxdimen
+\setbox3=\vbox{%
+\hsize=13cm\afont
+\exampletext}
+\boxmaxdepth0pt
+\setbox1\vsplit3to 2\baselineskip
+\setbox1=\vbox{\unvbox1}
+\fbox{\box1}
+\fbox{\box3}
+\the\baselineskip 1.764
+\end{document}
+
+It should result in an underfull vbox instead of an overfull one. TeX by topic has this to say about \vsplit:
+
+The extracted result of \vsplit 8-bit number to dimen is a box with the following properties.
+
+Height equal to the speciﬁed dimen ; TEX will go through the original box register (which must contain a vertical box) to ﬁnd the best breakpoint. This may result in an underfull box. ...
+If I understand this correctly, it means that TeX breaks earlier than the 2cm you specify, resulting in an underfull vbox. You would have to use the exact height of x lines to not get the underfull vbox warning. For instance, if we use \ht1 instead of 2cm as the dimen, no warning is generated. Because, again according to TeX by topic:
+
+The bottom of the original box is always a valid breakpoint for the \vsplit operation. If this breakpoint is taken, the remainder box register is void.
+
+http://tex.stackexchange.com/questions/38496/how-to-avoid-underfull-vbox-in-combination-with-vsplit

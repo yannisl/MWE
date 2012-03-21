@@ -1,0 +1,56 @@
+\documentclass{book}
+\usepackage[listings]{tcolorbox}
+\lstloadlanguages{[LaTeX]TeX, [primitive]TeX,Pascal}
+\usepackage{filecontents}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{amsmath}
+\usepackage{luacode} % loads luatexbase as well
+\newcommand\emphasis[2][blue]{\lstset{emph={exec,if,then,else,do,end,while,for,print,sprint,directlua,#2},
+   emphstyle={\ttfamily\textcolor{#1}}}}%
+\lstset{language={[LaTeX]TeX},
+      escapeinside={{(*@}{@*)}}, 
+       gobble=0,
+       stepnumber=1,numbersep=5pt, 
+       numberstyle={\footnotesize\color{gray}},%firstnumber=last,
+      breaklines=true,
+      framesep=5pt,
+      basicstyle=\small\ttfamily,
+      showstringspaces=false,
+      keywordstyle=\ttfamily\textcolor{blue},
+      stringstyle=\color{orange},
+      commentstyle=\color{black},
+      rulecolor=\color{gray!10},
+      breakatwhitespace=true,
+      showspaces=false,  % shows spacing symbol
+      backgroundcolor=\color{gray!15}}
+
+\makeatother
+\begin{document}
+
+\emphasis{return,repeat,until,function,local}
+\begin{tcblisting}{}
+\begin{luacode}
+-- example adapted from
+-- http://rosettacode.org/wiki/Happy_numbers
+function boxit(color, var, s)
+   zz="\\mdframed[roundcorner=3pt, leftmargin=2cm,innertopmargin=0pt,innerbottommargin=0pt,       innerleftmargin=0pt,innerrightmargin=0pt, innerlinewidth=0pt, middlelinewidth=0pt,outerlinewidth=1pt, outerlinecolor=red]"..var.."\\endmdframed"
+ return zz
+end
+function digits(n)
+  if n > 0 then return n \% 10, digits(math.floor(n/10)) end
+end
+function sumsq(a, ...)
+  return a and a ^ 2 + sumsq(...) or 0
+end
+local happy = setmetatable({true, false, false, false}, {
+      __index = function(self, n)
+         self[n] = self[sumsq(digits(n))]
+         return self[n]
+      end } )
+i, j = 0, 8
+repeat
+   i, j = happy[j] and (tex.sprint(boxit(violet, j, " ")) or i+1) or i, j + 1
+until i == 17 --or j > 999
+\end{luacode}
+\end{tcblisting}
+\end{document}

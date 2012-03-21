@@ -1,0 +1,21 @@
+\documentclass{article}
+\usepackage{luacode}
+\parindent0pt
+\begin{document}
+\hsize=.1cm
+\def\p#1{#1\par }
+\begin{luacode}
+  local file = "luatexbase.loader.lua"
+  local path = assert(kpse.find_file(file, 'tex'))
+  tex.sprint(path)
+\end{luacode}
+\makeatother
+\end{document}
+local z=0
+  local words = io.open('en.txt')
+  for w in words:lines() do
+   z=z+1
+    tex.sprint(z.."  "..w..", ")
+  end
+  words:close()
+use a dictionary of 45378 pages.

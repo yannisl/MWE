@@ -1,0 +1,33 @@
+\documentclass{article}
+\usepackage{lmodern}
+\def\beforepophook{}
+\def\afterpophook{}
+\def\newstack#1{%
+  \directlua{#1 = ''}}
+\def\pushstack#1#2{%
+  \directlua{%
+    #1 = '\luatexluaescapestring{\unexpanded{#2}}' .. 'SENTINEL' .. #1}}
+\def\popstack#1{%
+  \directlua{%
+    local i = string.find(#1,'SENTINEL') - 1
+    tex.sprint(-1,'\noexpand\\beforepophook{}' .. string.sub(#1,1,i)
+    .. '\noexpand\\afterpophook{}') 
+    #1 = string.sub(#1,i + 9)}}
+\def\printstack#1{%
+  \texttt{\directlua{tex.sprint(-2,#1)}}}
+\begin{document}
+\newstack{mystack}
+\pushstack{mystack}{\foo{This is a stack test}}
+\pushstack{mystack}{\def\foo#1{\textbf{#1}}}
+\pushstack{mystack}{\begin{tabular}{cc} Foo & Bar \end{tabular}}
+\printstack{mystack}
+\popstack{mystack}
+
+\printstack{mystack}
+
+\popstack{mystack}{}
+\printstack{mystack}
+
+\popstack{mystack}{}
+\printstack{mystack}
+\end{document}
