@@ -1,0 +1,33 @@
+\documentclass{book}
+\usepackage[left=0pt,right=0pt,top=0.5in]{geometry}
+\usepackage{graphicx,lipsum,caption}
+\usepackage[strict]{changepage}
+\makeatletter
+\newcommand{\cleartoevenpage}{%
+  \clearpage%
+  \ifoddpage\c@page\hbox{}\clearpage\fi}
+
+\begin{document}
+
+%\cleartoevenpage
+%\includegraphics[height=0.8\textheight]{atmprocess.png}
+%\newpage
+%\hspace*{-\textwidth}\includegraphics[height=0.8\textheight]{atmprocess.png}
+
+
+\cleartoevenpage
+\includegraphics{africamedics}
+\newpage
+\hspace*{-\textwidth}\includegraphics{africamedics}\hspace{1em}
+\parbox[b]{0.3\textwidth}{\lipsum*[1-2]}
+
+
+\cleartoevenpage
+\includegraphics[height=0.8\textheight]{africamedics}
+\newpage
+\hspace*{-\textwidth}\includegraphics[height=0.8\textheight]{africamedics}\hspace{1em}
+\parbox[b]{0.3\textwidth}{\lipsum*[1-2]}
+
+
+\end{document}
+Myriam Raymond [myriam.raymond@iskanders.com]
