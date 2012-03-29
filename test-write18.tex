@@ -1,0 +1,32 @@
+%% To enable write-18 go to edit/preferences/
+\documentclass{article}
+\usepackage{docmute}
+\usepackage{listings,lipsum}
+\begingroup
+\expandafter\ifx\csname pdfshellescape\endcsname\relax
+\else
+\ifnum\pdfshellescape>0 %
+\else
+\PackageWarningNoLine{epstopdf}{%
+  Shell escape feature is not enabled%
+}%
+\fi
+\fi
+\endgroup
+\begin{document}
+%% Important to have the .txt extension or any extension fails with nothing
+%% important to have immediate otherwise the test will fail as the file is created at the end
+%% of the run.
+\immediate\write18{dir  > listings.txt}
+\IfFileExists{listing.tex}{\message{\string\write18 ENABLED}}
+{\message{\string\write18DISABLED}}
+\AtEndDocument{\lstinputlisting{listings.txt}}
+\lipsum[1]
+\end{document}
+
+%% Important think to remember is that texify might be activated the you need to pass the option
+%% as --tex-option=--enable-write18
+
+% Run everything from comand line if it works then copy into settings
+
+% Run everything as administrator
