@@ -1,0 +1,35 @@
+\documentclass[twoside]{book}
+\usepackage[left=80pt,right=80pt,top=0.75in]{geometry}
+\usepackage{graphicx,lipsum}
+\usepackage{changepage}
+\usepackage{pgf,tikz,pgfpages}
+\usepackage{xlayouts,xcolor,amsmath,fancyhdr}
+\makeatletter
+\providecommand{\cleartoevenpage}[1][\@empty]{%
+ \clearpage%
+ \ifodd\c@page\null#1\clearpage\fi}
+\makeatother
+\pagestyle{grid}
+\begin{document}
+\mainmatter
+\null\newpage
+\pgfpagesuselayout{2 on 1}[a3paper,landscape,border shrink=0mm]
+% first page
+\cleartoevenpage
+\checkoddpage%
+{\parindent0pt
+\vbox to 120pt{\lipsum[1]}%
+\includegraphics[height=0.78\textheight]{china-05}}
+
+%secondpage
+{\parindent0pt
+\vbox to 120pt{\lipsum[1]}%
+\hspace*{\dimexpr(-2in-\textwidth-2\evensidemargin)}
+\includegraphics[height=0.78\textheight]{china-05}}
+\hspace{1em}\parbox[b]{0.35\textwidth}{\lipsum[1-2]}
+\end{document}
+
+
+
+
+Myriam Raymond [myriam.raymond@iskanders.com]
