@@ -1,0 +1,105 @@
+% Minimal Working Example
+% This about the minimum you need
+% to type to have a working LaTeX
+% file. Typesets a basic article with
+% a title, author and date.
+% Adding structure and indices, EPIGRAPHS
+% Example-06
+
+\documentclass{book}
+\usepackage{microtype}
+\usepackage{lipsum}
+\usepackage{makeidx}
+\usepackage{epigraph}
+\usepackage[listings,theorems]{tcolorbox}
+\tcbset{before={\par\medskip\pagebreak[0]\noindent},after={\par\medskip}}%
+\newcounter{texercise}[section]
+\makeindex
+
+\title{My First Book}
+\author{Y Lazarides}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\chapter{Maths and more on Packages}
+
+\section{Table of Equations}
+
+
+\subsection{Display Style}
+
+ \[\sum\limits_{i=1}^n i = \frac{n(n+1)}{2}\]
+
+
+You can typeset them nicely in boxes using the \texttt{tcolorbox}. 
+package.
+
+\begin{tcolorbox}[colback=blue!5,
+                  colframe=blue!50!black,
+                  arc=0mm,
+                  theorem={Equation}{texercise}{Summation}{myMarker}]{Summation of Numbers}{}
+  For all natural number $n$ it holds:\\[2mm]
+  \[\displaystyle\sum\limits_{i=1}^n i = \frac{n(n+1)}{2}\]
+\end{tcolorbox}
+
+
+\chapter{The Social Life of Rabbits}
+\epigraph{Oh!  My ears and whiskers!}%
+         {Lewis Carroll}
+
+
+\section{The Epigraph Package}
+\lipsum[1-30]
+\section{More Sections}
+\lipsum
+
+
+
+\section{Another Section}
+\lipsum
+\appendix
+\chapter{Experimental Results}
+We now write about a book on science. Indexing is an
+art and a science. This is our first example on indexing.\index{Indexing}
+
+
+
+If there is one issue that gives me problem generally with windows, is
+configuring a new installation properly. First port of call is normally
+to set the path. I can assure you when DOS was around it was a smoother
+process. We used to have get it on an autoexec.bat file and edit it with
+a text editor. Now you have to first find the screen, which has been designed
+with ultimate usability in mind. It normally puts a tonne of text in a tiny
+little editor.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\printindex
+\end{document}

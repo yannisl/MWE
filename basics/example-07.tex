@@ -1,0 +1,44 @@
+% Minimal Working Example
+% This about the minimum you need
+% to type to have a working LaTeX
+% file. Typesets a basic article with
+% a title, author and date.
+% Adding structure and indices, EPIGRAPHS
+% Example-06
+
+\documentclass{book}
+\usepackage{microtype}
+\usepackage{lipsum}
+\usepackage{makeidx}
+\usepackage{epigraph}
+\makeindex
+
+\title{My First Book}
+\author{Y Lazarides}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\chapter{The Social Life of Rabbits}
+\epigraph{Oh!  My ears and whiskers!}%
+         {Lewis Carroll}
+
+
+\section{The Epigraph Package}
+\lipsum[1-30]
+\section{More Sections}
+\lipsum
+
+
+
+\section{Another Section}
+\lipsum
+\appendix
+\chapter{Experimental Results}
+We now write about a book on science. Indexing is an
+art and a science. This is our first example on indexing.\index{Indexing}
+
+\printindex
+\end{document}
