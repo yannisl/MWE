@@ -1,0 +1,210 @@
+\documentclass{article}
+\usepackage{lipsum,xcolor,graphicx}
+\usepackage[latin]{babel}
+\usepackage{microtype}
+
+% Distance between columns.
+\newdimen\textcoldist
+\textcoldist4mm\relax
+
+% Distance around image.
+\newdimen\imgdist
+\imgdist4mm\relax
+
+% Width of text column.
+\newdimen\textcolwd
+\textcolwd\dimexpr.5\linewidth-.5\textcoldist\relax
+
+% Implementation begins here.
+
+\makeatletter
+
+% Box for full text content.
+\newbox\textbox@pq
+% Box for first column.
+\newbox\columnabox@pq
+% Box for second column.
+\newbox\columnbbox@pq
+% Box for image.
+\newbox\imgbox@pq
+% Line count for one column.
+\newcount\pqlines@pq
+% Line count for "global" parshape.
+\newcount\parshapelines@pq
+% Line count for image.
+\newcount\imglines@pq
+% Vertical position of image.
+\newcount\imgtopoffset@pq
+% Container for "global" parshape definition.
+\newcommand*\parshape@pq{}
+
+% Internal definition of \par.
+% Truncate "global" parshape by \prevgraf and reassign parshape.
+
+\def\par@pq
+{%
+  \o@par
+  \@tempcnta\prevgraf
+  \ifnum\parshapelines@pq<\@tempcnta\@tempcnta\parshapelines@pq\fi
+  \global\advance\parshapelines@pq-\@tempcnta
+  \ifnum\parshapelines@pq=\z@
+   \else
+    \xdef\parshape@pq{\expandafter\gobbleparshapeprefix@pq\parshape@pq}%
+    \parshape\parshape@pq
+  \fi
+}
+
+% Gobble parshape lines.
+
+\def\gobbleparshapeprefix@pq#1 #2 #3 %
+{%
+  \ifnum#1>\parshapelines@pq
+    \expandafter\gobbleparshapeprefix@pq\number\numexpr#1-\@ne\expandafter\expandafter\expandafter\relax\expandafter\space
+   \else
+    #1 #2 #3 %
+  \fi
+}
+
+
+% Generate parshape lines. This is a very naive definition which just
+% clips out the image box, but it could easily be made much more general.
+
+\def\iterate@mkps@pq#1#2%
+{%
+  \ifnum\numexpr#1*#2\relax>\numexpr2*\pqlines@pq\relax
+   \else
+    \ifnum#1>\pqlines@pq
+      \iterate@mkps@pq{1}{2}%
+     \else
+      \ifnum#1>\imgtopoffset@pq
+         \ifnum#1>\numexpr\imgtopoffset@pq+\imglines@pq\relax
+           0pt\space\the\textcolwd\space
+          \else
+           \ifnum#2=\@ne
+             0pt\space\the
+             \dimexpr\textcolwd-.5\wd\imgbox@pq-\imgdist+.5\textcoldist\relax
+             \space
+            \else
+             \the
+             \dimexpr.5\wd\imgbox@pq+\imgdist-.5\textcoldist\relax
+             \space
+             \the
+             \dimexpr\textcolwd-.5\wd\imgbox@pq-\imgdist+.5\textcoldist\relax
+             \space
+           \fi
+         \fi
+       \else
+         0pt\space\the\textcolwd\space
+       \fi
+       \expandafter\iterate@mkps@pq\expandafter
+       {\number\numexpr#1+\@ne\relax}{#2}%
+     \fi
+   \fi
+ }
+
+
+% Main macro.
+
+\newcommand\pullquote[2]
+{%
+  \begingroup
+  \vbadness\maxdimen
+  \vfuzz\maxdimen
+  \clubpenalty=\z@
+  \widowpenalty=\z@
+  \setbox\imgbox@pq
+  =\hbox{%
+    #2%
+  }%
+  % Typeset text. Some precautions are made for keeping register.
+  \splittopskip\dimexpr\baselineskip-\dp\strutbox\relax
+  \setbox\textbox@pq
+  =\vbox{%
+    \hsize\textcolwd
+    \tolerance9999\relax
+    \lineskiplimit-\maxdimen
+    \parskip\z@
+    \strut#1%
+  }%
+  % Calculate number of lines for text and image.
+  \pqlines@pq
+  \numexpr
+    \dimexpr\ht\textbox@pq+\dp\textbox@pq\relax
+    /\baselineskip
+    /\tw@
+  \relax
+  \imglines@pq
+  \numexpr
+    \dimexpr\ht\imgbox@pq+\dp\imgbox@pq+2\imgdist\relax
+    /\baselineskip
+  \relax
+  % Column line count is only a rough estimate, not considering the text
+  % extension by \parshape. So we \loop until correct column line count.
+  \loop
+    \typeout{trying \the\pqlines@pq\space lines.}%
+    \imgtopoffset@pq
+    \numexpr(\pqlines@pq-\imglines@pq)/\tw@\relax
+    % Calculate "global" parshape from image size and position.
+    \xdef\parshape@pq{\number\numexpr2*\pqlines@pq\relax\space\iterate@mkps@pq{1}{1}}%
+    % Remember number of lines in parshape.
+    \parshapelines@pq\numexpr2*\pqlines@pq\relax
+    % Re-typeset text with parshape setting.
+    \setbox\textbox@pq
+    =\vbox{%
+      \hsize\textcolwd
+      \tolerance9999\relax
+      \lineskiplimit-\maxdimen
+      \parskip\z@
+      \let\o@par\par
+      \let\par\par@pq
+      \parshape\parshape@pq
+      \strut#1%
+    }%
+    % Split off two columns.
+    \setbox\columnabox@pq=\vsplit\textbox@pq to \pqlines@pq\baselineskip
+    \setbox\columnbbox@pq=\vsplit\textbox@pq to \pqlines@pq\baselineskip
+    % Iterate until estimation for  column line count is correct.
+   \unless\ifvoid\textbox@pq
+    \@tempcnta
+    \numexpr
+      \dimexpr\ht\textbox@pq+\dp\textbox@pq\relax
+      /\baselineskip
+      /\tw@
+      -\@ne
+    \relax
+    \ifnum\@tempcnta<\@ne\@tempcnta\@ne\fi
+    \advance\pqlines@pq\@tempcnta
+  \repeat
+  % Output text columns and image.
+  \hbox
+  {%
+    \rlap
+    {%
+      \hskip
+      \dimexpr
+        \textcolwd+.5\textcoldist-.5\wd\imgbox@pq
+      \relax
+      \raise
+      \dimexpr
+        \numexpr\pqlines@pq-\imglines@pq-\imgtopoffset@pq\relax
+        \baselineskip
+        +.5\dimexpr\imglines@pq\baselineskip-\ht\imgbox@pq-\dp\imgbox@pq\relax
+      \relax
+      \box\imgbox@pq
+    }%
+    \box\columnabox@pq\hskip\textcoldist\box\columnbbox@pq
+  }%
+  \endgroup
+}
+\makeatother
+
+\newcommand\alltext
+{%
+  \lipsum[1-2]
+}
+
+\def\addgraphic{\includegraphics[width=5cm]{./graphics/amato}}
+
+\begin{document}
+\pullquote{\alltext}{\addgraphic}
+\end{document}
