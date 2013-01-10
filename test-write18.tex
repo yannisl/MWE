@@ -18,7 +18,7 @@
 %% important to have immediate otherwise the test will fail as the file is created at the end
 %% of the run.
 \immediate\write18{dir  > listings.txt}
-\IfFileExists{listing.tex}{\message{\string\write18 ENABLED}}
+\IfFileExists{listing.txt}{\message{\string\write18 ENABLED}}
 {\message{\string\write18DISABLED}}
 \AtEndDocument{\lstinputlisting{listings.txt}}
 \lipsum[1]

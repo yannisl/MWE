@@ -1,7 +1,7 @@
 % Typeset an invoice
 % TeX can typeset it but I am not sure if this is the best of
 % all worlds.
-% http://tex.stackexchange.com/posts/44216/edit
+% http://tex.stackexchange.com/posts/44216/
 % Dr Y Lazarides
 % 
 \documentclass[a4paper,10pt]{article}
@@ -27,7 +27,7 @@
 \newcommand{\totalttc}{
    \TotalHT  }
 \begin{document}
-\RaggedRight
+{\RaggedRight
 \begin{longtable}{cp{4.2cm}rrr}
 \toprule
 Item   &Description & Price & Qty & Total\\
@@ -37,8 +37,9 @@ Item   &Description & Price & Qty & Total\\
     \product{The \TeX book}{100.00}{100}
     \product{Product Four}{5000.00}{1}
     \product{Product Five}{5000.00}{2}
+    \product{Product Six}{5000.00}{1}
 \midrule
     &&&& Total \totalttc\\
 \bottomrule
-\end{longtable}
+\end{longtable}}
 \end{document}
