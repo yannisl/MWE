@@ -8,7 +8,8 @@ provide a guide. They are mostly aimed at people wishing to
 program in TeX, rather than just use it for a document or 
 thesis.
 
-Template for graphics
+##Template for graphics
 
-[elfrida](https://github.com/yannisl/MWE/tree/master/elfrida)
+Some of the images you can download 
+[elfrida](https://github.com/yannisl/MWE/tree/master/elfrida),
 [barmaid](https://github.com/yannisl/MWE/tree/master/barmaid)
