@@ -1,0 +1,15 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is ahead of 'origin/master' by 6 commits.
+#
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   examples-business/invoice.tex
+#	modified:   html-like.pdf
+#	new file:   lua-tutorial.synctex.gz(busy)
+#	modified:   test-write18.tex
+#
+
