@@ -1,0 +1,36 @@
+% Minimal Working Example
+% This about the minimum you need
+% to type to have a working LaTeX
+% file. Typesets a basic article with
+% a title, author and date.
+% Adding structure and indices
+% Example-06
+
+\documentclass{book}
+\usepackage{lipsum}
+\usepackage{makeidx}
+\makeindex
+
+\title{My First Book}
+\author{Y Lazarides}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\chapter{First Chapter}
+\section{The Lipsum Package}
+\lipsum[1-30]
+\section{More Sections}
+\lipsum
+
+\chapter{Second Chapter}
+\section{Another Section}
+\lipsum
+\appendix
+\chapter{Experimental Results}
+We now write about a book on science. Indexing is an
+art and a science. This is our first example on indexing.\index{Indexing}
+
+\printindex
+\end{document}
