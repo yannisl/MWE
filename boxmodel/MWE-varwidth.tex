@@ -1,0 +1,18 @@
+% MWE to demonstrate variable
+% width minipages
+% The example uses the varwidth package
+\documentclass{article}
+\usepackage{varwidth}
+\usepackage{lipsum}
+\begin{document}
+\fbox{%
+\begin{minipage}{\textwidth}
+test
+\end{minipage}}
+
+\fbox{%
+\begin{varwidth}{\textwidth}
+test
+\end{varwidth}}
+
+\end{document}
