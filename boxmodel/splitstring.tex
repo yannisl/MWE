@@ -1,0 +1,18 @@
+\documentclass{article}
+\usepackage{lipsum}
+\begin{document}
+
+\makeatletter
+\long\def\test#1{%
+  \long\def\getfirstchar##1##2;{%
+  \def\storeone{##1}
+}
+ \getfirstchar#1;
+}
+\makeatother
+
+
+\test{This is \par something}
+
+\storeone
+\end{document}
