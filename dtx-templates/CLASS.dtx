@@ -232,7 +232,7 @@ and the derived files
 % }
 % \begin{desc}
 % \itemcs{newCLASS}{\marg{CLASS}\marg{BASECNT}}
-%    An alias counter CLASS is created that does not allocate
+%    Use \cs{itemcs} to itemize a list describing syntax.
 %    a new \TeX\ counter register. It shares the count register and
 %    the clear list with counter BASECNT. If the value of either
 %    the two registers is changed, the changes affects both.
@@ -240,15 +240,15 @@ and the derived files
 %    This fixes a problem with \cs{newtheorem} if it
 %    is fooled by an alias counter with the same name:
 %    \begin{quote}
+
 %\begin{verbatim}
-%\newtheorem{foo}{Foo}% counter "foo"
-%\newCLASS{bar}{foo}% alias counter "bar"
-%\newtheorem{bar}[bar]{Bar}
-%\CLASSresetthe{bar}
+
+% ....
+
 %\end{verbatim}
-%    \end{quote}
-% \end{desc}
-%
+
+%		\end{quote}
+%\end{desc}
 % \StopEventually{
 % }
 %
@@ -447,6 +447,7 @@ and the derived files
 %   \usebox0
 % \fi
 % \end{quote}
+
 % If you have a \xfile{docstrip.cfg} that configures and enables \docstrip's
 % TDS installing feature, then some files can already be in the right
 % place, see the documentation of \docstrip.
@@ -520,22 +521,20 @@ and the derived files
   <name>CLASS</name>
   <caption>Alias counters.</caption>
   <authorref id='auth:oberdiek'/>
-  <copyright owner='Heiko Oberdiek' year='2006,2009'/>
+  <copyright owner='Yiannis Lazarides' year='2013'/>
   <license type='lppl1.3'/>
-  <version number='1.3'/>
+  <version number='1.0'/>
   <description>
-    This package introduces aliases for counters, that
-    share the same counter register and clear list.
+    This package introduces my package.
     <p/>
-    The package is part of the <xref refid='oberdiek'>oberdiek</xref>
-    bundle.
+    The package is part of the bundle \ldots
   </description>
   <documentation details='Package documentation'
-      href='ctan:/macros/latex/contrib/oberdiek/CLASS.pdf'/>
+      href='ctan:/macros/latex/contrib/yl/CLASS.pdf'/>
   <ctan file='true' path='/macros/latex/contrib/oberdiek/CLASS.dtx'/>
-  <miktex location='oberdiek'/>
-  <texlive location='oberdiek'/>
-  <install path='/macros/latex/contrib/oberdiek/oberdiek.tds.zip'/>
+  <miktex location='yl'/>
+  <texlive location='yl'/>
+  <install path='/macros/latex/contrib/yl/yl.tds.zip'/>
 </entry>
 %</catalogue>
 %    \end{macrocode}
@@ -543,8 +542,8 @@ and the derived files
 % \section{Acknowledgement}
 %
 % \begin{description}
-% \item[Ulrich Schwarz:] The package is based on his draft for
-%   ``Die \TeX nische Kom\"odie'', see \cite{schwarz}.
+% \item[Heiko Oberdiek:] The package is based on his
+% many packages.  ``Die \TeX nische Kom\"odie'', see \cite{schwarz}.
 % \end{description}
 %
 % \begin{thebibliography}{9}
