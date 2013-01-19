@@ -260,13 +260,13 @@ and the derived files
 %<*package>
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{CLASS}%
-  [2009/09/08 v1.3 Alias counters (HO)]%
+  [2013/13/01 v1.0 Example Class]%
 %    \end{macrocode}
 %
-% \subsection{Create new alias counter}
-%
-%    \begin{macro}{\newCLASS}
-%    A new alias counter is set up by \cs{newCLASS}.
+% \subsection{Adding your macros}
+% Your macros can be added using the |doc| system conventions.
+%    \begin{macro}{\examplemacro}
+%    A new alias counter is set up by \cs{examplemacro}.
 %    The following properties are added for the new counter CNT:
 %    \begin{description}
 %    \item[\mdseries\cs{theH}\meta{CNT}:] Compatibility for \xpackage{hyperref}
@@ -274,26 +274,7 @@ and the derived files
 %      in the definition.
 %    \end{description}
 %    \begin{macrocode}
-\newcommand*{\newCLASS}[2]{%
-  \begingroup
-    \def\AC@glet##1{%
-      \global\expandafter\let\csname##1#1\expandafter\endcsname
-        \csname##1#2\endcsname
-    }%
-    \@ifundefined{c@#2}{%
-      \@nocounterr{#2}%
-    }{%
-      \expandafter\@ifdefinable\csname c@#1\endcsname{%
-        \AC@glet{c@}%
-        \AC@glet{the}%
-        \AC@glet{theH}%
-        \AC@glet{p@}%
-        \expandafter\gdef\csname AC@cnt@#1\endcsname{#2}%
-        \expandafter\gdef\csname cl@#1\expandafter\endcsname
-        \expandafter{\csname cl@#2\endcsname}%
-      }%
-    }%
-  \endgroup
+
 }
 %    \end{macrocode}
 %    \end{macro}
@@ -302,16 +283,7 @@ and the derived files
 %    The \cs{the}\meta{CNT} macro is restored using the
 %    main counter.
 %    \begin{macrocode}
-\newcommand*{\CLASSresetthe}[1]{%
-  \@ifundefined{AC@cnt@#1}{%
-    \PackageError{CLASS}{%
-      `#1' is not an alias counter%
-    }\@ehc
-  }{%
-    \expandafter\let\csname the#1\expandafter\endcsname
-      \csname the\csname AC@cnt@#1\endcsname\endcsname
-  }%
-}
+
 %    \end{macrocode}
 %    \end{macro}
 %
@@ -324,13 +296,7 @@ and the derived files
 %    \cs{AC@findrootcnt} walks throught the aliasing relations
 %    to find the base counter.
 %    \begin{macrocode}
-\newcommand*{\AC@findrootcnt}[1]{%
-  \@ifundefined{AC@cnt@#1}{%
-    #1%
-  }{%
-    \expandafter\AC@findrootcnt\csname AC@cnt@#1\endcsname
-  }%
-}
+
 %    \end{macrocode}
 %    \end{macro}
 %
@@ -342,13 +308,7 @@ and the derived files
 %    The same patch principle is applicable to both
 %    \cs{@addtoreset} and \cs{@removefromreset}.
 %    \begin{macrocode}
-\def\AC@patch#1{%
-  \expandafter\let\csname AC@org@#1reset\expandafter\endcsname
-    \csname @#1reset\endcsname
-  \expandafter\def\csname @#1reset\endcsname##1##2{%
-    \csname AC@org@#1reset\endcsname{##1}{\AC@findrootcnt{##2}}%
-  }%
-}
+
 %    \end{macrocode}
 %    \end{macro}
 %    If \xpackage{remreset} is not loaded we cannot delay
@@ -357,8 +317,7 @@ and the derived files
 %    the package.
 %    \begin{macrocode}
 \RequirePackage{remreset}
-\AC@patch{addto}
-\AC@patch{removefrom}
+
 %    \end{macrocode}
 %
 %    \begin{macrocode}
