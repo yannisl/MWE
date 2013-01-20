@@ -1,0 +1,11 @@
+\documentclass{article}
+\usepackage{expl3}
+
+\begin{document}
+
+\ExplSyntaxOn
+
+\regex_extract_once:nnNTF { \A(La)?TeX(!*)\Z } { LaTeX!!! } \l_foo_seq
+{ true } { false }
+\ExplSyntaxOff
+\end{document}
