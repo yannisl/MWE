@@ -1,30 +1,53 @@
-% Assigning key value pairs
-%http://tex.stackexchange.com/questions/37094/what-is-the-recommended-way-to-assign-a-value-to-a-variable-and-retrieve-it-for/37096#37096
 \documentclass{article}
+\usepackage{lipsum}
 \makeatletter
-%  Properties a la Lisp.
+%  Properties.
 \def\ece#1#2{\expandafter#1\csname#2\endcsname}%
-% \setproperty{ATOM}{PROPNAME}{VALUE} defines the property PROPNAME on the
-% ``atom'' ATOM to have VALUE.
-% 
-\def\setproperty#1#2#3{\ece\protected@edef{#1@p#2}{#3}}%
-\def\setpropertyglobal#1#2#3{\ece\protected@xdef{#1@p#2}{#3}}%
-%
-% 
-% \getproperty{ATOM}{PROPNAME} expands to the value of the property
-% PROPNAME on ATOM, or to nothing (i.e., \empty), if the property isn't
-% present.
-% 
-\def\getproperty#1#2{%
-  \expandafter\ifx\csname#1@p#2\endcsname\relax
-  % then \empty
-  \else \csname#1@p#2\endcsname
-  \fi
-}%
-%
+
+% \setproperty@cx{atom}{propertyname}{value} defines the property 
+% propertyname  on the ``atom'' atom to have value.
+ 
+\def\setproperty@cx#1#2#3{\ece\protected@edef{#1@p#2}{#3}}%
+ 
+% \getproperty@cx{atom}{propertyname} expands to the value of the property
+% propertyname on atom.
+
+\def\getproperty@cx#1#2{%
+    \expandafter\ifx\csname#1@p#2\endcsname\relax
+        \else \csname#1@p#2\endcsname
+    \fi
+}
+
+
+\long\def\setminipage@cx#1#2{%
+    \setproperty@cx{boxwidth}{width}{\dimexpr#1\relax}%
+    \fbox{%
+        \minipage{\getproperty@cx{boxwidth}{width}}
+            \raggedright #2
+        \endminipage
+    }%
+}
+
+\def\setparindent@cx#1{%
+    \setproperty@cx{parindent}{value}{\dimexpr#1\relax}% 
+    \parindent\getproperty@cx{parindent}{value}%
+    %begins a paragraph if necessary
+    \leavevmode
+}
+
+
+% Author command API
+
+\let\SetParagraphIndentation\setparindent@cx
+\let\SmallBox\setminipage@cx
+
 \makeatother
 
 \begin{document}
-\setproperty{test}{aproperty}{19}
-\getproperty{test}{aproperty}
+
+\SmallBox{25pt+35pt}{lorem ipsum dorem. Lorem\par lorem.}
+
+\lipsum[5]
+\SetParagraphIndentation{.5in + 2cm + 10pt}
+\lipsum[5]
 \end{document}
