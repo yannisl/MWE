@@ -1,0 +1,51 @@
+% http://tex.stackexchange.com/questions/94758/macro-improvements
+% 
+\documentclass{book}
+\usepackage{filecontents, mathpazo}
+\begin{filecontents}{test.txt}
+and the this by on of 
+\end{filecontents}
+\makeatletter
+
+
+\def\upfirst#1#2\upfirst{%
+   \in@{#1#2}{and the this by on of \relax }%
+   \ifin@{\LARGE#1#2 }\else {\Huge\MakeUppercase#1}{\LARGE#2 }\fi
+}
+
+\def\smallcaps#1\upfirst{\textsc{#1} }
+
+\def\boldfirst#1#2\upfirst{\textbf{\uppercase{#1}}#2 }
+
+\def\everytoken#1#2{%
+\def\everytoken@##1{%
+   \@tempcntb=0
+   \@tfor \i :=##1  \do{\expandafter#2\i\upfirst   
+  }}
+\everytoken@{#1}%
+}
+
+\usepackage{hyperref}
+\begin{document}
+
+\everytoken {{the} {battle} {and} {the} {resistance} {of} {france}}{\upfirst}
+
+\everytoken {{Life} {death} {and} {the} {Universe}}{\smallcaps}
+
+\title{\everytoken {{The} {battle} {and} {the} {Resistance} }{\upfirst}}
+
+\author{yl}
+   
+\makeatother
+
+\maketitle
+
+
+\end{document}
+
+
+
+
+
+
+
