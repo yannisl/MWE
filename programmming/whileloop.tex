@@ -1,0 +1,18 @@
+\documentclass{article}
+\begin{document}
+\makeatletter
+\newcount\temp
+\temp=0
+\@whilenum \temp<10 \do {
+   \advance\temp by1
+   \number\temp
+}
+\newif\if@test
+\@whilesw\if@test\fi {
+   \advance\temp by1
+   \the\temp\space   
+   \ifnum\temp>15 \@testrue\fi
+}
+
+\makeatother
+\end{document}
