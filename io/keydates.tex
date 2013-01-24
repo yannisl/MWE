@@ -1,0 +1,37 @@
+\documentclass{article}
+\usepackage{filecontents}
+\begin{filecontents}{keydates.dat}
+
+\end{filecontents}
+\begin{document}
+%% Define a new command for activity key-dates
+ %% this can be saved for shipout later
+ \newcommand{\keydate}[2]{#1  #2 \\}
+ \newcommand{\out}[2]{%
+   \immediate\write\tempfile{%
+      \noexpand\keydate{ #1}{#2}}}
+
+ %% We open the file to  to write the key-dates
+ %% we will use it later to import
+\newwrite\tempfile
+\immediate\openout\tempfile=keydates.dat
+
+
+ %% Example
+ %% 
+
+\out{Activity 1}{10 Sep 2012}
+\out{Activity 2}{12 Sep 2012}
+\out{Activity 3}{13 Sep 2012}
+
+ %% finally we close the file
+ %%
+ \immediate\closeout\tempfile
+
+ %% we now read the file and dostuff with it
+ %% 
+ \section{Summary of  Key Dates}
+ \input{keydates.dat} 
+
+
+\end{document} 

@@ -1,0 +1,19 @@
+\documentclass{article}
+\usepackage{filecontents}
+\begin{filecontents}{\jobname.txt}
+1
+2
+3
+4
+5
+\end{filecontents}
+\begin{document}
+\newread\file
+\openin\file=\jobname.txt
+\loop\unless\ifeof\file
+\read\file to\fileline % Reads a line of the file into \fileline
+\textbf{\fileline} % prints in bold font
+\repeat
+\closein\file
+
+\end{document}
