@@ -1,0 +1,32 @@
+%http://tex.stackexchange.com/questions/95036/continue-line-numbers-in-listings-package
+
+% code based on heiko's answer
+
+\documentclass{article}
+
+\usepackage{listings}
+
+\makeatletter
+\lstnewenvironment{latex3}[1][]{%
+  \lstset{%
+    #1,
+    language=bash,
+    numbers=left,
+    firstnumber=auto,
+  }%
+  \csname\@lst @SetFirstNumber\endcsname
+}{%
+  \csname \@lst @SaveFirstNumber\endcsname
+}
+\makeatother
+
+\begin{document}
+
+\begin{latex3}[name=Test]
+echo xyz
+\end{latex3}
+\begin{latex3}[name=Test]
+echo xyz
+\end{latex3}
+
+\end{document}

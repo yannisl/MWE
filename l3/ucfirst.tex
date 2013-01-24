@@ -1,0 +1,130 @@
+\begin{filecontents*}{\jobname.dat}
+that this
+the de
+\end{filecontents*}
+\documentclass{article}
+\usepackage{xparse,l3regex}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\everytoken}{O{}mm}
+ {
+  \group_begin:
+  #1 % #1 are global formatting instructions
+  \yiannis_everytoken:Nn #2 { #3 }
+  \group_end:
+ }
+
+\seq_new:N \l__yiannis_words_seq
+\seq_new:N \l__yiannis_final_seq
+\seq_new:N \g_yiannis_reserved_words_seq
+\tl_new:N \l__yiannis_first_word_tl
+\cs_generate_variant:Nn \seq_put_left:Nn { Nf }
+
+\cs_new_protected:Npn \yiannis_everytoken:Nn #1 #2
+ {
+  \seq_set_split:Nnn \l__yiannis_words_seq { ~ } { #2 }
+  \seq_pop_left:NN \l__yiannis_words_seq \l__yiannis_first_word_tl
+  \seq_clear:N \l__yiannis_final_seq
+  \seq_map_inline:Nn \l__yiannis_words_seq
+   {
+    \yiannis_if_reserved:nTF { ##1 } 
+      { \seq_put_right:Nn \l__yiannis_final_seq { ##1 } }
+      { \seq_put_right:Nn \l__yiannis_final_seq { #1 { ##1 } } }
+   }
+  \seq_put_left:Nf \l__yiannis_final_seq { \exp_args:NNV \exp_not:N #1 \l__yiannis_first_word_tl }
+  \seq_use:Nnnn \l__yiannis_final_seq { ~ } { ~ } { ~ }
+ }
+
+\prg_new_conditional:Npnn \yiannis_if_reserved:n #1 { TF }
+ {
+  \seq_if_in:NnTF \g_yiannis_reserved_words_seq { #1 }
+   { \prg_return_true: }
+   { \prg_return_false: }
+ }
+
+%%% Simple version
+\NewDocumentCommand{\Hugeupfirst}{m}
+ {
+  \tl_to_uppercase:n { { \Huge \tl_head:n { #1 } } }
+  \tl_tail:n { #1 }
+ }
+
+%%% Complex but more robust version (uncomment the following four lines)
+%\RenewDocumentCommand{\Hugeupfirst}{m}
+% {
+%  \yiannis_Hugeupfirst:n { #1 }
+% }
+\cs_new_protected:Npn \yiannis_hugeupfirst:n #1
+ {
+  \tl_set:Nn \l__yiannis_temp_tl { #1 }
+  \regex_replace_once:nnN
+   { \A (.*? [A-Za-z]) }
+   { \c{tl_to_uppercase:n} \cB\{ \cB\{ \c{Huge} \1 \cE\} \cE\} }
+   \l__yiannis_temp_tl
+  \tl_use:N \l__yiannis_temp_tl
+ }
+%%% end of more complex version
+
+%%% Simple version
+\NewDocumentCommand{\upfirst}{m}
+ {
+  \tl_to_uppercase:n { \tl_head:n { #1 } }
+  \tl_tail:n { #1 }
+ }
+
+%%% Complex but more robust version (uncomment the following four lines)
+\RenewDocumentCommand{\upfirst}{m}
+ {
+  \yiannis_upfirst:n { #1 }
+ }
+\cs_new_protected:Npn \yiannis_upfirst:n #1
+ {
+  \tl_set:Nn \l__yiannis_temp_tl { #1 }
+  \regex_replace_once:nnN
+   { \A (.*? [A-Za-z]) }
+   { \c{tl_to_uppercase:n} \cB\{ \1 \cE\} }
+   \l__yiannis_temp_tl
+  \tl_use:N \l__yiannis_temp_tl
+ }
+%%% end of more complex version
+
+\NewDocumentCommand{\setreservedwords}{m}
+ {
+  \clist_map_inline:nn { #1 }
+   { \seq_gput_right:Nn \g_yiannis_reserved_words_seq { ##1 } }
+ }
+
+\ior_new:N \l_yiannis_input_ior
+\NewDocumentCommand{\readreservedwords}{m}
+ {
+  \yiannis_read_reserved_words:n { #1 }
+ }
+\cs_new_protected:Npn \yiannis_read_reserved_words:n #1
+ {
+  \ior_open:Nn \l_yiannis_input_ior { #1 }
+  \tl_clear:N \l_tempa_tl
+  \ior_map_inline:Nn \l_yiannis_input_ior
+   {
+    \tl_put_right:Nn \l_tempa_tl { ##1 ~ }
+   }
+  \seq_set_split:NnV \l_tempa_seq { ~ } \l_tempa_tl
+  \seq_gconcat:NNN \g_yiannis_reserved_words_seq \l_tempa_seq \g_yiannis_reserved_words_seq
+  \seq_gremove_all:Nn \g_yiannis_reserved_words_seq { }
+ }
+
+\ExplSyntaxOff
+
+\setreservedwords{a, and, of}
+\readreservedwords{\jobname.dat}
+
+\begin{document}
+
+\everytoken{\Hugeupfirst}{Pi\`ece de r\'esistance Pièce de résistance}
+
+\everytoken[\scshape]{\Hugeupfirst}{the battle  and the resistance of france}
+
+\everytoken[\scshape]{\upfirst}{A the battle and the resistance of france}
+
+\everytoken{\upfirst}{a the battle and the resistance of france}
+
+\end{document}

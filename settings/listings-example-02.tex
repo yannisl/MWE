@@ -1,0 +1,55 @@
+%http://tex.stackexchange.com/questions/95036/continue-line-numbers-in-listings-
+% Alternative answer Y Lazarides, many ways to enlightment
+
+\documentclass{article}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\lstnewenvironment{bash}[1][]
+  {\lstset{language=C}\lstset{%
+   numbers=left,numberstyle=\normalsize,stepnumber=1,numbersep=5pt,
+   framesep=5pt,
+   basicstyle=\normalsize\ttfamily,
+   showstringspaces=false,
+   keywordstyle=\itshape\color{blue},
+   stringstyle=\color{maroon},
+   commentstyle=\color{black},
+   xleftmargin=5pt,
+   xrightmargin=5pt,
+   aboveskip=\bigskipamount,
+   belowskip=\bigskipamount,
+   backgroundcolor=\color{gray!20}, #1
+}}
+{}
+
+
+%
+%%% Always I forget this so I created some aliases
+\def\ContinueLineNumber{\lstset{firstnumber=last}}
+\def\StartLineAt#1{\lstset{firstnumber=#1}}
+\let\numberLineAt\StartLineAt
+
+
+
+
+\begin{document}
+
+\begin{bash}[name=Test]
+echo xyz
+\end{bash}
+
+\StartLineAt{30}
+\begin{bash}[name=Test]
+echo xyz
+\end{bash}
+
+\ContinueLineNumber
+
+
+\begin{bash}[name=Test]
+echo xyz
+\end{bash}
+
+
+
+\end{document}
