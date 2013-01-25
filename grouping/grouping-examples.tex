@@ -1,0 +1,129 @@
+\documentclass{article}
+\begin{document}
+
+\def\frac#1#2{{\begingroup#1\endgroup\over#2}}
+
+\[ \frac12 \]
+
+\def\frac#1#2{{#1\over#2}}
+
+$\frac{a+23+c+2}{24}$
+
+
+\def\startlines{%
+  \begingroup
+  \obeylines\obeyspaces
+  \leavevmode
+}
+\def\endlines{\endgroup}
+
+\startlines
+
+This is a test 
+...   ......         ....... test and another test
+
+
+This is a test 
+...   ......         ....... test and another test
+
+\endlines
+
+\obeylines\obeyspaces
+
+  This is a test 
+  ...   ......        
+  ....... test and another test
+
+
+\def\test#1{\bgroup#1\egroup}
+
+$a=a+123-223\test{ }+z$
+
+\def\test#1{\begingroup#1\endgroup}
+
+$a=a+123-223\test{ }+z$
+
+
+\makeatletter
+\long\def\g@addto@macro#1#2{%
+\begingroup
+  \toks@\expandafter{#1#2}%
+  \xdef#1{\the\toks@}%
+\endgroup}
+
+\def\test{}
+
+\g@addto@macro{\test}{Write something. \def\A{Test}}
+\def\A{28}
+\g@addto@macro{\test}{Write something else \A }
+
+\test
+
+
+\def\alist{\@elt a\@elt b\@elt c}
+
+\begingroup
+  \let \@elt\@gobble  \alist
+\endgroup
+
+\begingroup
+  \def\@elt#1{-#1- }  \alist
+\endgroup
+
+\makeatother
+
+
+\end{document}
+
+The use of groups follows common practices in computer coding. Here are some
+common use cases.
+
+
+In \@elt lists inevitably most changes should be local
+
+When changing catcodes
+
+
+When macro definitions are split into two
+
+
+Text typesetting in a limited scope 
+
+
+
+
+
+We use \begingroup
+for this purpose since \define@newfont might be called in math mode, and an
+empty \bgroup. . . \egroup would add an empty Ord atom to the math list and
+thus affect the spacing.
+
+to avoid `leaking out' of style changes
+
+\let\math@bgroup\bgroup
+448 \def\math@egroup#1{#1\egroup}
+
+
+\def\index{\@bsphack\begingroup \@sanitize\@index}
+
+\def\@index#1{\endgroup\@esphack}
+
+\def\ProvidesFile#1{%
+103 \begingroup
+104 \catcode`\ 10 %
+105 \ifnum \endlinechar<256 %
+106 \ifnum \endlinechar>\m@ne
+107 \catcode\endlinechar 10 %
+108 \fi
+109 \fi
+110 \@makeother\/%
+111 \@makeother\&%
+112 \kernel@ifnextchar[{\@providesfile{#1}}{\@providesfile{#1}[]}}
+During initex a special version of \@providesfile is used. The real denition
+is installed right at the end, in ltfinal.dtx.
+\def\@providesfile#1[#2]{%
+\wlog{File: #1 #2}%
+\expandafter\xdef\csname ver@#1\endcsname{#2}%
+\endgroup}
+\end{macrocode}
+

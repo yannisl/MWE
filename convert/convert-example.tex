@@ -1,0 +1,119 @@
+\documentclass{minimal}
+\usepackage{fp,xcolor,xspace,amsmath}
+
+\makeatletter
+
+%% globally set the numbers of decimals
+\xdef\NumberDecimals{3}
+
+\def\SetInBetween#1{\def\between{#1}}
+\SetInBetween{\text{ equals }}
+
+%% Temporary stores for real numbers for conversions
+%% The first one just stores the multiplication number
+\def\conversionfactora#1{%
+  \gdef\ConversionFactor{#1}}
+
+%% The second one stores the inverse of this for two way 
+%% conversions
+
+\def\inverseconversionfactor#1{
+  \gdef\InverseConversionFactor##1{\FPdiv\invert{1}{##1}\invert}
+  \InverseConversionFactor{#1}%
+}
+
+
+%% Creates all the macros for the conversion units
+%% Then defines the relevant factors
+\def\SetConversion#1#2#3{%
+\expandafter\def\csname#1#2\endcsname{#3}%Define one way
+\FPdiv\invert{1}{#3}
+\expandafter\def\csname#2#1\endcsname{\invert}
+}
+
+
+%% helper macro to typeset the  
+%% units. If a formatting macro exists for the symbols
+%% we use them, else we use the siunitx package commands
+%% 
+\def\TypesetUnits#1#2{%
+\ifcsname#2\endcsname%
+{#1 {\csname#2\endcsname}}%
+\else%
+{#1 {#2}}%
+\fi}
+%% Define a store for the numbers
+%% inUnitsValue defines the input value
+\gdef\inUnitsValue{}
+\gdef\outUnitsValue{}
+
+%
+%
+%% The \convert is a convenience value
+%% provided the conversion value has been set it will create
+%% the conversion
+\global\def\convert#1#2#3{%
+\TypesetUnits{#1}{#2}\between%
+%
+%% We first test if a conversion factor formula has been
+%% defined or is simply a multiplier
+%% a conversion formula is of the form CtoF i.e centigrate
+%% to Fahreneit
+%% this handles pre-defined macros such as \degtoF
+\ifcsname#2to#3\endcsname%
+\expandafter\csname#2to#3\endcsname{#1}%  
+\csname#3\endcsname%typesets units
+\else
+ \def\conversion@factor{\csname#2#3\endcsname}
+ %multiply value in by conversion factor
+ \FPmul\tempi{#1}{\conversion@factor}%
+ \FPround\temp{\tempi}{\NumberDecimals}%format units
+ \expandafter\TypesetUnits{\temp}{#3}%
+ \global\let\outUnitsValue\temp%stores raw output
+ \def\arg@i{#1}
+ \global\let\inUnitsValue\arg@i% stores raw input
+\fi
+}
+
+\makeatother
+
+\begin{document}
+\parindent0pt
+
+\SetConversion{ft^2}{m^2}{0.09290304}
+\SetConversion{pous}{mm}{296}
+\SetConversion{pous}{inch}{11.6}
+\SetConversion{pous}{daktyloi}{16}
+
+\(
+\convert{10.35}{ft^2}{m^2}
+\)
+\SetConversion{stadion}{pous}{600}
+\SetConversion{stadion}{km}{.185}
+\SetConversion{EGstadion}{km}{.1575}
+
+Perhaps one of the most common of all was the stadion, which was equal to 600 podes.
+
+
+The most famous of all calculations using stadia was that of Eratosthenes who measured the circumference of the earth. Based on the interpretation of the length of the stadion, being either the Egyptian at 157.5 meters or the Greek which was 185 meters his calculation was fairly accurate.
+Eratosthenes calculation of the circumference of the earth:
+
+(based on Greek stadion) \convert{252000}{stadion}{km}\\
+
+or Egyptian
+
+\convert{252000}{EGstadion}{km}\\
+
+This would give the radius of the earth as:
+
+\FPdiv\radiusi{\outUnitsValue}{\FPpi}\FPdiv\radiusi{\radiusi}{2}
+
+\radiusi m
+
+\SetConversion{m}{km}{0.001}
+\convert{\radiusi}{m}{km}
+
+This can be compared to the mean earth radius of 6371 km
+
+
+\end{document}
