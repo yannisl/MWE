@@ -1,0 +1,28 @@
+\documentclass{article}
+\begin{document}
+\begin{table}[htp]
+            \centering
+                \footnotesize\setlength{\tabcolsep}{2.5pt}
+
+\renewcommand*{\arraystretch}{1.5}
+
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+Node ID   & \multicolumn{2}{c|}{Density-based} & \multicolumn{2}{c|}{Mahalanobis distance-based}    & \multicolumn{2}{c|}{Running average-based} \\ 
+\cline{2-7} 
+     & DR\%   &  FPR\%      & DR\%   &  FPR\%     & DR\%   &  FPR\% \\ \hline 
+25   & 100    & 71          & 100    & 71         & 100    & 60      \\ \hline
+    \end{tabular}
+\end{table}
+
+% minimize the template definition *6{c|}
+
+\renewcommand*{\arraystretch}{1.5}
+\begin{tabular}{|c|*6{c|}}
+\hline
+Node ID   & \multicolumn{2}{c|}{Density-based} & \multicolumn{2}{c|}{Mahalanobis distance-based}    & \multicolumn{2}{c|}{Running average-based} \\ 
+\cline{2-7} 
+     & DR\%   &  FPR\%      & DR\%   &  FPR\%     & DR\%   &  FPR\% \\ \hline 
+25   & 100    & 71          & 100    & 71         & 100    & 60      \\ \hline
+    \end{tabular}
+\end{document}
