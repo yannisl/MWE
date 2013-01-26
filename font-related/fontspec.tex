@@ -1,0 +1,14 @@
+%http://tex.stackexchange.com/questions/26276/fontspec-sizefeatures-and-recursive-font-definition/26277#26277
+\documentclass{article}
+\usepackage{fontspec}
+
+\setmainfont[BoldFont=Arial Bold,
+  SizeFeatures={
+  {Size={-8},BoldFont=Arial Bold},
+  {Size=8-}}]{Hoefler Text}
+
+\begin{document}
+Normal text\\
+
+{\small \textbf{Small bold}}\\
+\end{document}
