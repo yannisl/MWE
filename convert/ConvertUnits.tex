@@ -4,7 +4,7 @@
 %
 % Function: Typesetting and converting units 
 % 
-% Copyright (C) 2011, Yiannis Lazarides
+% Copyright (C) 2013, Yiannis Lazarides
 %
 % This program may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.2
@@ -35,6 +35,10 @@
 %% counter used for accuracy
 \newcount\acc
 \usepackage{listings}
+\usepackage{tcolorbox}
+
+
+
 \def\Rule{\rule{5cm}{0.4pt}}
 
 %% Define the looks of the symbol after convertion
@@ -47,6 +51,7 @@
 \expandafter\def\csname m2\endcsname{\si{\square\meter}}
 \expandafter\def\csname m3persec\endcsname{m$^3/s$}
 \expandafter\def\csname m3/s\endcsname{\si{\cubed\meter\per\second}}
+
 
 \expandafter\def\csname km2\endcsname{km$^2$}
 \expandafter\def\csname ft2\endcsname{ft$^2$}
@@ -76,7 +81,7 @@
 \expandafter\def\csname lbf\endcsname{lb$_f$}
 
 
-
+%%% Use 99999 as an error marker
 \gdef\inverts{99999}
 
 \def\convertunits{\texttt{convertunits}\xspace}
@@ -95,18 +100,20 @@
 
 
 
-
-
 %% globally set the numbers of decimals
 \xdef\NumberDecimals{3}
+
+%% The SetInBetween defines text or symbol to be inserted
+%% 1m -> 3.3ft 
 
 \def\SetInBetween#1{\def\between{#1}}
 \SetInBetween{ = }
 
 %% Temporary stores for real numbers for conversions
 %% The first one just stores the multiplication number
-\def\conversionfactora#1{
-  \gdef\ConversionFactor{#1}}
+\def\conversionfactora#1{%
+  \gdef\ConversionFactor{#1}
+}
 
 %% The second one stores the inverse of this for two way 
 %% conversions
@@ -121,27 +128,28 @@
 %% Then defines the relevant factors
 \gdef\SetConversion#1#2#3{%
 \expandafter\gdef\csname#1#2\endcsname{#3}%Define one way
-\gdef\Temp{#3}
-\FPdiv\invert{1}{\Temp}
-\expandafter\gdef\csname#2#1\endcsname{\invert}
+\gdef\Temp{#3}%
+\FPdiv\invert{1}{\Temp}%
+\expandafter\gdef\csname#2#1\endcsname{\invert}%
 }
 
 %% helper macro to typeset the  
 %% units. If a formatting macro exists for the symbols
 %% we use them, else we use the siunitx package commands
 %% 
-\def\TypesetUnits#1#2{
-\ifcsname#2\endcsname%
-{\SI{#1}{\csname#2\endcsname}}
-\else%
-{\SI{#1}{#2}}%
+\def\TypesetUnits#1#2{%
+  \ifcsname#2\endcsname%
+    {\SI{#1}{\csname#2\endcsname}}
+  \else%
+    {\SI{#1}{#2}}%
 \fi}
+
 %% Define a store for the numbers
 %% inUnitsValue defines the input value
 \gdef\inUnitsValue{}
 \gdef\outUnitsValue{}
 
-%% The \convert is a convenience value
+%% The \convert is a convenience macro
 %% provided the conversion value has been set it will create
 %% the conversion
 \global\def\convert#1#2#3{%
@@ -212,7 +220,7 @@
 
 There are many commonly used units that find their way into books. This package will help you convert them from one set of units to another. It will also enable you to typeset them using as the basic engine the |siunitx| package.
 
-The unit can be used both in the humanities as well as scientific disciplines and it is easy to extend to cover almost any possibility.
+The unit can be used both in the humanities as well as scientific disciplines and it is easy to extend to cover any conceivable units.
 
 American units or Imperial units can be interchanged easily with SI units.
 
@@ -334,6 +342,31 @@ The international standard symbol for a foot is ``ft'' (see ISO 31-1, Annex A).
 \test{ft}{m}
 
 
+\chapter{Roman Units}
+The ancient units of measurement were built upon the Greek system with influences from Egyptian, Hebrew and Mesopotamian influences. The Roman units were
+comparatively consistent and well documented.
+
+\subsection{Lengths}
+
+\begin{marginfigure}
+\includegraphics[width=\linewidth]{./graphics/modius}
+\caption{Bronze modius measure (4th cent. AD) with inscription acknowledging Imperial regulation of weights and measures.}
+\end{marginfigure}
+
+\SetConversion{pes}{ft}{0.967}
+\SetConversion{pes}{in}{294.7}
+
+\SetConversion{digitus}{mm}{18.5}
+
+\SetConversion{uncial}{inch}{0.971}
+
+
+\convert{1}{uncial}{inch} or 
+\convert{1}{inch}{uncial}
+
+
+\SI{4.38}{\square\meter}
+\end{document}
 
 
 
