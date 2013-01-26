@@ -1,0 +1,51 @@
+%http://tex.stackexchange.com/questions/95401/questions-on-macro-writing-in-tex-to-modify-an-existing-style-file-fancybox-sty
+\documentclass{article}
+\usepackage{pgf}
+
+\definecolor{thegray} {rgb}{0.9,0.9,0.9}
+\def\setcolor#1{\color{#1}}
+
+% create family of keys called rule
+\pgfkeys{/rule/.is family}
+\def\cxset{\pgfqkeys{/rule}}
+\makeatletter
+
+\cxset{rule width/.store in = \rulewidth@my,
+       rule thickness/.store in=\rulethickness@my,
+       rule color/.code ={\setcolor{#1}},
+       rule raised/.store in = \ruleraised@my
+      }
+
+\cxset{rule thickness = 10pt,
+       rule raised = 0pt,
+       rule width = 45pt}
+
+
+\newcommand\Rule[1][rule color = thegray,
+       rule thickness = 1pt,
+       rule raised = 2pt,
+       rule width = 85pt]{%
+  \color@begingroup
+  \colorlet{originalcolor}{.}%
+  \cxset{#1}\relax%
+  \rule[\ruleraised@my]{\rulewidth@my}{\rulethickness@my}%
+  \color{originalcolor}%
+  \color@endgroup%
+ }
+
+
+\makeatother
+\begin{document}
+
+\Rule\Rule[rule width=60pt,rule raised=-100pt,
+           rule color= purple] test
+
+
+\end{document}
+
+
+
+
+
+
+
