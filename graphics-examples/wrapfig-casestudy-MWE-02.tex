@@ -1,0 +1,44 @@
+\documentclass[imperial,10pt]{octavo}
+\usepackage[english,latin]{babel}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{xcolor,calc}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{\baselineskip}
+\newcommand*\WarningHead[1]{%
+  \parbox{\linewidth}{\textbf{#1}}\vspace{10px}%
+}
+\newcommand*\WrapFigure[1]{%
+  %\ifhmode\else\leavevmode\vspace*{\dimexpr(-\normalbaselineskip+10pt)}\fi%
+  \setlength\intextsep{0pt}%
+  \setlength{\columnsep}{10pt}
+\fboxrule1pt
+\fboxsep0pt
+\def\x{5cm}
+\begin{wrapfigure}{r}[-10pt]{\x}%
+    \raggedleft% right align the figures
+\fbox{%
+    \begin{minipage}{\x}
+     \centering
+    \includegraphics[width=\x]{fig177}\par%
+    \vspace*{10pt}
+    \footnotesize\textsc{Fig 177}
+    \end{minipage}}
+\end{wrapfigure}
+}%
+\newcommand*{\lorem}{\parindent1em
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pellentesque iaculis nunc eget congue. Etiam lobortis nisi velit. Proin tristique massa a lectus ullamcorper semper. Aenean ut dignissim diam. Integer ullamcorper eros nibh. Cras molestie neque quis lectus lobortis egestas. Maecenas vel tortor in nulla sagittis venenatis. Nulla ac eros dui, eget lacinia ante. Fusce elementum nisl ac tortor hendrerit id lacinia orci malesuada. Praesent eu iaculis mi. Vestibulum sodales tempor rutrum. }
+\begin{document}
+\hrule
+\unskip
+\begin{center}
+\unskip
+\begin{minipage}{12cm}
+ \lorem
+\WrapFigure{foo}
+\textbf{Missouri Collection}.\quad \lorem
+\end{minipage}
+\end{center}
+\hrule
+\end{document}
