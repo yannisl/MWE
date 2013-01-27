@@ -22,7 +22,7 @@
 
 \documentclass{tufte-book}
 \usepackage{fp,xcolor,xspace,textcomp,suffix,graphicx}
-\usepackage{soul,amsmath,xstring,coollist,siunitx, caption}
+\usepackage{soul,amsmath,xstring,coollist,siunitx, caption,expl3}
 \sisetup{fixed-exponent =0,scientific-notation = false,
 }%
 
@@ -209,6 +209,20 @@
   }
 \fi}
 
+
+%% ROMAN UNITS
+
+\SetConversion{pes}{ft}{0.967}
+\SetConversion{pes}{in}{294.7}
+
+\SetConversion{digitus}{mm}{18.5}
+\SetConversion{uncia}{inch}{0.971}
+
+\SetConversion{palmus}{digitus}{0.25}
+\SetConversion{palmus}{mm}{74}
+\SetConversion{palmus}{pes}{0.25}
+
+
 %% Utility Environments
 % We create some simple environments for typesetting purposes
 \newenvironment{conversiontable}{%
@@ -220,11 +234,30 @@
 \end{tabular}
 }
 
+%  We take care that units and numbers do not break across lines
+%  and they are separated by a thin space.
+\def\aunit#1#2{\hbox{#1\kern.5pt#2}}
 
 \makeatother
 \makeindex
 
+\usepackage{amsmath}
 \begin{document}
+
+\let\xp=\expandafter
+\let\xp\undefined
+
+\ifdefined \xp yes \else no \fi
+
+\let\SyntaxOn\ExplSyntaxOn
+
+\SyntaxOn
+\fp_set:Nn\a_fp{5}
+\fp_pow:Nn\a_fp{2}
+\fp_use:N\a_fp\par
+
+\ExplSyntaxOff
+\end{document}
 
 \makeatletter
 
@@ -353,90 +386,9 @@ The international standard symbol for a foot is ``ft'' (see ISO 31-1, Annex A).
 
 \test{ft}{m}
 
+\input{./sections/romanunits}
 
-\chapter{Roman Units}
-The ancient units of measurement were built upon the Greek system with influences from Egyptian, Hebrew and Mesopotamian influences. The Roman units were
-comparatively consistent and well documented.
-
-\subsection{Lengths}
-
-\begin{marginfigure}
-\includegraphics[width=\linewidth]{./graphics/modius}
-\caption{Bronze modius measure (4th cent. AD) with inscription acknowledging Imperial regulation of weights and measures.}
-\end{marginfigure}
-
-
-The basic unit of Roman linear measurement was the \textit{pes} or Roman foot. Investigation of its relation to the English foot goes back at least to 1647, when John Greaves published his \textit{Discourse on the Romane foot}. Greaves visited Rome in 1639, and measured, among other things, the foot measure on the tomb of Titus Statilius Aper, that on the statue of Cossutius formerly in the gardens of Angelo Colocci, the congius of Vespasian previously measured by Villalpandus, a number of brass measuring-rods found in the ruins of Rome, the paving-stones of the Pantheon and many other ancient Roman buildings, and the distance between the milestones on the Appian Way. He concluded that the Cossutian foot was the "true" Roman foot, and reported these values compared to the iron standard of the English foot in the Guildhall in London.
-
-
-
-\SetConversion{pes}{ft}{0.967}
-\SetConversion{pes}{in}{294.7}
-
-\SetConversion{digitus}{mm}{18.5}
-\SetConversion{uncial}{inch}{0.971}
-
-\SetConversion{palmus}{digitus}{0.25}
-\SetConversion{palmus}{mm}{74}
-\SetConversion{palmus}{pes}{0.25}
-
-\SetInBetween{$\to$}
-
-\begin{table}[htbp]
-\begin{conversiontable}
-\convert{1}{pes}{ft}\\
-\convert{1}{palmus}{pes}\\
-\convert{1}{uncial}{inch}\\
-\convert{1}{palmus}{mm}\\
-\convert{1}{inch}{uncial}\\
-\end{conversiontable}
-\caption{Roman length units.}
-
-\end{table}
-
-As starting measurements from the smaller units proved futile, Greaves changed his plan to measure the distance between \textit{milestones}. These milestones in the \textit{Appian} way, the Romans divided and distinguished their miles; and which occasioned those phrase, \textit{ad primum}, ad quartum, ad centesimum lpidem, and the ike.
-
-
-Greaves writes:
-
-
-\begin{quotation}
-Wherefore having received small satisfaction from the writings of the ancients, and not much better from the imperfect designations of the \textit{Roman} foot by modern authors, I proposed to my self in my travels abroad these ways, which no
-reasonable man must approve of. And those were, first to examine as many ancient measures an monuments in \textit{Italy}, and other parts as it was possible; and secondly, to compare these with as many standards and orginals, as I could procure the sight of. And last of all, to transmit both these and them to posterity, I exactly measured some of the most lasting monuments of the ancients. To this purpose, in the year 1639 I went to Italy, to view asthe other antiquities of the Romans, so especially those of weights and measures; and to take them with as much exactness as it was possible, I carried instruments with me made by the best artizans. 
-
-\end{quotation}
-
-We can only guess, how long the trips and the study took, but it resulted in a publication who survived and forms the basis of the following table:
-
-
-\begin{tabular}{p{8cm}l}
-\toprule
-Measurement & ft\\
-\midrule
-Roman foot on the monument of Statilius & .967\\
-The foot on the monument of Statilius in Rome & .972\\
-The foot of Villalpandus, deduced from the congius of Vespasian & .986\\ 
-The Greek foot & 1.007\\
-The Venetian foot &1.162\\
-The Rhineland foot, or that of Snellius &1.033\\
-The derah or cubit at Cairo in Egypt &1.824\\
-The Persian arist &3.197\\
-The greater Turkish pike at Constantinople & 2.2\\
-The braccio at Florence & 1.913\\
-
-\bottomrule
-\end{tabular}
-
-
-Greaves investigation into measures and standards did not stop here, he also investigated the cubit and the Denarius, which was a weight measure.
-
-
-
-
-\end{document}
-
-
-
+\chapter{Other European Countries}
 \newthought{Bologna}
 
 We are told that the Bologna foot was 0.3805 metres or 14.99 inches; thus 80 Feet of Bologna= 99 English Feet
