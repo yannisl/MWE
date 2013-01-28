@@ -1,0 +1,15 @@
+\documentclass{article}
+
+
+\begin{document}
+\def\a#1{\def\AA{#1}}
+\def\b#1{\def\BB{#1}}
+\def\c#1{\def\CC{#1}\CC}
+
+\b{DD}
+
+\BB
+
+\AA
+
+\end{document}
