@@ -1,0 +1,63 @@
+\documentclass[a4paper]{article}
+\usepackage{fp}   
+\begin{document}
+    \makeatletter
+  \pdfresettimer 
+
+\newcount\numbertimes
+    \newcount\numone
+    \newcount\numtwo 
+    \newcount\savenumone
+\def\fibonacci#1{...
+    \numbertimes=2\numone=0
+    \numtwo=1
+    \loop
+       \advance\numone  by  \numtwo  
+       \savenumone=\the\numone  \numone=\numtwo  \numtwo=\savenumone 
+       \advance\numbertimes  by 1 \ifnum \numbertimes<#1
+    \repeat  
+    \ifnum\numbertimes=#1 \advance\numone  by   \numtwo\fi 
+    }
+
+
+
+\def\fibo{%
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+\fibonacci{30}\fibonacci{30}\fibonacci{30}\fibonacci{30}
+}
+
+\fibo\fibo\fibo\fibo\fibo\fibo\fibo\fibo\fibo\fibo\fibo
+
+
+\FPset\result{\the\pdfelapsedtime}
+\FPmul\result{\result}{100000} 
+\FPround\result{\result}{16}
+\result\thinspace 
+
+
+\ifdim\result sp <100000sp  \fibo \else Finish\stop \fi
+
+test
+
+\makeatother
+        
+
+\end{document}
+
+http://tex.stackexchange.com/questions/13192/benchmarking-various-operations-of-tex/13208#13208
