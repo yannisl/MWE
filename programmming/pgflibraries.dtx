@@ -1,0 +1,309 @@
+% \iffalse meta-comment
+% Copyright (C) 2011 by Raphaël Pinson <raphink@gmail.com>
+% This work may be distributed and/or modified under the
+% \fi
+% \iffalse
+%<*driver>
+\ProvidesFile{towers.dtx}
+%</driver>
+%<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+%<package>\ProvidesPackage{towers}
+%<*package>
+   [2011/09/04 1.7 Draws a tower]
+%</package>
+%
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage{towers}
+\usepackage{scrpage2}
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+ \DocInput{towers.dtx}
+ \PrintChanges
+ \PrintIndex
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{105}
+%
+% \CharacterTable
+%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%   Digits        \0\1\2\3\4\5\6\7\8\9
+%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%   Dollar        \$     Percent       \%     Ampersand     \&
+%   Acute accent  \'     Left paren    \(     Right paren   \)
+%   Asterisk      \*     Plus          \+     Comma         \,
+%   Minus         \-     Point         \.     Solidus       \/
+%   Colon         \:     Semicolon     \;     Less than     \<
+%   Equals        \=     Greater than  \>     Question mark \?
+%   Commercial at \@     Left bracket  \[     Backslash     \\
+%   Right bracket \]     Circumflex    \^     Underscore    \_
+%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%   Right brace   \}     Tilde         \~}
+%
+%
+% \changes{v1.7}{2011/09/04}{Add Makefile}
+% \changes{v1.6}{2011/09/03}{Bugfix: Fix babel for non-frenchb users (thanks to Marco Daniel)}
+% \changes{v1.5}{2011/09/01}{Bugfix: Put rotate box around text only (thanks to Wolfgang Ulmer)}
+% \changes{v1.4}{2011/04/20}{Protect internal macros. Display a fancytab in documentation. Make it babel-safe.}
+% \changes{v1.3}{2011/04/18}{Add tabfloor and accessors}
+% \changes{v1.2}{2011/04/17}{Add tabgap. Fix tabtop by adding tabheight/2}
+% \changes{v1.1}{2011/04/16}{Add tabtextvpos and tabtexthpos macros}
+% \changes{v1.0}{2011/04/14}{Initial version}
+
+% \DoNotIndex{\newcommand,\newenvironment}
+%
+% \providecommand*{\url}{\texttt}
+% \GetFileInfo{towers.dtx}
+% \title{The \textsf{fancytabs} package\thanks{This document
+%  corresponds to \textsf{towers}~\fileversion,
+%  dated~\filedate.}}
+% \author{Rapha\"el Pinson \\ \url{raphink@gmail.com}}
+% \date{\fileversion~from \filedate}
+%
+% \fancytabsStyle{\small\scshape}
+% \chead{\fancytab{The Fancytabs Manual}{1}}
+% \pagestyle{scrheadings}
+%
+% \maketitle
+%
+% \thispagestyle{scrheadings}
+% 
+% \begin{abstract}
+% The \textsf{fancytabs} package allows to insert tabs
+% on the border of pages.
+% \end{abstract}
+%
+% \section{Usage}
+%
+% \subsection{Adding a tab}
+%
+% \DescribeMacro{\fancytab}
+% The |\fancytab| macro adds a new tab.
+% It takes two arguments:
+% |\fancytab{<text>}{<position>}|
+% and displays the text in the tab, on given vertical position.
+%
+% \subsection{Adding a tab to all odd pages with scrpage2}
+%
+% The following code adds a tab with the chapter name,
+% positioned by chapter order, on each odd page.
+%
+% \begin{verbatim}
+% \documentclass{scrbook}
+% \usepackage{scrpage2}
+% \usepackage{fancytabs}
+% \usepackage{lipsum}
+% 
+% % Capture chapter head
+% \let\oldchapter\chapter
+% \newcommand\temphead{}
+% \newcommand\chaphead{}
+% \renewcommand\chapter[2][\temphead]{%
+%    \renewcommand\temphead{#2}%
+%    \renewcommand\chaphead{#2}%
+%    \oldchapter[#1]{#2}}
+%
+% % Set central right header to display tab
+% % for both scrplain and scrheadings
+% \cohead[\fancytab{\chaphead}{\thechapter}]
+%        {\fancytab{\chaphead}{\thechapter}}
+% \renewcommand*{\chapterpagestyle}{scrplain}
+% \pagestyle{scrheadings}
+% 
+% \begin{document}
+% \chapter{A chapter}
+% 
+% \lipsum
+% \lipsum
+%
+% \end{document}
+% \end{verbatim}
+%
+% \subsection{Parameters}
+%
+% \DescribeMacro{\fancytabsStyle}
+% The style of the text in the tab.
+% Default is |\Large\scshape|.
+%
+% \DescribeMacro{\fancytabsHeight}
+% Define the height of the tab.
+% Default is |4cm|.
+%
+% \DescribeMacro{\fancytabsWidth}
+% Define the height of the tab.
+% Default is |1cm|.
+%
+% \DescribeMacro{\fancytabsCount}
+% Define the maximum amount of tabs on a page.
+% After |\tabcount| tabs are displayed,
+% the next tab is displayed on top of the page again.
+% Default is |6|.
+%
+% \DescribeMacro{\fancytabsLeftColor}
+% Define the left color for the tab gradient.
+% Default is |white|.
+%
+% \DescribeMacro{\fancytabsRightColor}
+% Define the right color for the tab gradient.
+% Default is |gray!50|.
+%
+% \DescribeMacro{\fancytabsTop}
+% Define margin on top of the top tab.
+% Default is |\tab@height|.
+%
+% \DescribeMacro{\fancytabsTextVPos}
+% Define the relative vertical position
+% of the text in the tab.
+% Default is |0.5|.
+%
+% \DescribeMacro{\fancytabsTextHPos}
+% Define the relative horizontal position
+% of the text in the tab.
+% Default is |\tab@textvpos|.
+%
+% \DescribeMacro{\fancytabsGap}
+% Define the gap between two tabs.
+% Default is |0in|.
+%
+% \DescribeMacro{\fancytabsFloor}
+% Define the starting number for incrementation.
+% This is useful if you want to pass for example
+% |\arabic{chapter}| as counter but not put tabs
+% for previous chapters.
+% Default is |0|.
+%
+% \StopEventually{}
+%
+% \section{Implementation}
+%
+% \iffalse
+%<*package>
+% \fi
+%
+%    \begin{macrocode}
+\ProvidesPackage{fancytabs}
+\RequirePackage{tikz}
+%    \end{macrocode}
+% 
+% \begin{macro}{Variables}
+%    \begin{macrocode}
+\newcommand{\tab@style}{\Large\scshape}
+\newcommand{\tab@height}{4cm}
+\newcommand{\tab@width}{1cm}
+\newcommand{\tab@count}{6}
+\newcommand{\tab@leftcolor}{white}
+\newcommand{\tab@rightcolor}{gray!50}
+\newcommand{\tab@top}{\tab@height}
+\newcommand{\tab@textvpos}{0.5}
+\newcommand{\tab@texthpos}{\tab@textvpos}
+\newcommand{\tab@gap}{0in}
+\newcommand{\tab@floor}{0}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{Accessors}
+%    \begin{macrocode}
+\newcommand{\fancytabsStyle}[1]{\renewcommand{\tab@style}{#1}}
+\newcommand{\fancytabsHeight}[1]{\renewcommand{\tab@height}{#1}}
+\newcommand{\fancytabsWidth}[1]{\renewcommand{\tab@width}{#1}}
+\newcommand{\fancytabsCount}[1]{\renewcommand{\tab@count}{#1}}
+\newcommand{\fancytabsLeftColor}[1]{\renewcommand{\tab@leftcolor}{#1}}
+\newcommand{\fancytabsRightColor}[1]{\renewcommand{\tab@rightcolor}{#1}}
+\newcommand{\fancytabsTop}[1]{\renewcommand{\tab@top}{#1}}
+\newcommand{\fancytabsTextVPos}[1]{\renewcommand{\tab@textvpos}{#1}}
+\newcommand{\fancytabsTextHPos}[1]{\renewcommand{\tab@texthpos}{#1}}
+\newcommand{\fancytabsGap}[1]{\renewcommand{\tab@gap}{#1}}
+\newcommand{\fancytabsFloor}[1]{\renewcommand{\tab@floor}{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{Babel safety}
+%
+% Some |babel| packages (such as |frenchb|) handle semi-colons which
+% is incompatible with |tikz|. This part disables semi-colon handling
+% by babel locally.
+%
+%    \begin{macrocode}
+\AtBeginDocument{\@ifpackageloaded{babel} 
+  {\@ifundefined{active@char;}{}{% 
+    \g@addto@macro\tikz@installcommands{% 
+      \shorthandoff{;}}% 
+      \g@addto@macro\tikz@uninstallcommands{% 
+        \shorthandon{;}}% 
+  }% 
+  }{}% 
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\fancytab}
+% We define the |\fancytab| macro to generate a new tab.
+%    \begin{macrocode}
+\newcommand{\fancytab}[2]{%
+  \begin{tikzpicture}[remember picture,overlay]%
+    \node[yshift={-1*(\tab@top+\tab@height/2+
+                 mod(#2-1-\tab@floor,\tab@count)*
+                 (\tab@height+\tab@gap))},
+                  xshift=-0.5*\tab@width]
+      at (current page.north east) {
+      \tikz\shade[shading=axis,bottom color=\tab@leftcolor,
+                  top color=\tab@rightcolor,shading angle=-90] 
+        (0,0) rectangle (\tab@width,\tab@height)
+           node[rotate=0]
+                  at (\tab@texthpos*\tab@width,\tab@textvpos*\tab@height)
+                      {\rotatebox{90}{\tab@style#1}};%
+    };%
+  \end{tikzpicture}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \iffalse
+%</package>
+% \fi
+%
+% \Finale
+\endinput
+
+This answer is divided into two parts, developing a library and or developing a pcakge, there are some subtle differences.
+
+To develop a package with LaTeX is fairly simple. (cls guide)
+
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tower}[1994/06/01 Standard LaTeX package]
+
+
+Using `docstrip' and `doc'
+If you are going to write a large class or package for LATEX then you should
+consider using the doc software which comes with LATEX. 
+LATEX classes and
+packages written using this can be processed in two ways: they can be run
+through LATEX, to produce documentation; and they can be processed with
+docstrip, to produce the .cls or .sty file.
+
+The doc software can automatically generate indexes of definitions, indexes
+of command use, and change-log lists. It is very useful for maintaining and
+documenting large TEX sources. This is a bit more difficult to grasp.
+
+Minimal.
+http://tex.stackexchange.com/questions/30168/improving-tikz-user-interface
+
+
+
+
+
+
+
+
+
+
+
+

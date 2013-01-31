@@ -1,0 +1,186 @@
+% \iffalse meta-comment
+% Copyright (C) 2011 by YOU <YOU@gmail.com>
+% ...
+% \fi
+% \iffalse
+%<*driver>
+\ProvidesFile{towers.dtx}
+%</driver>
+%<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+%<package>\ProvidesPackage{towers}
+%<*package>
+   [2011/09/04 1.01 draws a tower]
+%</package>
+%<*driver>
+\documentclass{ltxdoc}
+%\usepackage{towers}
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+ \DocInput{towers.dtx}
+ \PrintChanges
+ \PrintIndex
+\end{document}
+%</driver>
+% \fi
+% \providecommand*{\url}{\texttt}
+% \GetFileInfo{towers.dtx}
+% \title{The \textsf{Towers} package\thanks{This document
+%  corresponds to \textsf{towers}~\fileversion,
+%  dated~\filedate.}}
+% \author{YOU \url{YOU@gmail.com}}
+% \date{\filedate}
+% \maketitle
+% \begin{abstract}
+% The \textsf{towers} package provides commands 
+% to draw a high-rise and track construction progress.
+% \end{abstract}
+% \section{Usage}
+% \subsection{Parameters}
+%
+% \DescribeMacro{\amacro}
+% The |doc| package provides a few commands to 
+% describe macros.
+% \StopEventually{}
+%
+% \section{Implementation}
+%
+% \iffalse
+%<*package>
+% \fi
+%
+%    \begin{macrocode}
+\ProvidesPackage{towers}
+\RequirePackage{tikz}
+%    \end{macrocode}
+% 
+% \begin{macro}{\somecommand}
+% Here you start writing code
+%    \begin{macrocode}
+\newcommand{\somecommand}{...}
+%    \end{macrocode}
+% \end{macro}
+% \iffalse
+%</package>
+% \fi
+% \Finale
+\endinput
+
+I am not aware of any specific literature related to what you are asking. Here I will provide some pointers as to the normal workflow of preparing a package and then outline some specific issues related to tikz and pgf libraries.
+
+__How to write a package__:
+
+To develop a package with LaTeX is fairly simple. (cls guide)
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tower}[1994/06/01 Standard LaTeX package]
+
+__Literate Programming and packaging your package__
+
+Using `docstrip' and `doc'
+
+If you are going to write a large class or package for LATEX then you should
+consider using the doc software which comes with LATEX. 
+LATEX classes and
+packages written using this can be processed in two ways: they can be run
+through LATEX, to produce documentation; and they can be processed with
+docstrip, to produce the .cls or .sty file.
+
+The doc software can automatically generate indexes of definitions, indexes
+of command use, and change-log lists. It is very useful for maintaining and
+documenting large TEX sources. 
+
+__PGF Libraries__
+
+The pgf package provides for what it calls `pgflibraries`. The difference between a library and module is the
+following: A library just defines additional objects using the basic layer, whereas a module adds completely
+new functionality. For instance, a decoration library defines additional decorations, while a decoration
+module defines the whole code for handling decorations.
+
+There is a special command for loading library packages (see page 425)
+
+Example: \string \usepgflibrary{arrows}
+This command causes the the pgflibraryhlibrary.code.tex to be loaded for each hlibraryi in the
+hlist of librariesi. This means that in order to write your own library, place a file of the appropriate
+name somewhere where TEX can find it. LATEX, plain TEX, and ConTEXt users can then use your
+library.
+
+You should also consider adding a TikZ library that simply includes your pgf library.
+
+PGF libraries are simply files with the specific extension `filename.code.tex`. They can be generated via the doc/docstrip system or just typed in. They are loaded ...
+
+They require the 
+\makeatletter
+
+Good practice to add a definition to show its loaded.
+
+\def\tcblibrary@documentation@loaded{}
+
+In main code you may have to write specific commands
+
+\def\tcb@optionlist{}
+
+\def\tcbuselibrary#1{\tcbset{library/.cd,#1}}
+
+\def\tcb@add@library#1#2{%
+  \tcbset{library/#1/.code={\@ifundefined{tcblibrary@#1@loaded}{\input #2}{}}}%
+  \DeclareOption{#1}{\edef\tcb@optionlist{\tcb@optionlist,#1}}%
+}
+
+\tcb@add@library{listings}{tcblistings.code.tex}
+\tcb@add@library{theorems}{tcbtheorems.code.tex}
+\tcb@add@library{documentation}{tcbdocumentation.code.tex}
+
+Minimal.
+http://tex.stackexchange.com/questions/30168/improving-tikz-user-interface
+
+http://tex.stackexchange.com/questions/30168/improving-tikz-user-interface
+
+%%
+%% Copyright (C) 2011 by YOU
+%%
+%% This file may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either
+%% version 1.2 of this license or (at your option) any later
+%% version. The latest version of this license is in:
+%%
+%% http://www.latex-project.org/lppl.txt
+%%
+%% and version 1.2 or later is part of all distributions of
+%% LaTeX version 1999/12/01 or later.
+%%
+
+\input docstrip.tex
+\keepsilent
+\usedir{tex/latex/towers}
+
+\preamble
+
+This is a generated file.
+
+Copyright (C) 2011 by YOU
+
+This file may be distributed and/or modified under the
+conditions of the LaTeX Project Public License, either
+version 1.2 of this license or (at your option) any later
+version. The latest version of this license is in:
+
+   http://www.latex-project.org/lppl.txt
+
+and version 1.2 or later is part of all distributions of
+LaTeX version 1999/12/01 or later.
+
+\endpreamble
+
+\generate {\file {towers.sty}{\from{towers.dtx}{package}}}
+
+\obeyspaces
+\Msg{****************************************************}
+\Msg{* *}
+\Msg{* Happy TeXing! *}
+\Msg{* *}
+\Msg{****************************************************}
+
+
+\endbatchfile

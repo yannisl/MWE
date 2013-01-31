@@ -1,0 +1,5444 @@
+% \iffalse meta-comment
+%
+% isoe.dtx
+%
+%    This work has been partially funded by the US government
+% and is not subject to copyright.
+%
+%    This program is provided under the terms of the
+% LaTeX Project Public License distributed from CTAN
+% archives in directory macros/latex/base/lppl.txt.
+%
+% Author: Peter Wilson (CUA and NIST) 
+%         now at: peter.r.wilson@boeing.com
+% 
+% \fi
+% \CheckSum{3764}
+%
+% \changes{v11}{1997/09/30}{Output character table to class and package files only}
+% \changes{v2}{1997/12/01}{Moved xtab and uschyp package code to seperate files}
+% \changes{v2}{1997/12/04}{Moved isorot package code to seperate file}
+% \changes{v2.1}{1999/02/15}{General updates}
+% \changes{v2.1}{1999/02/15}{Character table not output at all}
+% \changes{v2.1}{1999/03/19}{Some changes to boilerplate}
+% \changes{v2.2}{2000/01/10}{Modified to support tex4ht}
+% \changes{v2.3}{2001/07/06}{Modified to match ISO 2001 requirements}
+% \changes{v2.3}{2002/01/10}{More changes to match ISO 2001 requirements}
+% \changes{v2.4}{2002/07/22}{Added support for pdf/hyperref bookmarking}
+%
+% ^^A \def\fileversion{v2.2}
+% ^^A \def\filedate{2000/01/10}
+% \def\fileversion{v2.3}
+% ^^A \def\filedate{2001/07/06}
+% \def\filedate{2002/01/10}
+% \def\fileversion{v2.4}
+% \def\filedate{2002/07/22}
+% \title{\LaTeX{} for ISO Standards: \\
+%        Source code\thanks{This
+%        file has version number \fileversion, last revised
+%        \filedate.}}
+%
+% \author{%
+% Peter Wilson\\
+% Catholic University of America\thanks{This work was originally
+% performed as
+% a Guest Researcher at the National Institute of Standards and Technology.} \\
+% Now at \texttt{peter.r.wilson@boeing.com}
+% }
+% \date{\filedate}
+% \maketitle
+% \tableofcontents
+%
+% \StopEventually{}
+%
+% 
+%
+% \section{Introduction}
+%
+% This document provides the commented source for \LaTeX{}
+% class and package files designed for the typesetting of
+% documents according to the rules for ISO international standards.
+% A seperate document provides the user manual~\cite{PRW96i}.
+% This manual is typeset according to the conventions of the
+% \LaTeX{} \textsc{docstrip} utility which enables the automatic
+% extraction of the \LaTeX{} macro source files~\cite{GOOSSENS94}.
+%
+%    The original version of this class was used for the production
+% of camera ready copy
+% for the ISO~10303 standard \emph{Product data representation and
+% exchange}. The initial release of ISO~10303:1994 consisted of twelve
+% parts and over 2400 pages. The editorial board of the ISO Central
+% Secretariat in Geneva accepted the typographic conventions embodied
+% in those macros.
+%
+%    ISO (the International Organization for Standardisation) specify
+% their document layout requirements in ISO Directives~\cite{ISOD397}.
+% Unfortunately these Directives do not completely define the document
+% layout, leaving several aspects open to interpretation by the
+% document editor and re-interpretation by the ISO editorial board.
+% At the request of the editors of ISO~10303, and no doubt others as
+% well, ISO has clarified the intent of their Directives~\cite{ISOD201}. 
+% Also, since
+% they were published ISO has been considering how best to accept
+% and use electronic manuscripts instead of camer ready paper copy.
+% At the time of writing (July 2001) they will accept documents in
+% PDF format. This has also lead to some changes in requirements.
+%
+% The following specifications are a re-implementation of the 
+% class macros published in July 2000.
+%
+%    This manual is provided as a service for future developers
+% and maintainers of the
+% class and packages for ISO standards. It is assumed that any 
+% any such person is \LaTeX{} literate and accustomed to supporting
+% complex class and package files~\cite{GOOSSENS94}.
+%
+%
+%    Sections~\ref{sec:docstrip} through~\ref{sec:ic} describe some
+% administrative elements and code for general use later in the specification.
+% The macros forming the class file are defined in sections~\ref{sec:opt}
+% through~\ref{sec:init}. These are principally revisions of the 
+% report class to meet ISO typographic requirements and many new macros
+% to support specific structural elements of an ISO standard to provide
+% logical markup capabilities. Section~\ref{sec:askinc} describes the
+% macros for the \texttt{askinc} package for interactive file inclusion.
+% 
+%
+% \section{A driver for this document} \label{sec:docstrip}
+%
+% The next series of code contains the documentation driver file for
+% \LaTeX, i.e., the file that will produce the documentation you are
+% currently reading. This will be extracted from this file by the 
+% \textsc{docstrip} program.
+%
+%    \begin{macrocode}
+%<*driver>
+\documentclass{ltxdoc}
+%    \end{macrocode}
+%
+%    We do not want the following basic elements to appear in the index.
+%    \begin{macrocode}
+\DoNotIndex{\',\.,\@M,\@@input,\@addtoreset,\@arabic,\@badmath}
+\DoNotIndex{\@centercr,\@cite}
+\DoNotIndex{\@dotsep,\@empty,\@float,\@gobble,\@gobbletwo,\@ignoretrue}
+\DoNotIndex{\@input,\@ixpt,\@m}
+\DoNotIndex{\@minus,\@mkboth,\@ne,\@nil,\@nomath,\@plus,\@set@topoint}
+\DoNotIndex{\@tempboxa,\@tempcnta,\@tempdima,\@tempdimb}
+\DoNotIndex{\@tempswafalse,\@tempswatrue,\@viipt,\@viiipt,\@vipt}
+\DoNotIndex{\@vpt,\@warning,\@xiipt,\@xipt,\@xivpt,\@xpt,\@xviipt}
+\DoNotIndex{\@xxpt,\@xxvpt,\\,\ ,\addpenalty,\addtolength,\addvspace}
+\DoNotIndex{\advance,\Alph,\alph}
+\DoNotIndex{\arabic,\ast,\begin,\begingroup,\bfseries,\bgroup,\box}
+\DoNotIndex{\bullet}
+\DoNotIndex{\cdot,\cite,\CodelineIndex,\cr,\day,\DeclareOption}
+\DoNotIndex{\def,\DisableCrossrefs,\divide,\DocInput,\documentclass}
+\DoNotIndex{\DoNotIndex,\egroup,\ifdim,\else,\fi,\em,\endtrivlist}
+\DoNotIndex{\EnableCrossrefs,\end,\end@dblfloat,\end@float,\endgroup}
+\DoNotIndex{\endlist,\everycr,\everypar,\ExecuteOptions,\expandafter}
+\DoNotIndex{\fbox}
+\DoNotIndex{\filedate,\filename,\fileversion,\fontsize,\framebox,\gdef}
+\DoNotIndex{\global,\halign,\hangindent,\hbox,\hfil,\hfill,\hrule}
+\DoNotIndex{\hsize,\hskip,\hspace,\hss,\if@tempswa,\ifcase,\or,\fi,\fi}
+\DoNotIndex{\ifhmode,\ifvmode,\ifnum,\iftrue,\ifx,\fi,\fi,\fi,\fi,\fi}
+\DoNotIndex{\input}
+\DoNotIndex{\jobname,\kern,\leavevmode,\let,\leftmark}
+\DoNotIndex{\list,\llap,\long,\m@ne,\m@th,\mark,\markboth,\markright}
+\DoNotIndex{\month,\newcommand,\newcounter,\newenvironment}
+\DoNotIndex{\NeedsTeXFormat,\newdimen}
+\DoNotIndex{\newlength,\newpage,\nobreak,\noindent,\null,\number}
+\DoNotIndex{\numberline,\OldMakeindex,\OnlyDescription,\p@}
+\DoNotIndex{\pagestyle,\par,\paragraph,\paragraphmark,\parfillskip}
+\DoNotIndex{\penalty,\PrintChanges,\PrintIndex,\ProcessOptions}
+\DoNotIndex{\protect,\ProvidesClass,\raggedbottom,\raggedright}
+\DoNotIndex{\refstepcounter,\relax,\renewcommand,\reset@font}
+\DoNotIndex{\rightmargin,\rightmark,\rightskip,\rlap,\rmfamily,\roman}
+\DoNotIndex{\roman,\secdef,\selectfont,\setbox,\setcounter,\setlength}
+\DoNotIndex{\settowidth,\sfcode,\skip,\sloppy,\slshape,\space}
+\DoNotIndex{\symbol,\the,\trivlist,\typeout,\tw@,\undefined,\uppercase}
+\DoNotIndex{\usecounter,\usefont,\usepackage,\vfil,\vfill,\viiipt}
+\DoNotIndex{\viipt,\vipt,\vskip,\vspace}
+\DoNotIndex{\wd,\xiipt,\year,\z@}
+%    \end{macrocode}
+%    We do want an index, using linenumbers, but not update information.
+%    \begin{macrocode}
+\EnableCrossrefs
+\CodelineIndex
+%% \RecordChanges
+%    \end{macrocode}
+%    We use so many \file{docstrip} modules that we set the
+%    \texttt{StandardModuleDepth} counter to 1.
+%    \begin{macrocode}
+\setcounter{StandardModuleDepth}{1}
+%    \end{macrocode}
+%    Some commonly used abbreviations
+%    \begin{macrocode}
+\newcommand*{\Lopt}[1]{\textsf {#1}}            % typeset an option
+\newcommand*{\file}[1]{\texttt {#1}}            % typeset a file
+\newcommand*{\Lcount}[1]{\textsl {\small#1}}    % typeset a counter
+\newcommand*{\pstyle}[1]{\textsl {#1}}          % typeset a pagestyle
+\newcommand*{\Lenv}[1]{\texttt {#1}}            % typeset an environment
+\newcommand*{\Lpack}[1]{\textsf {#1}}           % typeset a package
+%    \end{macrocode}
+%    We want the full details printed.
+%    \begin{macrocode}
+\begin{document}
+\DocInput{isoe.dtx}
+\PrintIndex
+%% \PrintChanges
+\end{document}
+%</driver>
+%    \end{macrocode}
+%
+%
+%
+%
+%
+% \section{Identification} \label{sec:id}
+%
+% \changes{v2}{1997/11/30}{Eliminated all native v2.09 support}
+%
+%    The \file{iso} document class can only be used with \LaTeX 2e, so we make
+%    sure that an appropriate message is displayed when another \TeX\
+%    format is used.
+%    \begin{macrocode}
+%<iso>\NeedsTeXFormat{LaTeX2e}
+%    \end{macrocode}
+%
+%    Announce the name, option files and version for \LaTeX 2e files:
+%    \begin{macrocode}
+%<iso>\ProvidesClass{isov2}[2002/07/22 v2.4 LaTeX ISO document class]
+%<9pt>\ProvidesFile{iso9.clo}[1997/11/30 v1.1 ISO class size option]
+%<10pt>\ProvidesFile{iso10.clo}[1997/11/30 v1.1 ISO class size option]
+%<11pt>\ProvidesFile{iso11.clo}[1997/11/30 v1.1 ISO class size option]
+%<inc>\ProvidesPackage{askincv1}[1995/05/31 Interactive include package]
+%<fwd1>\ProvidesFile{isofwdbp.tex}[2002/01/10 ISO Foreword boilerplate]
+%<trfwd1>\ProvidesFile{trfwd1.tex}[2002/01/10 PAS/TS Foreword boilerplate]
+%    \end{macrocode}
+%
+%
+% \section{Initial Code} \label{sec:ic}
+%
+%    \begin{macrocode}
+%<*iso>
+%    \end{macrocode}
+%
+% \changes{v2.1}{1999/02/15}{Requires the url package}
+% The class requires the \file{url} package, so make sure
+% that it is loaded.
+%    \begin{macrocode}
+\RequirePackage{url}
+%    \end{macrocode}
+%
+%    In this part we define a few commands that are used later on.
+%
+% \begin{macro}{\@ptsize}
+%    This control sequence is used to store the second digit of the
+%    pointsize we are typesetting in. So, normally, it's value is one
+%    of 0, 1 or 2.
+%    \begin{macrocode}
+\newcommand{\@ptsize}{}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\if@restonecol}
+%    When the document has to be printed in two columns, we sometimes
+%    have to temporarily switch to one column. This switch is used to
+%    remember to switch back.
+%    \begin{macrocode}
+\newif\if@restonecol
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\isostringsequal}
+% \begin{macro}{\isoemptystring}
+%    The command |\isostringsequal| is based on code in Stephan von
+%    Bechtolsheim \emph{\TeX{} in Practice}, vol III page 334.
+%    It enables the definition of specific commands for testing whether
+%    two strings are equal.
+%    \begin{macrocode}
+\def\isostringsequal #1#2{%
+  TT\fi
+  \edef\@is@str@ngsequali{#1}%
+  \edef\@is@str@ngsequalii{#2}%
+  \ifx\@is@str@ngsequali\@is@str@ngsequalii}
+%    \end{macrocode}
+%    Now we define the |\isoemptystring| command for use in testing
+%    for an empty parameter.
+%    \begin{macrocode}
+\def\isoemptystring #1{%
+  TT\fi
+  \if\isostringsequal{#1}{}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\fillline}
+%    This command draws a horizontal line across the page.
+%    \begin{macrocode}
+\newcommand{\fillline}{\mbox{}\hrulefill\mbox{}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\makecommand}
+% \begin{macro}{\make@command}
+% \changes{v2.2}{2000/01/10}{Added makecommand}
+% The |\makecommand| macro is like the |\newcommand| macro except that it
+% always (re)defines a command. It is equivalent to the pair of commands: \\
+% |\providecommand{\com}...\renewcommand{\com}...|. \\
+% The code for |\make@command}| is a simplified version of the code 
+% for |\renew@command| in file \file{ltdefns.dtx}.
+%    \begin{macrocode}
+\newcommand{\makecommand}{\@star@or@long\make@command}
+\newcommand{\make@command}[1]{%
+  \let\@ifdefinable\@rc@ifdefinable
+  \new@command#1}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\ifpdf}
+% \changes{v2.2}{2000/01/10}{Added ifpdf to support pdfLaTeX}
+% This can be used to check whether or not a document is being processed
+% by LaTeX or pdfLaTeX. 
+%    \begin{macrocode}
+\newif\ifpdf
+\ifx\pdfoutput\undefined
+  \pdffalse
+\else
+  \pdftrue
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\ifisohyper}
+% This can be used to check, after |\begin{document}| to check if
+% the \Lpack{hyperref} package has been used.
+% \changes{v2.4}{2002/07/22}{Added \cs{ifisohyper} to support hyperref}
+%    \begin{macrocode}
+\newif\ifisohyper
+  \isohyperfalse
+\AtBeginDocument{%
+  \@ifpackageloaded{hyperref}%
+      {\isohypertrue}%
+      {\newcommand{\hyperpage}[1]{#1}}%
+}
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \section{Declaration of Options} \label{sec:opt}
+%
+%
+% \subsection{Setting Paper Sizes}
+%
+%    The variables |\paperwidth| and |\paperheight| should reflect the
+%    physical paper size after trimming. For desk printer output this
+%    is usually the real paper size since there is no post-processing.
+%    We assume that the document will only be printed on either ISO
+%    standard A4 paper (option \Lopt{a4paper}) or on the most common
+%    of the US paper sizes (option \Lopt{letterpaper}).
+%
+%    Option \Lopt{a4paper} will be the default.
+%
+% \begin{macro}{\if@us}
+%    A flag for the paper size option.
+%    \begin{macrocode}
+\newif\if@us\@usfalse
+%    \end{macrocode}
+% \end{macro}
+%    Declare the paper size options.
+%    \begin{macrocode}
+\DeclareOption{a4paper}
+   {\setlength\paperheight {297mm}%   %% 11.69in
+    \setlength\paperwidth  {210mm}}   %%  8.27in
+\DeclareOption{letterpaper}
+   {\setlength\paperheight {11in}%    %% 279mm
+    \setlength\paperwidth  {8.5in}%   %% 216mm
+    \@ustrue}
+%    \end{macrocode}
+%
+% \subsection{Choosing the type size}
+%
+%    The type size options are handled by defining |\@ptsize| to contain
+%    the last digit of the size in question and branching on |\ifcase|
+%    statements. This is done for historical reasons to stay compatible
+%    with other packages that use the |\@ptsize| variable to select
+%    special actions. It makes the declarations of size options less
+%    than 10pt difficult, although one can probably use \texttt{9}
+%    assuming that a class will not define both
+%    \Lopt{9pt} and \Lopt{19pt} options.
+%
+%    Option \Lopt{11pt} will be the default.
+%
+%    \begin{macrocode}
+\renewcommand{\@ptsize}{1}
+\DeclareOption{9pt}{\renewcommand{\@ptsize}{9}}
+\DeclareOption{10pt}{\renewcommand{\@ptsize}{0}}
+\DeclareOption{11pt}{\renewcommand{\@ptsize}{1}}
+%    \end{macrocode}
+%
+%
+%  \subsection{Two-side or one-side printing}
+%
+%    For two-sided printing we use the switch |\if@twoside|. In
+%    addition we have to set the |\if@mparswitch| to get any margin
+%    paragraphs into the outside margin. In this class we always
+%    use two-sided printing with marginal notes on the outside.
+% \begin{macro}{\if@twoside}
+% \begin{macro}{\if@mparswitch}
+%    \begin{macrocode}
+\@twosidetrue  \@mparswitchtrue
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \changes{v2}{1997/11/30}{Eliminated the sect option}
+%
+%  \subsection{Two column printing}
+%
+%    Two-column and one-column printing is again realized via a switch
+%    which is defined in the kernel. The default is single column printing.
+%
+% \begin{macro}{\if@twocolumn}
+%    \begin{macrocode}
+\DeclareOption{onecolumn}{\@twocolumnfalse}
+\DeclareOption{twocolumn}{\@twocolumntrue}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{The \Lopt{copyright} option}
+%
+%    The default is not to print ISO copyright notices. This option
+%    enables copyright notice printing. As usual, we employ a flag.
+% \changes{v11}{1997/09/30}{Added additional \cs{ifc@pyrightopt} flag}
+% \begin{macro}{\ifc@pyrightopt}
+%    |c@pyrightopt| stores the user's option, while |c@pyright| will
+%    be used to control printing of copyright notices and symbols
+%    in the body of the document.
+%    \begin{macrocode}
+\newif\ifc@pyright\c@pyrightfalse
+\newif\ifc@pyrightopt\c@pyrightoptfalse
+\DeclareOption{copyright}{\c@pyrightopttrue}
+\DeclareOption{notcopyright}{\c@pyrightoptfalse}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Document kind options \Lopt{is}, \Lopt{dis}, \Lopt{cd},
+%             \Lopt{wd}, \Lopt{techrep}, \Lopt{otherdoc} etc.}
+%
+%    The default is to assume that an ISO standard in preparation is 
+%    to be printed (effectively this is the \Lopt{otherdoc} option).
+%    The \Lopt{is} option declares that an International Standard (IS)
+%    is to be printed.
+%    The \Lopt{fdis} option declares that a Final Draft International
+%    Standard (FDIS) is to be printed, and similarly the
+%    \Lopt{dis} option declares that a Draft International Standard
+%    (DIS) is to be printed. The \Lopt{cd} option is for Committee
+%    Draft (CD) documents and the option \Lopt{wd} is for Working
+%    Drafts.
+%
+%    The \Lopt{techrep} option declares that a Technical Report (probably
+%    type 1 or 2) is to be printed.
+%
+%    The \Lopt{otherdoc} option indicates that
+%    the document is not intended to become an ISO standard (e.g., is
+%    an ISO internal report).
+% \begin{macro}{\ifisstandard}
+% \begin{macro}{\iffdisstandard}
+% \begin{macro}{\ifdisstandard}
+% \begin{macro}{\ifcdstandard}
+% \begin{macro}{\ifwdstandard}
+% \begin{macro}{\iftechrep}
+% \begin{macro}{\ifotherdoc}
+%    We use flags for remembering which option is in effect.
+% \changes{v1.1}{1997/09/30}{Added options: fdis, cd, and wd}
+%    \begin{macrocode}
+\newif\ifisstandard\isstandardfalse
+\newif\iffdisstandard\fdisstandardfalse
+\newif\ifdisstandard\disstandardfalse
+\newif\ifcdstandard\cdstandardfalse
+\newif\ifwdstandard\wdstandardfalse
+\newif\iftechrep\techrepfalse
+\newif\ifotherdoc\otherdocfalse
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+%  \begin{macro}{\iftechspec}
+%  \begin{macro}{\ifpaspec}
+%   Flags for the \Lopt{techspec} Technical Specification and \Lopt{pas}
+% Publicly Available Specification options.
+% \changes{v2.3}{2001/07/06}{Added ts and pas options}
+%    \begin{macrocode}
+\newif\iftechspec\techspecfalse
+\newif\ifpaspec\paspecfalse
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%    Now declare the options (including an \Lopt{is} option just for
+%    completeness). We need to ensure (later) that, whatever copyright 
+%    option has been used, copyright notices are not printed for certain
+%    kinds of documents.
+%    \begin{macrocode}
+\DeclareOption{is}{\isstandardtrue 
+                   \fdisstandardfalse 
+                   \disstandardfalse 
+                   \cdstandardfalse 
+                   \wdstandardfalse 
+                   \techrepfalse
+                   \techspecfalse
+                   \paspecfalse
+                   \otherdocfalse}
+\DeclareOption{fdis}{\isstandardfalse
+                   \fdisstandardtrue
+                   \disstandardfalse 
+                   \cdstandardfalse 
+                   \wdstandardfalse 
+                   \techrepfalse
+                   \techspecfalse
+                   \paspecfalse
+                   \otherdocfalse}
+\DeclareOption{dis}{\isstandardfalse
+                   \fdisstandardfalse 
+                   \disstandardtrue
+                   \cdstandardfalse 
+                   \wdstandardfalse 
+                   \techrepfalse
+                   \techspecfalse
+                   \paspecfalse
+                   \otherdocfalse}
+\DeclareOption{cd}{\isstandardfalse
+                   \fdisstandardfalse 
+                   \disstandardfalse 
+                   \cdstandardtrue
+                   \wdstandardfalse 
+                   \techrepfalse
+                   \techspecfalse
+                   \paspecfalse
+                   \otherdocfalse
+                   \c@pyrightfalse}
+\DeclareOption{wd}{\isstandardfalse
+                   \fdisstandardfalse 
+                   \disstandardfalse 
+                   \cdstandardfalse 
+                   \wdstandardtrue
+                   \techrepfalse
+                   \techspecfalse
+                   \paspecfalse
+                   \otherdocfalse
+                   \c@pyrightfalse}
+\DeclareOption{techrep}{\isstandardfalse
+                   \fdisstandardfalse 
+                   \disstandardfalse 
+                   \cdstandardfalse 
+                   \wdstandardfalse 
+                   \techreptrue
+                   \techspecfalse
+                   \paspecfalse
+                   \otherdocfalse}
+\DeclareOption{techspec}{\isstandardfalse
+                   \fdisstandardfalse 
+                   \disstandardfalse 
+                   \cdstandardfalse 
+                   \wdstandardfalse 
+                   \techrepfalse
+                   \techspectrue
+                   \paspecfalse
+                   \otherdocfalse}
+\DeclareOption{pas}{\isstandardfalse
+                   \fdisstandardfalse 
+                   \disstandardfalse 
+                   \cdstandardfalse 
+                   \wdstandardfalse 
+                   \techreptrue
+                   \techspecfalse
+                   \paspectrue
+                   \otherdocfalse}
+\DeclareOption{otherdoc}{\isstandardfalse
+                   \fdisstandardfalse 
+                   \disstandardfalse 
+                   \cdstandardfalse 
+                   \wdstandardfalse 
+                   \techrepfalse
+                   \techspecfalse
+                   \paspecfalse
+                   \otherdoctrue
+                   \c@pyrightfalse}
+%    \end{macrocode}
+%
+%  \subsection{The \Lopt{draft} option}
+%
+%    If the user requests \Lopt{draft} we show any overfull boxes,
+%    marginal notes are allowed, and any copyright notices are not
+%    printed. For symmetry, we also define a \Lopt{final} option
+%    which is the default.
+% \begin{macro}{\ifdr@ftd@c}
+%    \begin{macrocode}
+\newif\ifdr@ftd@c\dr@ftd@cfalse
+\setlength{\overfullrule}{\z@}
+\DeclareOption{final}{\setlength{\overfullrule}{\z@}
+                      \dr@ftd@cfalse}
+\DeclareOption{draft}{\setlength\overfullrule{5pt}%
+                      \dr@ftd@ctrue}
+%    \end{macrocode}
+% \end{macro}
+%
+% 
+%
+% \section{Executing Options} \label{sec:xopt}
+%
+%    Here we execute the default options to initialize certain
+%    variables. Note that the document class \file{isoe} always uses two
+%    sided printing.
+% \changes{v2.3}{2001/07/06}{Deleted the uglycaption option}
+%    \begin{macrocode}
+\ExecuteOptions{notcopyright,otherdoc,final,a4paper,11pt,onecolumn}
+%    \end{macrocode}
+%
+%    The |\ProcessOptions| command causes the execution of the code
+%    for every option \Lopt{FOO}
+%    which is declared and for which the user typed
+%    the \Lopt{FOO} option in his
+%    |\documentclass| command.  For every option \Lopt{BAR} he typed,
+%    which is not declared, the option is assumed to be a global option.
+%    All options will be passed as document options to any
+%    |\usepackage| command in the document preamble.
+%    \begin{macrocode}
+\ProcessOptions
+%    \end{macrocode}
+%
+% \begin{macro}{\ifc@pyright}
+%    Ensure that we have the correct value of |\ifc@pyright| no matter
+%    the ordering in which the options are processed.
+% \changes{v11}{1997/09/30}{Added setting of c@pyright after option processing}
+% \changes{v2.3}{2001/07/06}{Changed copyright option to apply to all docs}
+%    \begin{macrocode}
+\c@pyrightfalse
+\ifc@pyrightopt
+  \c@pyrighttrue
+\fi
+%    \end{macrocode}
+% \end{macro}
+%
+%    Now that all the options have been executed we can load the
+%    chosen class option file that contains all size dependent code.
+%    \begin{macrocode}
+\ifnum\@ptsize < \tw@
+  \input{iso1\@ptsize.clo}
+\else
+  \input{iso\@ptsize.clo}
+\fi
+%    \end{macrocode}
+%
+%  \section{Loading Packages} \label{sec:lpack}
+%
+%  This class file does not load additional package files.
+%
+%
+% \section{Document Layout} \label{sec:docl}
+% \label{sec:maincode}
+%
+%  In this section we deal with the more difficult typographical
+%  details.
+%
+% \subsection{Fonts}
+%
+%    \LaTeX\ offers the user commands to change the size of the font,
+%    relative to the `main' size. Each relative size changing command
+%    |\size| executes the command
+%    |\@setfontsize||\size|\meta{font-size}\meta{baselineskip} where:
+%
+%    \begin{description}
+%    \item[\meta{font-size}] The absolute size of the font to use from
+%        now on.
+%
+%    \item[\meta{baselineskip}] The normal value of |\baselineskip|
+%        for the size of the font selected. (The actual value will be
+%        |\baselinestretch| * \meta{baselineskip}.)
+%    \end{description}
+%
+%    A number of commands, defined in the \LaTeX\ kernel, shorten the
+%    following  definitions and are used throughout. They are:
+% \begin{center}
+% \begin{tabular}{ll@{\qquad}ll@{\qquad}ll}
+%  \verb=\@vpt= & 5 & \verb=\@vipt= & 6 & \verb=\@viipt= & 7 \\
+%  \verb=\@viiipt= & 8 & \verb=\@ixpt= & 9 & \verb=\@xpt= & 10 \\
+%  \verb=\@xipt= & 10.95 & \verb=\@xiipt= & 12 & \verb=\@xivpt= & 14.4\\
+%  \verb=\@xviipt= & 17.28 & \verb=\@xxpt= & 20.74 & \verb=\@xxvpt= & 24.88\\
+%  \end{tabular}
+%  \end{center}
+%
+% \begin{macro}{\normalsize}
+% \begin{macro}{\@normalsize}
+%
+%    The user level command for the main size is |\normalsize|.
+%    Internally \LaTeX\ uses |\@normalsize| when it refers to the
+%    main size. |\@normalsize| will be defined to work like
+%    |\normalsize| if the latter is redefined from its default
+%    definition (that just issues an error message). Otherwise
+%    |\@normalsize| simply selects a 9pt/11pt size.
+%
+%    The |\normalsize| macro also sets new values for\\
+%    |\abovedisplayskip|, |\abovedisplayshortskip| and
+%    |\belowdisplayshortskip|.
+%
+%    \begin{macrocode}
+%</iso>
+%<*9pt|10pt|11pt>
+\renewcommand{\normalsize}{%
+%<*9pt>
+   \@setfontsize\normalsize\@ixpt\@xpt
+   \abovedisplayskip 9\p@ \@plus 2\p@ \@minus 4.5\p@
+   \abovedisplayshortskip \z@ \@plus 3\p@
+   \belowdisplayshortskip 5.5\p@ \@plus 2.5\p@ \@minus 3\p@
+%</9pt>
+%<*10pt>
+   \@setfontsize\normalsize\@xpt\@xiipt
+   \abovedisplayskip 10\p@ \@plus2\p@ \@minus5\p@
+   \abovedisplayshortskip \z@ \@plus3\p@
+   \belowdisplayshortskip 6\p@ \@plus3\p@ \@minus3\p@
+%</10pt>
+%<*11pt>
+   \@setfontsize\normalsize\@xipt{13.6}%
+   \abovedisplayskip 11\p@ \@plus3\p@ \@minus6\p@
+   \abovedisplayshortskip \z@ \@plus3\p@
+   \belowdisplayshortskip 6.5\p@ \@plus3.5\p@ \@minus3\p@
+%</11pt>
+%    \end{macrocode}
+%    The |\belowdisplayskip| is always equal to the
+%    |\abovedisplayskip|. The parameters of the first level list are
+%    always given by |\@listI|.
+%    \begin{macrocode}
+   \belowdisplayskip \abovedisplayskip
+   \let\@listi\@listI}
+%    \end{macrocode}
+%
+%    We initially choose the normalsize font.
+%    \begin{macrocode}
+\normalsize
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+%
+% \begin{macro}{\@smidgeon}
+% \begin{macro}{\parskip}
+% \begin{macro}{\@onelineskip}
+%    ISO typesetting is grid based, which is not something that \LaTeX{}
+%    is good at. We use some `fixed' skips for before and after headings,
+%    plus a flexible smidgeon.
+%
+%    For the grid, we want a fixed size |\parskip|, dependant only on
+%    the normal font, of one blank line (i.e., the |\baselineskip|).
+%
+%    Just in case the value of |\parskip| gets changed, also keep
+%    a similar value in |@onelineskip|.
+% \changes{v2}{1997/11/30}{parskip fixed and moved to .clo files}
+% \changes{v2}{1997/11/30}{Added \cs{@smidgeon} command}
+% \changes{v2}{1997/11/30}{Added \cs{@onelineskip} command}
+%    \begin{macrocode}
+\newlength{\@smidgeon}
+  \setlength{\@smidgeon}{0.5\p@ \@plus 1\p@ \@minus 1\p@}
+\newlength{\@onelineskip}
+%<9pt>\parskip \@xpt\p@
+%<9pt>\setlength{\@onelineskip}{\@xpt\p@}
+%<10pt>\parskip \@xiipt\p@
+%<10pt>\setlength{\@onelineskip}{\@xiipt\p@}
+%<11pt>\parskip 13.6\p@
+%<11pt>\setlength{\@onelineskip}{13.6\p@}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\small}
+%    This code is similar to that for |\normalsize|.
+%    \begin{macrocode}
+\newcommand{\small}{%
+%<*9pt>
+    \@setfontsize\small\@viiipt{9}
+    \abovedisplayskip 6\p@ \@plus 2\p@ \@minus 4\p@
+    \abovedisplayshortskip \z@ \@plus 2\p@
+    \belowdisplayshortskip 4\p@ \@plus 2\p@ \@minus 2\p@
+    \def\@listi{\leftmargin\leftmargini
+                \topsep 2\p@ \@plus 2\p@ \@minus 2\p@
+                \parsep 1\p@ \@plus\p@ \@minus\p@
+                \itemsep \parsep
+                \itemindent\z@
+                }%
+%</9pt>
+%<*10pt>
+   \@setfontsize\small\@ixpt{11}%
+   \abovedisplayskip 8.5\p@ \@plus3\p@ \@minus4\p@
+   \abovedisplayshortskip \z@ \@plus2\p@
+   \belowdisplayshortskip 4\p@ \@plus2\p@ \@minus2\p@
+   \def\@listi{\leftmargin\leftmargini
+               \topsep 4\p@ \@plus2\p@ \@minus2\p@
+               \parsep 2\p@ \@plus\p@ \@minus\p@
+               \itemsep \parsep
+               \itemindent\z@
+              }%
+%</10pt>
+%<*11pt>
+   \@setfontsize\small\@xpt\@xiipt
+   \abovedisplayskip 10\p@ \@plus2\p@ \@minus5\p@
+   \abovedisplayshortskip \z@ \@plus3\p@
+   \belowdisplayshortskip 6\p@ \@plus3\p@ \@minus3\p@
+   \def\@listi{\leftmargin\leftmargini
+               \topsep 6\p@ \@plus2\p@ \@minus2\p@
+               \parsep 3\p@ \@plus2\p@ \@minus\p@
+               \itemsep \parsep
+               \itemindent\z@
+              }%
+%</11pt>
+   \belowdisplayskip \abovedisplayskip
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\footnotesize}
+%    This code is similar to that for |\normalsize|.
+%    \begin{macrocode}
+\newcommand{\footnotesize}{%
+%<*9pt>
+    \@setfontsize\footnotesize\@viiipt{9}
+    \abovedisplayskip 6\p@ \@plus 2\p@ \@minus 4\p@
+    \abovedisplayshortskip \z@ \@plus 2\p@
+    \belowdisplayshortskip 4\p@ \@plus 2\p@ \@minus 2\p@
+    \def\@listi{\leftmargin\leftmargini
+                \topsep 2\p@ \@plus 2\p@ \@minus 2\p@
+                \parsep 1\p@ \@plus\p@ \@minus\p@
+                \itemsep \parsep
+                \itemindent\z@
+               }%
+%</9pt>
+%<*10pt>
+   \@setfontsize\footnotesize\@viiipt{9.5}%
+   \abovedisplayskip 6\p@ \@plus2\p@ \@minus4\p@
+   \abovedisplayshortskip \z@ \@plus\p@
+   \belowdisplayshortskip 3\p@ \@plus\p@ \@minus2\p@
+   \def\@listi{\leftmargin\leftmargini
+               \topsep 3\p@ \@plus\p@ \@minus\p@
+               \parsep 2\p@ \@plus\p@ \@minus\p@
+               \itemsep \parsep
+               \itemindent\z@
+              }%
+%</10pt>
+%<*11pt>
+   \@setfontsize\footnotesize\@ixpt{11}%
+   \abovedisplayskip 8\p@ \@plus2\p@ \@minus4\p@
+   \abovedisplayshortskip \z@ \@plus\p@
+   \belowdisplayshortskip 4\p@ \@plus2\p@ \@minus2\p@
+   \def\@listi{\leftmargin\leftmargini
+               \topsep 4\p@ \@plus2\p@ \@minus2\p@
+               \parsep 2\p@ \@plus\p@ \@minus\p@
+               \itemsep \parsep
+               \itemindent\z@
+              }%
+%</11pt>
+   \belowdisplayskip \abovedisplayskip
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\scriptsize}
+% \begin{macro}{\tiny}
+% \begin{macro}{\large}
+% \begin{macro}{\Large}
+% \begin{macro}{\LARGE}
+% \begin{macro}{\huge}
+% \begin{macro}{\Huge}
+%    These are all much simpler than the previous macros, they just
+%    select a new fontsize, but leave the parameters for displays and
+%    lists alone.
+%    \begin{macrocode}
+%<*9pt>
+\newcommand{\tiny}{\@setfontsize\tiny\@vpt{6}}
+\newcommand{\scriptsize}{\@setfontsize\scriptsize\@viipt{8}}
+\newcommand{\large}{\@setfontsize\large\@xpt{11}}
+\newcommand{\Large}{\@setfontsize\Large\@xipt{12}}
+\newcommand{\LARGE}{\@setfontsize\LARGE\@xivpt{18}}
+\newcommand{\huge}{\@setfontsize\huge\@xviipt{22}}
+\newcommand{\Huge}{\@setfontsize\Huge\@xxpt{25}}
+%</9pt>
+%<*10pt>
+\newcommand{\tiny}{\@setfontsize\tiny\@vipt{7}}
+\newcommand{\scriptsize}{\@setfontsize\scriptsize\@viiipt{9}}
+\newcommand{\large}{\@setfontsize\large\@xipt{12}}
+\newcommand{\Large}{\@setfontsize\Large\@xiipt{14}}
+\newcommand{\LARGE}{\@setfontsize\LARGE\@xivpt{18}}
+\newcommand{\huge}{\@setfontsize\huge\@xviipt{22}}
+\newcommand{\Huge}{\@setfontsize\Huge\@xxvpt{30}}
+%</10pt>
+%<*11pt>
+\newcommand{\tiny}{\@setfontsize\tiny\@vipt{7}}
+\newcommand{\scriptsize}{\@setfontsize\scriptsize\@viiipt{9}}
+\newcommand{\large}{\@setfontsize\large\@xiipt{14}}
+\newcommand{\Large}{\@setfontsize\Large\@xivpt{18}}
+\newcommand{\LARGE}{\@setfontsize\LARGE\@xviipt{22}}
+\newcommand{\huge}{\@setfontsize\huge\@xxpt{25}}
+\newcommand{\Huge}{\@setfontsize\Huge\@xxvpt{30}}
+%</11pt>
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\Gfont}
+% \begin{macro}{\Tfont}
+% \begin{macro}{\Cfont}
+% \begin{macro}{\SCfont}
+% \begin{macro}{\SSCfont}
+% \begin{macro}{\Nfont}
+% \begin{macro}{\Efont}
+%    Define the font sizes for headings, captions, etc.
+%    |\Gfont| is the normal size font for general text.
+%    |\Tfont| is for the title of the standard.
+%    |\Cfont| is for clause headings. Similarly |\SCfont| and |\SSCfont|
+%    are for subheadings.
+%    |\Nfont| is for notes, examples, footers, footnotes, copyright.
+%    |\Efont| is for code in typewriter font.
+% \changes{v2}{1997/11/30}{New \cs{SCfont} and \cs{SSCfont} commands}
+% \changes{v2.3}{2001/07/06}{Added font series to heading font sizes}
+%    \begin{macrocode}
+\newcommand{\Gfont}{\normalsize}
+\newcommand{\Nfont}{\small}
+\newcommand{\Efont}{\small}
+%<*9pt>
+%%%\newcommand{\Tfont}{\huge}
+\newcommand{\Tfont}{\@setfontsize\Tfont\@xviipt{22}\bfseries}
+\newcommand{\Cfont}{\Large\bfseries}
+\newcommand{\SCfont}{\large\bfseries}
+\newcommand{\SSCfont}{\normalsize\bfseries}
+
+%</9pt>
+%<*10pt>
+%%%\newcommand{\Tfont}{\huge}
+\newcommand{\Tfont}{\@setfontsize\Tfont\@xviipt{22}\bfseries}
+\newcommand{\Cfont}{\Large\bfseries}
+\newcommand{\SCfont}{\large\bfseries}
+\newcommand{\SSCfont}{\normalsize\bfseries}
+
+%</10pt>
+%<*11pt>
+%%%\newcommand{\Tfont}{\LARGE}
+\newcommand{\Tfont}{\LARGE\bfseries}
+\newcommand{\Cfont}{\Large\bfseries}
+\newcommand{\SCfont}{\large\bfseries}
+\newcommand{\SSCfont}{\normalsize\bfseries}
+
+%</11pt>
+
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+%
+% \begin{macro}{\beforecskip}
+% \begin{macro}{\aftercskip}
+% \begin{macro}{\beforescskip}
+% \begin{macro}{\afterscskip}
+% \begin{macro}{\beforesscskip}
+% \begin{macro}{\aftersscskip}
+%    We define skips for before and after headings. ISO wants two blank
+%    lines before a clause and one afterwards. For lower level sectioning
+%    the spacing is one blank line before and one after.
+%
+%    Remember that \LaTeX{} automatically adds |\parskip| before and
+%    after headings.
+% \changes{v2}{1997/11/30}{New before and after clause skip commands}
+%    \begin{macrocode}
+\newlength{\beforecskip}
+  \setlength{\beforecskip}{\@smidgeon}
+  \addtolength{\beforecskip}{2\@onelineskip}
+  \addtolength{\beforecskip}{-\parskip}
+\newlength{\aftercskip}
+  \setlength{\aftercskip}{\@smidgeon}
+  \addtolength{\aftercskip}{\@onelineskip}
+  \addtolength{\aftercskip}{-\parskip}
+\newlength{\beforescskip}
+  \setlength{\beforescskip}{\@smidgeon}
+  \addtolength{\beforescskip}{\@onelineskip}
+  \addtolength{\beforescskip}{-\parskip}
+\newlength{\afterscskip}
+  \setlength{\afterscskip}{\@smidgeon}
+  \addtolength{\afterscskip}{\@onelineskip}
+  \addtolength{\afterscskip}{-\parskip}
+\newlength{\beforesscskip}
+  \setlength{\beforesscskip}{\@smidgeon}
+  \addtolength{\beforesscskip}{\@onelineskip}
+  \addtolength{\beforesscskip}{-\parskip}
+\newlength{\aftersscskip}
+  \setlength{\aftersscskip}{\@smidgeon}
+  \addtolength{\aftersscskip}{\@onelineskip}
+  \addtolength{\aftersscskip}{-\parskip}
+
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+%    \begin{macrocode}
+%</9pt|10pt|11pt>
+%<*iso>
+%    \end{macrocode}
+%
+% \begin{macro}{\captionsize}
+%  This internal command holds the font size for captions. Its value
+%  depends on the \Lopt{uglycaption} option.
+% \changes{v1.1}{1997/07/31}{Added \cs{captionsize} command to support the uglycaption}
+% \changes{v2.3}{2001/07/06}{\cs{captionsize} is just \cs{normalsize}}
+%    \begin{macrocode}
+  \newcommand{\captionsize}{\normalsize}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Paragraphing}
+%
+% \begin{macro}{\lineskip}
+% \begin{macro}{\normallineskip}
+%    These parameters control \TeX's behaviour when two lines tend to
+%    come too close together.
+%    \begin{macrocode}
+\setlength\lineskip{1\p@}
+\setlength\normallineskip{1\p@}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\baselinestretch}
+%    This is used as a multiplier for |\baselineskip|. The default is
+%    to \emph{not} stretch the baselines.
+%    \begin{macrocode}
+\renewcommand{\baselinestretch}{}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\parindent}
+%    |\parskip| gives extra vertical space between paragraphs and
+%    |\parindent| is the width of the paragraph indentation. 
+%    (|\parskip| is defined in the \file{.clo} file.)
+%    \begin{macrocode}
+\setlength\parindent{\z@}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\@lowpenalty}
+% \begin{macro}{\@medpenalty}
+% \begin{macro}{\@highpenalty}%
+%    The commands |\nopagebreak| and |\nolinebreak| put in penalties
+%    to discourage these breaks at the point they are put in.
+%    They use |\@lowpenalty|, |\@medpenalty| or |\@highpenalty|,
+%    dependent on their argument.
+%    \begin{macrocode}
+\@lowpenalty   51
+\@medpenalty  151
+\@highpenalty 301
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\clubpenalty}
+% \begin{macro}{\widowpenalty}
+%    These penalties are used to discourage club and widow lines.
+%    The default values are 150 each, but we want stronger discouragement.
+%    \begin{macrocode}
+\clubpenalty  1000
+\widowpenalty 1000
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\displaywidowpenalty}
+% \begin{macro}{\predisplaypenalty}
+% \begin{macro}{\postdisplaypenalty}
+%    Discourage, but do not prevent, widows in front of a math display
+%    and forbid breaking directly in front of a display. Allow break
+%    after a display without a penalty. The default values are
+%    used, therefore we only show them here.
+%    \begin{macrocode}
+% \displaywidowpenalty 50
+% \predisplaypenalty   10000
+% \postdisplaypenalty  0
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\interlinepenalty}
+%    Allow the breaking of a page in the middle of a paragraph.
+%    \begin{macrocode}
+% \interlinepenalty 0
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\brokenpenalty}
+%    We allow the breaking of a page after a hyphenated line.
+%    \begin{macrocode}
+% \brokenpenalty 100
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%
+%
+% \subsection{Page Layout}
+%
+%    All margin dimensions are measured from a point one inch from the
+%    top and lefthand side of the page.
+%
+%    The ISO layout on A4 paper (297 by 210 mm) is 25mm sidemargins 
+% (make that 25.4mm for simplicity)
+% 12mm above and below the header and footer, at least one blank line
+% between the typeblock and headers/footers. This leads to
+% |\...sidemargin = 0|, and |\textwidth = 159.2mm = 160mm| for convenience,
+% and |\topmargin = -13.5mm|.
+%
+% Make |\headheight|,
+% |\headskip| and footheight each be 12pt, then |\footskip = 24pt|.
+% The total height of the typeblock is then 256mm; subtracting the
+% |\topskip| (say 12pt = 4mm) gives |\textheight = 252mm|.
+% \changes{v2.3}{2001/07/06}{Reconfigured the page layout}
+%
+% \subsubsection{Vertical spacing}
+%
+% \begin{macro}{\headheight}
+% \begin{macro}{\headsep}
+% \begin{macro}{\topskip}
+%    The |\headheight| is the height of the box that will contain the
+%    running head. The |\headsep| is the distance between the bottom
+%    of the running head and the top of the text. The |\topskip| is the
+%    |\baselineskip| for the first line on a page; 
+%    \LaTeX's output routine will not work properly if it has the
+%    value 0pt, so do not do that!
+%    \begin{macrocode}
+\setlength\headheight{12\p@}
+\setlength\headsep{12\p@}
+%</iso>
+%<9pt>\setlength\topskip{12\p@}
+%<10pt>\setlength\topskip{12\p@}
+%<11pt>\setlength\topskip{12\p@}
+%<*iso>
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\footskip}
+%    The distance from the baseline of the box which contains the
+%    running footer to the baseline of last line of text is controlled
+%    by the |\footskip|.
+%    \begin{macrocode}
+\setlength\footskip{24\p@}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\maxdepth}
+% \begin{macro}{\@maxdepth}
+%    The \TeX\ primitive register |\maxdepth| has a function that is
+%    similar to that of |\topskip|. The register |\@maxdepth| should
+%    always contain a copy of |\maxdepth|. In both plain \TeX\ and
+%    \LaTeX~2.09 |\maxdepth| had a fixed value of \texttt{4pt}; in
+%    native \LaTeX 2e mode we let the value depend on the typesize. We
+%    set it so that |\maxdepth| $+$ |\topskip| $=$ typesize $\times
+%    1.5$. As it happens, in these classes |\topskip| is equal to the
+%    typesize, therefor we set |\maxdepth| to half the value of
+%    |\topskip|.
+%    \begin{macrocode}
+\setlength\maxdepth{.5\topskip}
+\setlength\@maxdepth\maxdepth
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \subsubsection{The dimension of text}
+%
+% \begin{macro}{\textwidth}
+% \begin{macro}{\textheight}
+% \begin{macro}{\columnsep}
+%    The width and height of the text which are fixed in this class.
+%    Also, the gutter width when in two column mode.
+%
+%    \begin{macrocode}
+\setlength\textwidth{160mm}
+%%%\setlength\textheight{221.5mm}
+\setlength\textheight{252mm}
+\setlength\columnsep{10mm}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+%
+%
+% \subsubsection{Margins}
+%
+% \begin{macro}{\topmargin}
+% \begin{macro}{\oddsidemargin}
+% \begin{macro}{\evensidemargin}
+% \begin{macro}{\marginparwidth}
+% \begin{macro}{\marginparsep}
+% \begin{macro}{\marginparpush}
+%    The margins are fixed in this class.
+%    \begin{macrocode}
+%%%\setlength\topmargin{0mm}
+\setlength\topmargin{-13.5mm}
+\setlength\oddsidemargin{0mm}
+\setlength\evensidemargin{0mm}
+\setlength\marginparwidth{0pt}
+\setlength\marginparsep{0pt}
+\setlength\marginparpush{3mm}
+%    \end{macrocode}
+%    However, some of the options can change these values. The \Lopt{draft}
+%    option allows marginal notes.
+%    \begin{macrocode}
+\ifdr@ftd@c
+    \setlength\marginparwidth{20mm}
+    \setlength\marginparsep{0.5mm}
+\fi
+%    \end{macrocode}
+%    The \Lopt{letterpaper} (279 by 216 mm) option rearranges the text block on the page,
+%    trying to center it horizontally.
+%    \begin{macrocode}
+\if@us
+%%%    \setlength\topmargin{-9.4mm}
+%%%    \setlength\oddsidemargin{1.55mm}
+%%%    \setlength\evensidemargin{1.55mm}
+    \addtolength{\topmargin}{-9mm}
+    \setlength\oddsidemargin{2mm}
+    \setlength\evensidemargin{2mm}
+    \typeout{ }
+    \typeout{*********************************************************}
+    \typeout{* Warning: You have used the letterpage option. *********}
+    \typeout{* This will not be acceptable as ISO camera ready copy. *}
+    \typeout{*********************************************************}
+    \typeout{ }
+\fi
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+%
+%
+% \subsubsection{Footnotes}
+%
+% \begin{macro}{\footnotesep}
+%    |\footnotesep| is the height of the strut placed at the beginning
+%    of every footnote.
+%    \begin{macrocode}
+\setlength\footnotesep{12\p@}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\footins}
+%    |\skip\footins| is the space between the last line of the main
+%    text and the top of the first footnote.
+%    \begin{macrocode}
+\setlength{\skip\footins}{6\p@ \@plus 2\p@ \@minus 2\p@}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{Float placement parameters}
+%
+% All float parameters are given default values in the \LaTeX 2e
+% kernel. For this reason counters only need to be set with
+% |\setcounter| and other parameters are set using |\renewcommand|.
+%
+% \paragraph{Limits for the placement of floating objects}
+%
+% \begin{macro}{\c@topnumber}
+%    The \Lcount{topnumber} counter holds the maximum number of
+%    floats that can appear on the top of a text page (classically 2)
+%    \begin{macrocode}
+\setcounter{topnumber}{2}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\topfraction}
+%    This indicates the maximum part of a text page that can be
+%    occupied by floats at the top (classically 0.7).
+%    \begin{macrocode}
+\renewcommand{\topfraction}{.8}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\c@bottomnumber}
+%    The \Lcount{bottomnumber} counter holds the maximum number of
+%    floats that can appear on the bottom of a text page (classically 1).
+%    \begin{macrocode}
+\setcounter{bottomnumber}{2}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\bottomfraction}
+%    This indicates the maximum part of a text page that can be
+%    occupied by floats at the bottom (classically 0.3).
+%    \begin{macrocode}
+\renewcommand{\bottomfraction}{.5}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\c@totalnumber}
+%    This indicates the maximum number of floats that can appear on
+%    any text page (classically 3).
+%    \begin{macrocode}
+\setcounter{totalnumber}{4}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\textfraction}
+%    This indicates the minimum part of a text page that has to be
+%    occupied by text (classically 0.2).
+%    \begin{macrocode}
+\renewcommand{\textfraction}{.1}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\floatpagefraction}
+%    This indicates the minimum part of a page that has to be
+%    occupied by floating objects before a `float page' is 
+%    produced (classically 0.5).
+%    \begin{macrocode}
+\renewcommand{\floatpagefraction}{.7}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\c@dbltopnumber}
+%    The \Lcount{dbltopnumber} counter holds the maximum number of
+%    two column floats that can appear on the top of a two column text
+%    page (classically 2).
+%    \begin{macrocode}
+\setcounter{dbltopnumber}{2}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\dbltopfraction}
+%    This indicates the maximum part of a two column text page that
+%    can be occupied by two column floats at the top (classically 0.7).
+%    \begin{macrocode}
+\renewcommand{\dbltopfraction}{.8}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\dblfloatpagefraction}
+%    This indicates the minimum part of a page that has to be
+%    occupied by two column wide floating objects before a `float
+%    page' is produced (classically 0.5).
+%    \begin{macrocode}
+\renewcommand{\dblfloatpagefraction}{.7}
+%    \end{macrocode}
+% \end{macro}
+%
+% \paragraph{Floats on a text page}
+%
+% \begin{macro}{\floatsep}
+% \begin{macro}{\textfloatsep}
+% \begin{macro}{\intextsep}
+%    When a floating object is placed on a page with text, these
+%    parameters control the separation between the float and the other
+%    objects on the page. These parameters are used for both
+%    one-column mode and single-column floats in two-column mode.
+%
+%    |\floatsep| is the space between adjacent floats that are moved
+%    to the top or bottom of the text page.
+%
+%    |\textfloatsep| is the space between the main text and floats
+%    at the top or bottom of the page.
+%
+%    |\intextsep| is the space between in-text floats and the text.
+%    \begin{macrocode}
+\setlength\floatsep    {12\p@ \@plus 2\p@ \@minus 2\p@}
+\setlength\textfloatsep{20\p@ \@plus 2\p@ \@minus 4\p@}
+\setlength\intextsep   {12\p@ \@plus 2\p@ \@minus 2\p@}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\dblfloatsep}
+% \begin{macro}{\dbltextfloatsep}
+%    When floating objects that span the whole |\textwidth| are placed
+%    on a text page and \LaTeX{} is in twocolumn mode the separation
+%    between the float and the text is controlled by |\dblfloatsep|
+%    and |\dbltextfloatsep|.
+%
+%    |\dblfloatsep| is the space between adjacent floats that are moved
+%    to the top or bottom of the text page.
+%
+%    |\dbltextfloatsep| is the space between the main text and floats
+%    at the top or bottom of the page.
+%
+%    \begin{macrocode}
+\setlength\dblfloatsep    {12\p@ \@plus 2\p@ \@minus 2\p@}
+\setlength\dbltextfloatsep{20\p@ \@plus 2\p@ \@minus 4\p@}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \paragraph{Floats on their own page or column}
+%
+% \begin{macro}{\@fptop}
+% \begin{macro}{\@fpsep}
+% \begin{macro}{\@fpbot}
+%    When floating objects are placed on separate pages the layout of
+%    such pages is controlled by these parameters. At the top of the
+%    page |\@fptop| amount of stretchable whitespace is inserted, at
+%    the bottom of the page we get an |\@fpbot| amount of stretchable
+%    whitespace. Between adjacent floats the |\@fpsep| is inserted.
+%
+%    These parameters are used for the placement of floating objects
+%    in one column mode, or in single column floats in two column
+%    mode.
+%
+%    Note that at least one of the two parameters |\@fptop| and
+%    |\@fpbot| should contain a |plus ...fil| to allow filling the
+%    remaining empty space.
+%    \begin{macrocode}
+\setlength\@fptop{0\p@ \@plus 1fil}
+\setlength\@fpsep{8\p@ \@plus 2fil}
+\setlength\@fpbot{0\p@ \@plus 1fil}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\@dblfptop}
+% \begin{macro}{\@dblfpsep}
+% \begin{macro}{\@dblfpbot}
+%    Double column floats in two column mode are handled with similar
+%    parameters.
+%    \begin{macrocode}
+\setlength\@dblfptop{0\p@ \@plus 1fil}
+\setlength\@dblfpsep{8\p@ \@plus 2fil}
+\setlength\@dblfpbot{0\p@ \@plus 1fil}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \subsection{Page Styles}
+%
+%    The page style \pstyle{foo} is defined by defining the command
+%    |\ps@foo|.   This command should make only local definitions.
+%    There should be no stray spaces in the definition, since they
+%    could lead to mysterious extra spaces in the output.
+%
+% \begin{macro}{\@evenhead}
+% \begin{macro}{\@oddhead}
+% \begin{macro}{\@evenfoot}
+% \begin{macro}{\@oddfoot}
+%    The |\ps@...| command defines the macros |\@oddhead|,
+%    |\@oddfoot|, |\@evenhead|, and |\@evenfoot| to define the running
+%    heads and feet---e.g., |\@oddhead| is the macro to produce the
+%    contents of the heading box for odd-numbered pages.  It is called
+%    inside an |\hbox| of width |\textwidth|.
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \subsubsection{Marking conventions}
+%
+%    To make headings determined by the sectioning commands, the page
+%    style defines the commands |\chaptermark|, |\sectionmark|,
+%    \ldots,\\
+%     where |\chaptermark{|\meta{TEXT}|}| is called by
+%    |\chapter| to set a mark, and so on.
+%
+%    The |\...mark| commands and the |\...head| macros are defined
+%    with the help of the following macros.  (All the |\...mark|
+%    commands should be initialized to no-ops.)
+%
+%    \LaTeX{} extends \TeX's |\mark| facility by producing two kinds
+%    of marks, a `left' and a `right' mark, using the following
+%    commands:
+%    \begin{flushleft}
+%     |\markboth{|\meta{LEFT}|}{|\meta{RIGHT}|}|: Adds both marks.
+%
+%     |\markright{|\meta{RIGHT}|}|: Adds a `right' mark.
+%
+%     |\leftmark|: Used in the |\@oddhead|, |\@oddfoot|, |\@evenhead|
+%                  or |\@evenfoot| macros, it gets the current `left'
+%                  mark.  |\leftmark| works like \TeX's |\botmark|
+%                  command.
+%
+%     |\rightmark|: Used in the |\@oddhead|, |\@oddfoot|, |\@evenhead|
+%                   or  |\@evenfoot| macros, it gets the current
+%                   `right' mark. |\rightmark| works like \TeX's
+%                   |\firstmark| command.
+%    \end{flushleft}
+%
+%    The marking commands work reasonably well for right marks
+%    `numbered within' left marks--e.g., the left mark is changed by a
+%    |\chapter| command and the right mark is changed by a |\section|
+%    command.  However, it does produce somewhat anomalous results if
+%    two |\markboth|'s occur on the same page.
+%
+%
+%    Commands like |\tableofcontents| that should set the marks in some
+%    page styles use a |\@mkboth| command, which is |\let| by the
+%    pagestyle command (|\ps@...|)  to |\markboth| for setting the
+%    heading or to |\@gobbletwo| to do nothing.
+%
+%
+%    \begin{macrocode}
+ %%%\mark{{}{}}   % Initializes TeX's marks   <--- can vanish
+%    \end{macrocode}
+%
+% \begin{macro}{\standard}
+% \begin{macro}{\yearofedition}
+% \begin{macro}{\languageofedition}
+%    These commands are to be used in the document preamble. They
+%    are used to specify the identification of the standard,
+%    the year of the standard and the language of the standard.
+%    For example, for a DIS printed in 1995 in English:
+%    \begin{verbatim}
+%      \standard{ISO/DIS 10303-321}
+%      \yearofedition{1995}
+%      \languageofedition{(E)}
+%    \end{verbatim}
+% \begin{macro}{\thestandard}
+% \begin{macro}{\thesyear}
+% \begin{macro}{\theslanguage}
+% \begin{macro}{\@runninghead}
+%    |\thestandard| and |\thesyear| hold the number and year of the 
+%    standard being documented. |\theslanguage| holds the ISO
+%    identification of the publication language; note that
+%    this must include parentheses around the code letter.
+%    \begin{macrocode}
+\gdef\thestandard{}
+\gdef\thesyear{}
+\gdef\theslanguage{}
+\def\standard#1{\gdef\thestandard{#1}}
+\def\yearofedition#1{\gdef\thesyear{#1}}
+\def\languageofedition#1{\gdef\theslanguage{#1}}
+%    \end{macrocode}
+%    |\@runninghead| contains the document identification text for 
+%    the running head. Its value depends on the \Lopt{otherdoc} option.
+%    \begin{macrocode}
+\ifotherdoc
+%    \end{macrocode}
+%    This is not intended to be a standard, so just use |\thestandard| text.
+%    \begin{macrocode}
+    \newcommand{\@runninghead}{\thestandard}
+\else
+%    \end{macrocode}
+%    It either is, or is intended to become, a standard,
+%    `so the year and language are 
+%    required as well; note the colon.
+%    \begin{macrocode}
+    \newcommand{\@runninghead}{\thestandard:\thesyear\theslanguage}
+\fi
+
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\copyrighthead}
+%
+%    |\copyrighthead| contains the text for a copyright mark
+%    in a heading.
+%    However, it should be blank if the document is not copyrighted.
+% \changes{v2.3}{2001/07/06}{Changed \cs{copyrighthead}}
+%    \begin{macrocode}
+\newcommand{\copyrighthead}{\ifc@pyright
+  {\mbox{\copyright \textsc{\copyrightname} \thesyear{} --- All rights reserved}}
+  \else
+    \mbox{}
+  \fi}
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\extrahead}
+% |\extrahead| puts its contents into the page header (e.g., a document
+% number). Use it in the preamble as |\renewcommand{\extrahead}{N5496}|.
+% \changes{v2.3}{2001/07/06}{Added \cs{extrahead}}
+%    \begin{macrocode}
+\newcommand{\extrahead}{\mbox{}}
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{Defining the page styles}
+%
+%    The pagestyles \pstyle{empty} and \pstyle{plain} are defined 
+%    in \file{latex.dtx}.
+%
+% \begin{macro}{\ps@headings}
+%    \pstyle{headings} is the typical pagestyle throughout the document.
+%    The header contains the identification of the standard.
+% The footer has the page number at the outer edge and a copyright
+% notice at the inner.
+% \changes{v2.3}{2001/07/06}{The headings pagestyle has been modified}
+%    \begin{macrocode}
+\newcommand{\ps@headings}{%
+    \def\@oddhead{\bfseries\extrahead\hfil\@runninghead}%
+    \def\@evenhead{\bfseries\@runninghead\hfil\extrahead}%
+    \def\@oddfoot{\copyrighthead\hfil\thepage}%
+    \def\@evenfoot{\thepage\hfil\copyrighthead}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\ps@startpage}
+%    The \pstyle{startpage} page style is similar to \pstyle{headings} 
+%    but without a copyright notice.
+% \changes{v2.3}{2001/07/06}{The startpage pagestyle modified like headings}
+%    \begin{macrocode}
+\newcommand{\ps@startpage}{%
+    \def\@oddhead{\bfseries\extrahead\hfil\@runninghead}%
+    \def\@evenhead{\bfseries\@runninghead\hfil\extrahead}%
+    \def\@oddfoot{\hfil\thepage}%
+    \def\@evenfoot{\thepage\hfil}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\ps@nohead}
+%    Pagestyle \pstyle{nohead} has no headers or footers.
+%    \begin{macrocode}
+\newcommand{\ps@nohead}{%
+    \def\@oddhead{}%
+    \def\@evenhead{}%
+    \def\@oddfoot{}%
+    \def\@evenfoot{}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\rectoisotitlehead}
+% \begin{macro}{\versoisotitlehead}
+% \begin{macro}{\ps@isotitlehead}
+%
+%    \pstyle{isotitlehead} is a special pagestyle for the title page of
+%    a standard. |\rectoisotitlehead| and |\versoisotitlehead|
+%    contain the relevent texts.
+% \changes{v2.3}{2002/01/22}{Changed the isotitlehead pagestyle}
+%    \begin{macrocode}
+\newcommand{\rectoisotitlehead}{%
+    \fillline\vspace{0.1\baselineskip}\linebreak%
+    {\bfseries \uppercase{\ISname}} 
+%%     \mbox{\ifc@pyright\space\copyright {\scshape \copyrightname}\else
+%%           \space{\scshape (\copyrightname)}\fi}
+     \hfil {\bfseries \@runninghead}%
+    \vspace{-0.5\baselineskip}\linebreak\fillline}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\newcommand{\versoisotitlehead}{%
+    \fillline\vspace{0.1\baselineskip}\linebreak%
+    {\bfseries \@runninghead} \hfil
+       {\bfseries \uppercase{\ISname}}
+%%     \mbox{\ifc@pyright\space\copyright {\scshape \copyrightname}\else
+%%           \space{\scshape (\copyrightname)}\fi}
+    \vspace{-0.5\baselineskip}\linebreak\fillline}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\def\ps@isotitlehead{%
+    \def\@oddhead{\parbox{\textwidth}{\protect\rectoisotitlehead}}%
+    \def\@evenhead{\parbox{\textwidth}{\protect\versoisotitlehead}}%
+%%    \def\@oddfoot{\hfil\thepage}%
+%%    \def\@evenfoot{\thepage\hfil}}
+    \def\@oddfoot{\copyrighthead\hfil\thepage}%
+    \def\@evenfoot{\thepage\hfil\copyrighthead}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%  
+%
+% \section{Document Markup} \label{sec:docm}
+%
+% \subsection{The title}
+%
+%    In this class the |\title| command is somewhat different to that
+%    in the standard classes.
+%
+% \begin{macro}{\title}
+% \begin{macro}{\thetitle}
+% \begin{macro}{\introelement}
+% \begin{macro}{\mainelement}
+% \begin{macro}{\compelement}
+%    The command |\title{|\meta{intro}|}{|\meta{main}|}{|\meta{comp}|}|
+%    produces a macro |\thetitle| which is used when generating the
+%    first normative clause.
+%
+%    First define a default |\thetitle|.
+%    \begin{macrocode}
+\gdef\thetitle{}
+%    \end{macrocode}
+%    Define the elements to be used in the title.
+% \changes{v2}{1997/11/30}{Tweaked the \cs{title} command}
+% \changes{v2.3}{2001/07/06}{Tweaked the \cs{title} command by adding \cs{par}}
+%    \begin{macrocode}
+\newcommand{\introelement}[1]{\if\isoemptystring{#1}\else {#1 ---\newline}\fi}
+\newcommand{\mainelement}[1]{#1}
+\newcommand{\compelement}[1]{\if\isoemptystring{#1}\else { --- \newline #1}\fi}
+%    \end{macrocode}
+%    The |\title| command starts a new recto page with arabic numbering and
+%    initialises the counters. It also uses the |isotitlehead|.
+%    \begin{macrocode}
+\renewcommand{\title}[3]{%
+    \cleardoublepage\pagenumbering{arabic}%
+    \setcounter{clause}{0}%
+    \ifotherdoc \else %
+         \protect\thispagestyle{isotitlehead}
+     \fi
+     \gdef\thetitle{{\Tfont \introelement{#1} %
+                             \mainelement{#2} %
+                             \compelement{#3}\par}}
+      \if@twocolumn
+         \twocolumn[\vspace*{2\baselineskip}\vbox to 35mm{\thetitle}]
+      \else
+          \vspace*{2\baselineskip}\vbox to 35mm{\thetitle}
+      \fi}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \subsection{The cover}
+%
+%    ISO will produce the cover (pages 1 and 2) for any documents they
+% publish. It can be useful for editors to be able to provide their
+% own, informal, cover sheet.
+%
+% \begin{environment}{cover}
+%  The |cover| environment is for typesetting an informal cover sheet.
+% there is no restriction on what can go into it, except that if used it
+% must be the first element in the document and the contents must not
+% exceed a single page.
+% \changes{v2.3}{2001/07/06}{Added the cover environment}
+%    \begin{macrocode}
+\newenvironment{cover}{%
+  \if@twocolumn
+    \@restonecoltrue\onecolumn
+  \else
+    \@restonecolfalse
+  \fi
+  \setcounter{page}{1} \pagenumbering{roman}
+  \thispagestyle{empty}}{%
+%    \end{macrocode}
+% A copyright notice has to go at the foot of the second page.
+%    \begin{macrocode}
+%%  \clearpage
+  \thispagestyle{startpage}
+  \mbox{}
+  \ifc@pyright\@copyrighttext\fi
+  \newpage
+  \if@restonecol\twocolumn\fi}
+
+%    \end{macrocode}
+% \end{environment}
+% 
+% \subsection{Clauses}
+%
+% \subsubsection{Building blocks} The definitions in this part of a
+%    class file usually make use of two internal macros, |\@startsection| and
+%    |\secdef|. To understand
+%    what is going on here, we describe their syntax.
+%
+%    The macro |\@startsection| has 6 required arguments, optionally
+%    followed by  a $*$, an optional argument and a required argument:
+%
+%    |\@startsection|\meta{name}\meta{level}\meta{indent}^^A
+%                    \meta{beforeskip}\meta{afterskip}\meta{style}
+%            optional *\\
+%    \null\hphantom{\bslash @startsection}^^A
+%            |[|\meta{altheading}|]|\meta{heading}
+%
+%    It is a generic command to start a section, the arguments have
+%    the following meaning:
+%
+%    \begin{description}
+%    \item[\meta{name}] The name of the user level command, e.g.,
+%          `section'.
+%    \item[\meta{level}] A number, denoting the depth of the section
+%          -- e.g., chapter=1, section = 2, etc.  A section number
+%          will be printed if and only if \meta{level} $<=$  the value
+%          of the \Lcount{secnumdepth} counter.
+%    \item[\meta{indent}] The indentation of the heading from the left
+%          margin
+%    \item[\meta{beforeskip}] The absolute value of this argument
+%          gives the skip to leave above the heading. If it is
+%          negative, then the paragraph indent of the text following
+%          the heading is suppressed.
+%    \item[\meta{afterskip}] If positive, this gives the skip to leave
+%          below the heading, else it gives the skip to leave to the
+%          right of a run-in heading.
+%    \item[\meta{style}] Commands to set the style of the heading.
+%    \item[$*$] When this is missing the heading is numbered and the
+%          corresponding counter is incremented.
+%    \item[\meta{altheading}] Gives an alternative heading to use in
+%          the table of contents and in the running heads. This should
+%          be present when the $*$ form is used.
+%    \item[\meta{heading}] The heading of the new section.
+%    \end{description}
+%  A sectioning command is normally defined to |\@startsection| and
+%  its first six arguments.
+%
+%    The macro |\secdef| can be used when a sectioning command is
+%    defined without using |\@startsection|. It has two arguments:
+%
+%    |\secdef|\meta{unstarcmds}\meta{starcmds}
+%
+%    \begin{description}
+%    \item[\meta{unstarcmds}] Used for the normal form of a
+%          sectioning command.
+%    \item[\meta{starcmds}] Used for the $*$-form of a
+%          sectioning command.
+%    \end{description}
+%
+%    You can use |\secdef| as follows:
+% \begin{verbatim}
+%       \def\chapter { ... \secdef \CMDA \CMDB }
+%       \def\CMDA    [#1]#2{ ... }  % Command to define
+%                                   % \chapter[...]{...}
+%       \def\CMDB    #1{ ... }      % Command to define
+%                                   % \chapter*{...}
+% \end{verbatim}
+%
+% \changes{v2.2}{2000/01/10}{deleted \cs{@prwstartsection} }
+%
+% \subsubsection{Overview}
+%
+%    ISO terminology uses `clause' instead of the typical terms for
+%    subdivisions in a document, although they do use the term `section'.
+%    Accordingly, we have defined new terms for the document sectioning
+%    commands. We also use the shorthand `ss' for `subsub', and so on.
+%
+%    \begin{center}
+%    \begin{tabular}{llc}\hline
+%    \LaTeX\       & ISO     & level \\ \hline
+%    chapter       & clause, annex  & 1 \\
+%    section       & sclause & 2 \\
+%    subsection    & ssclause & 3 \\
+%    subsubsection & sssclause & 4 \\
+%    paragraph     & ssssclause & 5 \\
+%    subparagraph  & sssssclause & 6 \\ \hline
+%    \end{tabular}
+%    \end{center}
+%
+%    We also provide `annex' commands, which are equivalent to a `clause'
+%    command.
+%
+% \subsubsection{Hyperref ToC levels}
+% 
+% \begin{macro}{\toclevel@clause}
+% \begin{macro}{\toclevel@sclause}
+% \begin{macro}{\toclevel@ssclause}
+% \begin{macro}{\toclevel@sssclause}
+% \begin{macro}{\toclevel@ssssclause}
+% \begin{macro}{\toclevel@sssssclause}
+% \begin{macro}{\toclevel@annex}
+% \begin{macro}{\toclevel@index}
+% The \Lpack{hyperref} package needs to know ToC entry levels.
+% \changes{v2.4}{2002/07/22}{Added \cs{toclevel@} macros for hyperref}
+%    \begin{macrocode}
+\newcommand*{\toclevel@clause}{1}
+\newcommand*{\toclevel@sclause}{2}
+\newcommand*{\toclevel@ssclause}{3}
+\newcommand*{\toclevel@sssclause}{4}
+\newcommand*{\toclevel@ssssclause}{5}
+\newcommand*{\toclevel@sssssclause}{6}
+\newcommand*{\toclevel@annex}{1}
+\newcommand*{\toclevel@index}{1}
+
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \subsubsection{Define Counters}
+%
+% \begin{macro}{\c@secnumdepth}
+%    The value of the counter \Lcount{secnumdepth} gives the depth of
+%    the highest-level sectioning command that is to produce section
+%    numbers.
+%    \begin{macrocode}
+\setcounter{secnumdepth}{6}
+%    \end{macrocode}
+% \end{macro}
+%
+% The macro\\
+%    |\newcounter{|\meta{newctr}|}[|\meta{oldctr}|]|\\
+%     defines\meta{newctr} to be a counter, which is reset to zero when
+%    counter \meta{oldctr} is stepped. Counter \meta{oldctr} must
+%    already be defined.
+%
+% \begin{macro}{\c@annex}
+% \begin{macro}{\c@clause}
+% \begin{macro}{\c@fibicl@use}
+%    These counters are used for the sectioning numbers. 
+%    Clause and annex are the top level document divisions.
+%    \begin{macrocode}
+\newcounter{annex}
+\newcounter{clause}
+\newcounter{fibicl@use}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+%
+% \begin{macro}{\c@sclause}
+% \begin{macro}{\c@ssclause}
+% \begin{macro}{\c@sssclause}
+% \begin{macro}{\c@ssssclause}
+% \begin{macro}{\c@sssssclause}
+%    The lower level divisions get reset by higher level divisions.
+%    \begin{macrocode}
+\newcounter{sclause}[clause]
+\newcounter{ssclause}[sclause]
+\newcounter{sssclause}[ssclause]
+\newcounter{ssssclause}[sssclause]
+\newcounter{sssssclause}[ssssclause]
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\c@yextra}
+% We need an extra counter for the \Lpack{hyperref} package.
+% \changes{v2.4}{2002/07/22}{Added \cs{c@yextra} counter for hyperref}
+%    \begin{macrocode}
+\newcounter{yextra}
+
+%    \end{macrocode}
+% \end{macro}
+%
+%    For any counter \Lcount{CTR}, |\theCTR| is a macro that defines
+%    the printed version of counter \Lcount{CTR}.  It is defined in
+%    terms of the following macros:
+%
+%    |\arabic{|\Lcount{COUNTER}|}| prints the value of
+%    \Lcount{COUNTER} as an arabic numeral.
+%
+%    |\roman{|\Lcount{COUNTER}|}| prints the value of
+%    \Lcount{COUNTER} as a lowercase roman numeral.
+%
+%    |\Roman{|\Lcount{COUNTER}|}| prints the value of
+%    \Lcount{COUNTER} as an uppercase roman numeral.
+%
+%    |\alph{|\Lcount{COUNTER}|}| prints the value of \Lcount{COUNTER}
+%    as a lowercase letter: $1 =$~a, $2 =$~ b, etc.
+%
+%    |\Alph{|\Lcount{COUNTER}|}| prints the value of \Lcount{COUNTER}
+%    as an uppercase letter: $1 =$~A, $2 =$~B, etc.
+%
+% \begin{macro}{\theannex}
+% \begin{macro}{\theclause}
+% \begin{macro}{\thefibicl@use}
+% The top level division numbers.
+%    \begin{macrocode}
+\renewcommand{\theannex}{\Alph{annex}}
+\renewcommand{\theclause}{\arabic{clause}}
+\renewcommand{\thefibicl@use}{\arabic{fibicl@use}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\thesclause}
+% \begin{macro}{\thessclause}
+% \begin{macro}{\thesssclause}
+% \begin{macro}{\thessssclause}
+% \begin{macro}{\thesssssclause}
+%  The lower level division number representations.
+%    \begin{macrocode}
+\renewcommand{\thesclause}{\theclause.\arabic{sclause}}
+\renewcommand{\thessclause}{\thesclause.\arabic{ssclause}}
+\renewcommand{\thesssclause}{\thessclause.\arabic{sssclause}}
+\renewcommand{\thessssclause}{\thesssclause.\arabic{ssssclause}}
+\renewcommand{\thesssssclause}{\thessssclause.\arabic{sssssclause}}
+
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\theHannex}
+% \begin{macro}{\theHclause}
+% \begin{macro}{\theHsclause}
+% \begin{macro}{\theHssclause}
+% \begin{macro}{\theHsssclause}
+% \begin{macro}{\theHssssclause}
+% \begin{macro}{\theHsssssclause}
+% For \Lpack{hyperref} we have to specify a similar set of 
+% number representations.
+% \changes{v2.4}{2002/07/22}{Added a lot of \cs{theHsclause} like commands}
+%    \begin{macrocode}
+\newcommand{\theHannex}{\Alph{annex}}
+\newcommand{\theHclause}{\arabic{clause}}
+\newcommand{\theHsclause}{\theHclause.\arabic{sclause}}
+\newcommand{\theHssclause}{\theHsclause.\arabic{ssclause}}
+\newcommand{\theHsssclause}{\theHssclause.\arabic{sssclause}}
+\newcommand{\theHssssclause}{\theHsssclause.\arabic{ssssclause}}
+\newcommand{\theHsssssclause}{\theHssssclause.\arabic{sssssclause}}
+
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+%
+% \subsubsection{Clauses}
+%
+%
+% \begin{macro}{\zerocounters}
+% \changes{v2.2}{2000/01/10}{Added \cs{zerocounters}}
+% At the start of each document division counters like for notes and examples
+% are zeroed.
+%    \begin{macrocode}
+\newcommand{\zerocounters}{%
+  \setcounter{note}{0}\setcounter{example}{0}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@hangfrom}
+% Multiline clause headings are flushleft (block paragraph style).
+% \changes{v2.3}{200/07/06}{Changed \cs{@hangfrom} for block para clauses}
+%    \begin{macrocode}
+\renewcommand{\@hangfrom}[1]{#1}
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\clause}
+%    The command to start a new clause.
+% \changes{v2}{1997/11/30}{Use beforecskip and aftercskip for skips around clause headings}
+% \changes{v2.2}{2000/01/10}{To support tex4ht all clausing commands use \cs{@startsection}}
+%    \begin{macrocode}
+\newcommand{\clause}{\zerocounters
+  \addtocounter{clause}{1}
+  \typeout{Clause: \theclause}
+  \addtocounter{clause}{-1}
+  \tocskip{\tocentryskip}
+  \@startsection{clause}{1}%
+    {\z@}%
+    {\beforecskip}%
+    {\aftercskip}%
+%%    {\raggedright\Cfont\bfseries}}
+    {\raggedright\Cfont}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\fibicl@use}
+% \changes{v2.2}{2000/01/10}{To support tex4ht added \cs{fibicl@use}}
+%     Document divisions like the Foreword and the Bibliography are 
+% effectively unnumbered clauses, but which appear in the ToC. In order
+% to ease support for the \Lpack{tex4ht} package, 
+% the |\fibicl@use| command is defined, but should
+% only be used in its starred form.
+%    \begin{macrocode}
+\newcommand{\fibicl@use}{%
+  \@startsection{fibicl@use}{1}%
+    {\z@}%
+    {\beforecskip}%
+    {\aftercskip}%
+%%    {\raggedright\Cfont\bfseries}}
+    {\raggedright\Cfont}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \subsubsection{Lower level headings}
+%
+%    These commands all make use of |\@startsection|. They also
+%    reinitialize the note and example counters.
+% \begin{macro}{\sclause}
+% \begin{macro}{\ssclause}
+% \begin{macro}{\sssclause}
+% \begin{macro}{\ssssclause}
+% \begin{macro}{\sssssclause}
+% \changes{v2}{1997/11/30}{Use beforescskip and afterscskip, etc, for skips around s...clause headings}
+% \changes{v2}{1997/11/30}{s...clauses reset the example counter}
+%    \begin{macrocode}
+\newcommand{\sclause}{\zerocounters
+    \@startsection{sclause}{2}%
+        {\z@}%
+        {\beforescskip}%
+        {\afterscskip}%
+        {\raggedright\SCfont}}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\newcommand{\ssclause}{\zerocounters
+    \@startsection{ssclause}{3}%
+        {\z@}%
+        {\beforesscskip}%
+        {\aftersscskip}%
+        {\raggedright\SSCfont}}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\newcommand{\sssclause}{\zerocounters
+    \@startsection{sssclause}{4}%
+        {\z@}%
+        {\beforesscskip}%
+        {\aftersscskip}%
+        {\raggedright\SSCfont}}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\newcommand{\ssssclause}{\zerocounters
+    \@startsection{ssssclause}{5}%
+        {\z@}%
+        {\beforesscskip}%
+        {\aftersscskip}%
+        {\raggedright\SSCfont}}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\newcommand{\sssssclause}{\zerocounters
+    \@startsection{sssssclause}{6}%
+        {\z@}%
+        {\beforesscskip}%
+        {\aftersscskip}%
+        {\raggedright\SSCfont}}
+%    \end{macrocode}
+%    Preloaded definitions.
+%    \begin{macrocode}
+\def\clausemark#1{}
+\def\sclausemark#1{}
+\def\ssclausemark#1{}
+\def\sssclausemark#1{}
+\def\ssssclausemark#1{}
+\def\sssssclausemark#1{}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% 
+%
+% 
+% 
+% \subsubsection{Annexes}
+%
+% \begin{macro}{\init@nnex}
+%    As an annex command has to do quite a lot, we define the internal
+%    |\init@nnex| command as a worker. It has to:
+%    \begin{itemize}
+%    \item clear the page;
+%    \item reset the table and figure counters to zero;
+%    \item redefine the |\thefigure| and the |\thetable| to precede them
+%          with the annex letter;
+%    \item reset the |sclause| counter to zero;
+%    \item test for annexes I and O since these are not allowed by ISO.
+%    \end{itemize}
+%    Use as: |\@annex{|\meta{title}|}{|\meta{typeset body kind}|}{|\meta{typeset toc kind}|}|
+% \changes{v1}{1996/06/19}{Added blank line after `annexes' title in toc.}
+% \changes{v2}{1997/11/30}{Deleted Annex heading in the ToC}
+% \changes{v2}{1997/11/30}{Added annex type to ToC}
+% \changes{v2}{1997/11/30}{Annexes reset the note and example counters}
+% \changes{v2}{1997/12/01}{Replaced \cs{typeout} by \cs{ClassError}}
+% \changes{v2.2}{2000/01/10}{Reimplented annexes to support tex4ht}
+% \changes{v2.4}{2002/07/22}{Changed \cs{init@nnex} for hyperref}
+%    \begin{macrocode}
+\newcommand{\init@nnex}{%
+    \clearpage
+%    \end{macrocode}
+%    Reset the counters and test for illegal annex numbering
+%    \begin{macrocode}
+    \setcounter{table}{0}
+    \setcounter{figure}{0}
+    \setcounter{sclause}{0}
+    \zerocounters
+    \refstepcounter{annex}
+    \ifnum 9=\value{annex} \refstepcounter{annex}\fi
+    \ifnum 15=\value{annex} \refstepcounter{annex}\fi
+%    \end{macrocode}
+%    Reset the numbering scheme, but not just  when first called.
+%    \begin{macrocode}
+%%%    \ifnum 1=\value{annex}
+       \renewcommand{\clause}{%
+         \ClassWarning{iso}{%
+           \protect\clause\space commands are not allowed after starting Annexes}{%
+           Type \space <return> to proceed and I'll ignore your \protect\clause.}}
+       \renewcommand{\thesclause}{\theannex.\arabic{sclause}}
+       \renewcommand{\thetable}{\theannex.\arabic{table}}
+       \renewcommand{\thefigure}{\theannex.\arabic{figure}}
+       \renewcommand{\theHsclause}{\theHannex.\arabic{sclause}}
+       \ifisohyper
+         \renewcommand{\theHtable}{\theHannex.\arabic{table}}
+         \renewcommand{\theHfigure}{\theHannex.\arabic{figure}}
+       \fi
+%%%     \fi
+%    \end{macrocode}
+%    Prevent floats appearing before the title.
+%    \begin{macrocode}
+     \global\@topnum\z@
+     \@afterindentfalse
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\makepreannexhead}
+%    Command to typeset the first part of an annex title. Use as
+% |\makepreannexhead{|\meta{type}|}|.
+%    \begin{macrocode}
+\newcommand{\makepreannexhead}[1]{%
+  \begin{center}
+  {{\Cfont \annexname~\theannex}\\\Large #1}
+  \end{center}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\makeannexhead}
+%     Typeset the title name of an annex. 
+% Use as |\makeannexhead{|\meta{title}|}|.
+%    \begin{macrocode}
+\newcommand{\makeannexhead}[1]{%
+  \centerline{\Cfont #1}
+  \vskip 0.5\baselineskip
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\addannextotoc}
+%     Add an annex title to the ToC. 
+% Use as |\addannextotoc{|\meta{type}|}{|\meta{title}|}|.
+% \changes{v2.4}{2002/07/22}{Fixed minor problem in \cs{addannextotoc}}
+%    \begin{macrocode}
+\newcommand{\addannextotoc}[2]{%
+  \tocskip{\tocentryskip}
+  \addcontentsline{toc}{annex}{\ifnum2>\c@secnumdepth \else
+    \protect\numberline{\annexname~\theannex\space #1}\fi #2}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@infannex}
+% \begin{macro}{\infannex}
+% \begin{macro}{\@normannex}
+% \begin{macro}{\normannex}
+% \begin{macro}{\@repannex}
+% \begin{macro}{\repannex}
+%    Three kinds of annexes are provided. |\infannex| is an informative
+%    annex and |\normannex| is a normative annex. Just to round things
+%    out, |\repannex| is neither of these.
+%
+%    All the titles are centered, together with the kind of annex.
+%
+%    Here are the informative annex commands.
+%    \begin{macrocode}
+\newcommand{\@infannex}[1]{%
+  \makepreannexhead{(\informativename)}
+  \makeannexhead{#1}
+  \addannextotoc{(\informativename)}{#1}
+}
+\newcommand{\infannex}[1]{%
+  \init@nnex
+  \@infannex{#1}
+  \typeout{Informative annex: #1}
+}
+%    \end{macrocode}
+%
+%    Here are the normative annex commands.
+%    \begin{macrocode}
+\newcommand{\@normannex}[1]{%
+  \makepreannexhead{(\normativename)}
+  \makeannexhead{#1}
+  \addannextotoc{(\normativename)}{#1}
+}
+\newcommand{\normannex}[1]{%
+  \init@nnex
+  \@normannex{#1}
+  \typeout{Normative annex: #1}
+}
+%    \end{macrocode}
+%
+%    Here are the other annex commands.
+%    \begin{macrocode}
+\newcommand{\@repannex}[1]{%
+  \makepreannexhead{}
+  \makeannexhead{#1}
+  \addannextotoc{}{#1}
+}
+\newcommand{\repannex}[1]{%
+  \init@nnex
+  \@repannex{#1}
+  \typeout{Annex: #1}
+}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \subsection{Lists}
+%
+% \subsubsection{General List Parameters}
+%
+% The following commands are used to set the default values for the list
+% environment's parameters. See the \LaTeX{} manual for an explanation
+% of the meanings of the parameters.  Defaults for the list
+% environment are set as follows.  First, |\rightmargin|,
+% |\listparindent| and |\itemindent| are set to 0pt.  Then, for a Kth
+% level list, the command |\@listK| is called, where `K' denotes `i',
+% '`i', ... , `vi'.  (I.e., |\@listiii| is called for a third-level
+% list.)  By convention, |\@listK| should set |\leftmargin| to
+% |\leftmarginK|.
+%
+% \changes{v2}{1997/11/30}{list labels are flush with left margin}
+% \changes{v2}{1997/11/30}{list text is indented 3 spaces from the label}
+%
+% \begin{macro}{\leftmargin}
+% \begin{macro}{\leftmargini}
+% \begin{macro}{\leftmarginii}
+% \begin{macro}{\leftmarginiii}
+% \begin{macro}{\leftmarginiv}
+% \begin{macro}{\leftmarginv}
+% \begin{macro}{\leftmarginvi}
+% For efficiency, level-one list's values are defined at top level, and
+% |\@listi| is defined to set only |\leftmargin|.
+%
+%    \begin{macrocode}
+\setlength{\leftmargini}{2em}
+%    \end{macrocode}
+%    The value of |\leftmargin| has to be set at this outer level.
+%    \begin{macrocode}
+\leftmargin \leftmargini
+%    \end{macrocode}
+%    For ISO, all lists are indented the same amount.
+%    \begin{macrocode}
+\setlength{\leftmarginii}{\leftmargini}
+\setlength{\leftmarginiii}{\leftmargini}
+\setlength{\leftmarginiv}{\leftmargini}
+\setlength{\leftmarginv}{\leftmargini}
+\setlength{\leftmarginvi}{\leftmargini}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\itemindent}
+%    Here we set the |\itemindent| which is the extra indentation before
+%    a label.
+%    \begin{macrocode}
+\setlength{\itemindent}{\z@}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\labelsep}
+% \begin{macro}{\labelwidth}
+%    |\labelsep| is the distance between the label and the text of an
+%    item; |\labelwidth| is the width of the label.
+%    \begin{macrocode}
+\setlength{\labelsep}{0.5em}
+\setlength{\labelwidth}{\leftmargini}
+  \addtolength{\labelwidth}{-\labelsep}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\partopsep}
+%    When the user leaves a blank line before the environment an extra
+%    vertical space of |\partopsep| is inserted, in addition to
+%    |\parskip| and |\topsep|.
+%    \begin{macrocode}
+%</iso>
+%<*9pt|10pt|11pt>
+\setlength\partopsep{2\p@ \@plus 1\p@ \@minus 1\p@}
+%</9pt|10pt|11pt>
+%<*iso>
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@beginparpenalty}
+% \begin{macro}{\@endparpenalty}
+%    These penalties are inserted before and after a list or paragraph
+%    environment. They are set to a bonus value to encourage page
+%    breaking at these points.
+% \begin{macro}{\@itempenalty}
+%    This penalty is inserted between list items.
+%    \begin{macrocode}
+\@beginparpenalty -\@lowpenalty
+\@endparpenalty   -\@lowpenalty
+\@itempenalty     -\@lowpenalty
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\@setitemparams}
+%    Lists may be called within other list environments with differing
+% layouts. We use a routine to set the layout for \Lenv{itemize} and
+% \Lenv{enumerate} lists.
+% \changes{v2}{1997/12/02}{Added \cs{@setitemparams} routine}
+%    \begin{macrocode}
+%</iso>
+%<*9pt|10pt|11pt>
+\newcommand{\@setitemparams}{%
+  \setlength{\labelsep}{0.5em}
+  \setlength{\labelwidth}{\leftmargini}
+    \addtolength{\labelwidth}{-\labelsep}
+  \setlength{\itemindent}{\z@}
+  \setlength{\parsep}{\baselineskip}
+  \topsep \z@ \@plus1\p@ \@minus1\p@
+  \itemsep \z@ \@plus1\p@ \@minus1\p@}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@listI}
+% \begin{macro}{\@listi}
+% |\@listI| defines top level and |\@listi| values of
+% |\leftmargin|, |\parsep|, |\topsep|, and |\itemsep|
+%
+%    \begin{macrocode}
+\def\@listi{\leftmargin\leftmargini
+ %%%            \itemindent\labelsep
+ %%            \itemindent\z@
+ %%           \parsep\baselineskip
+ %%           \topsep 0\p@ \@plus1\p@ \@minus1\p@
+ %%           \itemsep0\p@ \@plus1\p@ \@minus1\p@}
+  \@setitemparams}
+\let\@listI\@listi
+%    \end{macrocode}
+%    We have to initialise these parameters.
+%    \begin{macrocode}
+\@listi
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\@listii}
+% \begin{macro}{\@listiii}
+% \begin{macro}{\@listiv}
+% \begin{macro}{\@listv}
+% \begin{macro}{\@listvi}
+%    Here are the same macros for the lower level lists.
+%    \begin{macrocode}
+\def\@listii {\leftmargin\leftmarginii
+ %%%              \itemindent\labelsep}
+ %%             \itemindent\z@
+  \@setitemparams
+             }
+\def\@listiii{\leftmargin\leftmarginiii
+ %%%              \itemindent\labelsep}
+ %%             \itemindent\z@
+  \@setitemparams
+             }
+\def\@listiv {\leftmargin\leftmarginiv
+ %%%              \itemindent\labelsep}
+ %%             \itemindent\z@
+  \@setitemparams
+             }
+\def\@listv  {\leftmargin\leftmarginv
+ %%%              \itemindent\labelsep}
+ %%             \itemindent\z@
+  \@setitemparams
+             }
+\def\@listvi {\leftmargin\leftmarginvi
+ %%%              \itemindent\labelsep}
+ %%             \itemindent\z@
+  \@setitemparams
+             }
+%</9pt|10pt|11pt>
+%<*iso>
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \subsubsection{Enumerate}
+%
+% \changes{v2}{1997/11/30}{Enumeration increased from 3 to 4 levels}
+%
+%    ISO only requires two levels of enumeration labelled `a)' and
+%    `1)'. We include a third level and fourth labelled `i)' and `A)', 
+%    just in case.
+%    ISO has printed ISO 10303:1994 which includes all three levels
+%    defined here.
+%    The enumerate environment uses four counters: \Lcount{enumi},
+%    \Lcount{enumii}, \Lcount{enumiii} and \Lcount{enumiv}, where
+%    \Lcount{enumN} controls the numbering of the Nth level
+%    enumeration.
+%
+% \begin{macro}{\theenumi}
+% \begin{macro}{\theenumii}
+% \begin{macro}{\theenumiii}
+% \begin{macro}{\theenumiv}
+%    The counters are already defined in \file{latex.dtx}, but their
+%    representation is changed here.
+% \changes{v2.3}{2001/07/06}{4th level enumerate now uses Roman, not Alph}
+%    \begin{macrocode}
+\renewcommand{\theenumi}{\alph{enumi}}
+\renewcommand{\theenumii}{\arabic{enumii}}
+\renewcommand{\theenumiii}{\roman{enumiii}}
+\renewcommand{\theenumiv}{\Roman{enumiv}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\labelenumi}
+% \begin{macro}{\labelenumii}
+% \begin{macro}{\labelenumiii}
+% \begin{macro}{\labelenumiv}
+%    The label for each item is generated by the commands\\
+%    |\labelenumi| \ldots\ |\labelenumiv|.
+%    \begin{macrocode}
+\newcommand{\labelenumi}{\theenumi)}
+\newcommand{\labelenumii}{\theenumii)}
+\newcommand{\labelenumiii}{\theenumiii)}
+\newcommand{\labelenumiv}{\theenumiv)}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\p@enumii}
+% \begin{macro}{\p@enumiii}
+% \begin{macro}{\p@enumiv}
+%    The expansion of |\p@enumN||\theenumN| defines the output of a
+%    |\ref| command when referencing an item of the Nth level of an
+%    enumerated list.
+%    \begin{macrocode}
+\renewcommand{\p@enumii}{\theenumi}
+\renewcommand{\p@enumiii}{\p@enumii\theenumii}
+\renewcommand{\p@enumiv}{\p@enumiii\theenumiii}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{environment}{enumerate}
+%    We modify the default |enumerate| environment to make labels
+%    flush left in the label box.
+%    \begin{macrocode}
+\def\enumerate{%
+  \ifnum \@enumdepth >\thr@@\@toodeep\else
+    \advance\@enumdepth\@ne
+    \edef\@enumctr{enum\romannumeral\the\@enumdepth}%
+
+      \expandafter
+      \list
+        \csname label\@enumctr\endcsname
+        {\usecounter\@enumctr\def\makelabel##1{##1\hfill}}%
+  \fi}
+\let\endenumerate =\endlist
+%    \end{macrocode}
+% \end{environment}
+%
+% \subsubsection{Itemize}
+%
+% \changes{v2}{1997/11/30}{Itemize increased from 3 to 4 levels}
+%
+%    ISO only requires one level labelled with either a long dash
+%    or a bullet. We provide
+%    four levels, three of which have been used in ISO 10303:1994.
+%
+% \begin{macro}{\labelitemi}
+% \begin{macro}{\labelitemii}
+% \begin{macro}{\labelitemiii}
+% \begin{macro}{\labelitemiii}
+%    Itemization is controlled by the commands: |\labelitemi|,
+%    |\labelitemii|, etc., which define
+%    the labels of the various itemization levels: the symbols used are
+%    bold em-dash, bullet, asterisk, and centered period.
+%
+% \changes{v2}{1997/11/30}{Itemize dash changed from en- to em-dash}
+% \changes{v2}{1997/11/30}{1st and 2nd level itemize symbols swapped}
+% \changes{v2.1}{1999/02/15}{1st and 2nd level itemize symbols swapped}
+% \changes{v2.3}{2001/07/06}{All itemize labels are em dashes}
+%    \begin{macrocode}
+\newcommand{\labelitemi}{{\normalfont\bfseries \textemdash}\hfill}
+%%\newcommand{\labelitemii}{\textbullet\hfill}
+%%\newcommand{\labelitemiii}{\textasteriskcentered}
+%%\newcommand{\labelitemiv}{\textperiodcentered}
+\newcommand{\labelitemii}{\labelitemi}
+\newcommand{\labelitemiii}{\labelitemi}
+\newcommand{\labelitemiv}{\labelitemi}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{environment}{itemize}
+%    We modify the default |itemize| environment to make the labels
+%    flush left in the label box.
+%    \begin{macrocode}
+\def\itemize{%
+  \ifnum \@itemdepth >\thr@@\@toodeep\else
+    \advance\@itemdepth\@ne
+    \edef\@itemitem{labelitem\romannumeral\the\@itemdepth}%
+
+    \expandafter
+    \list
+      \csname\@itemitem\endcsname
+       {\def\makelabel##1{##1\hfill}}%
+  \fi}
+\let\enditemize =\endlist
+%    \end{macrocode}
+% \end{environment}
+%
+% \subsubsection{Description}
+%
+% \begin{environment}{description}
+%    The description environment is defined here -- while the default itemize
+%    and enumerate environments are defined in \file{latex.dtx}.
+%
+%    \begin{macrocode}
+\newenvironment{description}%
+               {\list{}{\labelwidth\z@ \itemindent 0.5em \labelsep 0.5em
+                        \let\makelabel\descriptionlabel}}%
+               {\endlist}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{macro}{\descriptionlabel}
+%    To change the formatting of the label, you must redefine
+%    |\descriptionlabel|. Note that the label includes a colon.
+%
+%    \begin{macrocode}
+\newcommand*{\descriptionlabel}[1]{\normalfont\bfseries #1:\hfill}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Defining new environments}
+%
+%
+% \subsubsection{Quotation}
+%
+%    This is not required by ISO, but we leave it in anyway.
+% \begin{environment}{quotation}
+%   The quotation environment is defined by making clever use of
+%   the list environment's parameters. The lines in the environment
+%   are set smaller than |\textwidth|. The first line of a paragraph
+%   inside this environment is indented.
+%
+%    \begin{macrocode}
+\newenvironment{quotation}%
+               {\list{}{\listparindent 1.5em%
+                        \itemindent    \listparindent
+                        \rightmargin   \leftmargin
+                        \parsep        \z@ \@plus\p@}%
+                \item[]}%
+               {\endlist}
+%    \end{macrocode}
+% \end{environment}
+%
+% \subsubsection{Quote}
+%
+%    This is also not an ISO requirement, but leave it in anyway.
+%
+% \begin{environment}{quote}
+%   The quote environment is like the quotation environment except
+%   that paragraphs are not indented.
+%
+%    \begin{macrocode}
+\newenvironment{quote}%
+               {\list{}{\rightmargin\leftmargin}%
+                \item[]}%
+               {\endlist}
+%    \end{macrocode}
+% \end{environment}
+%
+% \subsubsection{Theorem}
+%
+%    This document class does not define it's own theorem environments,
+%    the defaults, supplied by \file{latex.dtx} are available.
+%
+% \subsubsection{Notes}
+%
+%    ISO requires that information which is essential to the
+%    understanding of a standard but which is not a requirement
+%    is to be given in the form of a note. In the Directives edition 2,
+%    there were three
+%    styles of note:
+%    \begin{enumerate}
+%    \item isolated notes which are marked NOTE - 1, NOTE - 2, etc.
+%    \item a local grouping of notes marked \\
+%          NOTES \\
+%          1 - \ldots \\
+%          2 - \ldots
+%    \item an isolated note that is not numbered because it is
+%          the only one in that (sub-) clause of the document.
+%    \end{enumerate}
+%
+%    The 3rd edition removed the local grouping.
+%
+% \begin{macro}{\ifinfloat}
+%    Special consideration has to be given when notes appear within a float.
+% \changes{v2}{1997/12/02}{Deleted \cs{ifintable} as \cs{ifinfloat} does the job}
+%    \begin{macrocode}
+\newif\ifinfloat\infloatfalse
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\c@note}
+% \begin{macro}{\c@floatnote}
+% \begin{macro}{\thenote}
+% \begin{macro}{\thefloatnote}
+%    Define note counters, where the counter \Lcount{note} for body
+%    notes gets reset within each new clause and notes
+%    within floats have their own numbering scheme 
+%    via \Lcount{floatnote}.
+%    \begin{macrocode}
+\newcounter{note}[clause]
+\renewcommand{\thenote}{\arabic{note}}
+\newcounter{floatnote}
+\renewcommand{\thefloatnote}{\arabic{floatnote}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+%
+% \begin{macro}{\theHnote}
+% \begin{macro}{\theHfloatnote}
+% We also need \Lpack{hyperref} representations.
+% \changes{v2.4}{2002/07/22}{Added \cs{theHnote} and \cs{theHfloatnote}}
+%    \begin{macrocode}
+\newcommand{\theHnote}{\thenote.\arabic{yextra}}
+\newcommand{\theHfloatnote}{\thefloatnote.\arabic{yextra}}
+
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%    
+%
+% \begin{macro}{\notelabel}
+%    Labeling of notes (and examples).
+%    \begin{macrocode}
+\newcommand{\notelabel}[1]{{#1\hfill}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{environment}{notes}
+%    This environment produced a fixed heading followed by a
+%    numbered list. The environment is defined in terms of a general list.
+%
+%    Use as:
+%    \begin{verbatim}
+%    \begin{notes}
+%    \begin{note}Text of first note ... \end{note}
+%    \begin{note}Text of second note ... \end{note}
+%    \end{notes}
+%    \end{verbatim}
+%
+%    With the 3rd edition of the ISO Directives, this has been made a no-op
+%    and is only retained for compatability. The original code was:
+% \begin{verbatim}
+% \newif\ifinnotes\innotesfalse
+% \newenvironment{notes}{\list{}%
+%    {\ifinfloat \leftmargin 0em \else \leftmargin 2em\fi
+%     \itemindent 0.5em \labelwidth 0em
+%     \labelsep 0.5em \listparindent 0em
+%     \let\makelabel\notelabel}
+%    \innotestrue
+%    \Nfont\item[\notesname]\mbox{}\nopagebreak[2]}%
+%    {\innotesfalse\endlist}
+% \end{verbatim}
+%
+% \changes{v2}{1997/11/30}{notes environment made a no-op}
+% \changes{v2.3}{2001/07/06}{Deleted notes environment}
+% \end{environment}
+%
+% \begin{macro}{\@setnoteparams}
+%    Because notes, and examples, have the same basic layout we use a
+% routine to set the various parameters.
+% \changes{v2}{1997/12/02}{Added \cs{@setnoteparams}}
+% \changes{v2.3}{2001/07/06}{Notes not indented}
+%    \begin{macrocode}
+\newcommand{\@setnoteparams}{%
+  \setlength{\partopsep}{\z@}
+  \setlength{\topsep}{\z@}
+  \setlength{\labelsep}{1em}
+  \setlength{\itemindent}{\labelsep}
+  \setlength{\labelwidth}{\z@}
+  \setlength{\listparindent}{\z@}
+  \setlength{\leftmargin}{\z@}     % added in v2.3
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{environment}{anote}
+%    An isolated un-numbered note.
+% \changes{v2}{1997/11/30}{dash removed from NOTE label}
+% \changes{v2}{1997/12/02}{Adjusted anote margins when in a float}
+%    \begin{macrocode}
+\newenvironment{anote}{\list{}{%
+%%  \ifinfloat \setlength{\leftmargin}{\z@} \else 
+%%             \setlength{\leftmargin}{2em} \fi
+  \@setnoteparams}
+  \Nfont\item[\notename]}%
+{\endlist}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{environment}{note}
+%    A numbered note.
+% \changes{v2.4}{2002/07/22}{Changed note environment for hyperref}
+%    \begin{macrocode}
+\newenvironment{note}{\list{}{%
+%    \end{macrocode}
+%    Use the appropriate counter: normally \Lcount{note} but
+%    \Lcount{floatnote} when in a floating environment.
+%    \begin{macrocode}
+  \stepcounter{yextra}
+  \ifinfloat
+    \refstepcounter{floatnote}
+    \let\thenote\thefloatnote
+  \else
+    \refstepcounter{note}
+  \fi
+%    \end{macrocode}
+%    Originally we adjusted the margins according to whether we were
+% in a notes environment or not.
+% \changes{v2}{1997/11/30}{Deleted the dash after NOTE number}
+% \changes{v2}{1997/12/01}{Deleted \cs{ifinnotes} test from note environment}
+% \changes{v2}{1997/12/02}{Added \cs{ifinfloat} test}
+%    \begin{macrocode}
+%%  \ifinfloat \setlength{\leftmargin}{\z@} \else 
+%%             \setlength{\leftmargin}{2em} \fi
+  \@setnoteparams}
+  \Nfont\item[\notename~\thenote]}%
+  {\endlist}
+%    \end{macrocode}
+% \end{environment}
+%
+% \subsubsection{Examples}
+%
+%    ISO Directives part 3 (2nd edition) had no rules on how to display 
+%    an example, but it did use examples itself; these examples were 
+%    displayed in a format similar to notes.
+%
+%    We provided two styles of example:
+%    \begin{enumerate}
+%    \item isolated examples which are marked EXAMPLE - 1, EXAMPLE - 2, etc.
+%    \item a local grouping of examples marked \\
+%          EXAMPLES \\
+%          1 - \ldots \\
+%          2 - \ldots
+%    \end{enumerate}
+%
+%    The 3rd edition of the Directives does specify some options for
+%    typesetting examples. A single example in a (sub) clause is
+%    preceeded by the word `EXAMPLE'. If there are several examples,
+%    then each is numbered (e.g., `EXAMPLE 3'). It also states that
+%    all lines of an example shall be inset from the margin or set
+%    in a smaller font, so that its extent can be determined.
+%
+%    For now, we choose both options.
+%
+%    Implementation is very similar to that for notes.
+%
+% \begin{macro}{\c@example}
+% \begin{macro}{\theexample}
+% \begin{macro}{\theHexample}
+%    Define example counter. Example numbering is only continuous
+%    within a (sub) clause (we used to have it continuous throughout
+%    the document).
+% \changes{v2}{1997/11/30}{Reset example counter at each clause}
+% \changes{v2.4}{2002/07/22}{Added \cs{theHexample}}
+%    \begin{macrocode}
+\newcounter{example}[clause]
+\renewcommand{\theexample}{\arabic{example}}
+\newcommand{\theHexample}{theexample.\arabic{yextra}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+%
+% \begin{environment}{examples}
+%    Originally, this environment produces a fixed heading followed by a
+%    numbered list. The environment is defined in terms of a general list.
+%
+%    Use as:
+%    \begin{verbatim}
+%    \begin{examples}
+%    \begin{example}Text of first ...\end{example}
+%    \begin{example}Text of second ... \end{example}
+%    \end{examples}
+%    \end{verbatim}
+%
+% \changes{v2}{1997/11/30}{examples environment made into a no-op}
+%    With the 3rd edition of the ISO Directives the environment has been
+%    made a no-op, but is retained for compatibility.
+%    The code used to be:
+% \begin{verbatim}
+% \newif\ifinexamples\inexamplesfalse
+% \newenvironment{examples}{\list{}%
+%    {\leftmargin 2em
+%     \itemindent 0.5em \labelwidth 0em
+%     \labelsep 0.5em \listparindent 0em
+%     \let\makelabel\notelabel}
+%    \inexamplestrue
+%    \Nfont\item[\examplesname]\mbox{}\nopagebreak[2]}%
+%    {\inexamplesfalse\endlist}
+% \end{verbatim}
+% \changes{v2.3}{2001/07/06}{Deleted examples environment}
+% \end{environment}
+%
+% \begin{environment}{anexample}
+%    An isolated un-numbered example.
+% \changes{v2}{1997/11/30}{Added anexample environment}
+%    \begin{macrocode}
+\newenvironment{anexample}{\list{}{%
+%%  \ifinfloat \setlength{\leftmargin}{\z@} \else 
+%%             \setlength{\leftmargin}{2em} \fi
+  \@setnoteparams}
+  \Nfont\item[\examplename]}{\endlist}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{environment}{example}
+%    Like the |note| environment.
+% \changes{v2}{1997/11/30}{Deleted dash after examples number}
+% \changes{v2}{1997/12/01}{Removed \cs{ifinexamples} test in example environment}
+% \changes{v2}{1997/12/02}{Added \cs{ifinfloat} test}
+% \changes{v2.4}{2002/07/22}{Changed example environment for hyperref}
+%    \begin{macrocode}
+\newenvironment{example}{\list{}{%
+  \stepcounter{yextra}
+  \refstepcounter{example}
+%%  \ifinfloat \setlength{\leftmargin}{\z@} \else 
+%%             \setlength{\leftmargin}{2em} \fi
+  \@setnoteparams}
+  \Nfont\item[\examplename~\theexample]}%
+  {\endlist}
+%    \end{macrocode}
+% \end{environment}
+%
+% \subsubsection{Listing of references}
+%
+%    ISO has three kinds of literature references, broken into two
+%    categories. The categories are normative and informative
+%    references. Within the normative category, references are
+%    to either published or `unpublished' standards (IS or DIS
+%    in ISO terminology).
+%
+% \begin{environment}{nreferences}
+%
+%    The |nreferences| environment is for listing normative
+%    references. It is implemented as a list.
+%
+% \begin{macro}{\nreferencelabel}
+%    Labelling of normative references.
+%    \begin{macrocode}
+\newcommand{\nreferencelabel}[1]{#1,\hfill}
+%    \end{macrocode}
+% \end{macro}
+%    Define the environment. It is used as:
+%    \begin{verbatim}
+%    \begin{nreferences}
+%    \isref{id}{published standard title}
+%    \disref{id}{unpublished standard title}
+%    ....
+%    \end{nreferences}
+%    \end{verbatim}
+%    \begin{macrocode}
+\newenvironment{nreferences}{\list{}%
+    {\leftmargin 0pt \itemindent 0.5em
+     \labelwidth\z@ \labelsep 0.5em
+     \let\makelabel\nreferencelabel}}%
+    {\endlist}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{macro}{\isref}
+%    This is a two parameter command for printing a normative reference to
+%    a published standard.
+%    \begin{macrocode}
+\newcommand{\isref}[2]{\item[#1]{\itshape #2}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\disref}
+%    This is a two parameter command for printing a normative reference to
+%    an unpublished standard. ISO requires that each unpublished standard
+%    should be footnoted as `unpublished'. Awkwardly, only one footnote
+%    is permitted. This means we have to fiddle with the footnote counter.
+% \changes{v2.2}{2000/01/10}{Simplified definition of \cs{disref}}
+% \begin{macro}{\ifd@is}
+%    A flag to denote if there have been any previous disrefs.
+%    \begin{macrocode}
+\newif\ifd@is\d@isfalse
+%    \end{macrocode}
+% \end{macro}
+%    Now define the |\disref| command.
+%    \begin{macrocode}
+\newcommand{\disref}[2]{\begingroup
+    \ifd@is
+%    \end{macrocode}
+%    This is not the first call to |\disref|, so just footnotemark the entry
+%    \begin{macrocode}
+         {\item[#1\protect\@footnotemark]{\itshape #2}}
+    \else
+%    \end{macrocode}
+%    This is the first call, so we have to make the footnote
+%    \begin{macrocode}
+         \addtocounter{footnote}{1}
+         \xdef\@thefnmark{\thefootnote}
+         \item[#1\protect\@footnotemark]{\itshape #2}%
+         \footnotetext[\value{footnote}]{\tbpname}
+         \d@istrue
+    \fi
+    \endgroup\d@istrue}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{environment}{references}
+%
+%    The |references| environment is for listing informative
+%    references. It is implemented as a list.
+%
+% \begin{macro}{\c@infrefctr}
+% \begin{macro}{\p@infrefctr}
+% \begin{macro}{\theinfrefctr}
+% \begin{macro}{\labelinfref}
+%    Informative references are labelled with a number enclosed in
+%    square brackets.
+%
+%    In the body of the text, a reference to an informatively
+%    listed document |n| has to be printed as |[n]|. Use the
+%    standard \LaTeX\ |\label| command and the|\bref| command for this.
+%    \begin{macrocode}
+\newcounter{infrefctr}
+\renewcommand{\p@infrefctr}{}
+\renewcommand{\theinfrefctr}{\arabic{infrefctr}}
+\newcommand{\labelinfref}{[\arabic{infrefctr}]}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%    Define the environment. It is used as:
+%    \begin{verbatim}
+%    \begin{references}
+%    \reference{authors}{title}{publisher and date}
+%    ....
+%    \end{references}
+%    \end{verbatim}
+%    \begin{macrocode}
+\newenvironment{references}{\list{\labelinfref}{\usecounter{infrefctr}
+     \leftmargin 0pt \itemindent 0.5em
+     \labelwidth\z@ \labelsep 0.5em}}%
+    {\endlist}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{macro}{\reference}
+%    This is a three parameter command for printing an informatively
+%    listed reference document. \\
+%    |\reference{|\meta{authors}|}{|\meta{title}|}{|\meta{publisher and date}|}|
+%    \begin{macrocode}
+\newcommand{\reference}[3]{\item {#1} {{\itshape #2}} {#3}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{Listing of definitions}
+%
+%    One element of an ISO standard is the listing of definitions
+%    of terms.
+%
+% \begin{environment}{olddefinitions}
+%    The |olddefinitions| environment is for listing terms which
+%    have been defined in some other standard. It is defined
+%    in terms of the |itemize| environment.
+%    \begin{macrocode}
+\newenvironment{olddefinitions}%
+    {\begin{itemize}}%
+    {\end{itemize}}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{macro}{\olddefinition}
+%    Within an |olddefinitions| environment each term is specified by
+%    the \\
+%    |\olddefinition{|\meta{phrase}|}{|\meta{supplement}|}|
+%    command. 
+%    \begin{macrocode}
+\newcommand{\olddefinition}[2]{\item #1 #2}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{environment}{definitions}
+%    Terms being defined within the current document are listed within
+%    the |definitions| environment. ISO requires that each definition
+%    be sequentially numbered within the clause in which it is defined.
+%    This numbering is as though the definition formed a sub-clause.
+% \changes{v11}{1997/09/30}{Reimplemented definitions as clauses}
+% \changes{v2}{1997/11/30}{Reimplemented definitions}
+% \begin{macro}{\c@cl@level}
+%    A counter for determing the current sectioning level.
+%    \begin{macrocode}
+\newcounter{cl@level}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\@defcl}
+%    We use this internally for the |\definition| command. A default
+%    definition is suplied here as we are going to renew it, possibly
+%    several times.
+%    \begin{macrocode}
+\newcommand{\@defcl}[1]{}
+%    \end{macrocode}
+% \end{macro}
+%    Now we define the |definitions| environment.
+%    \begin{macrocode}
+\newenvironment{definitions}{%
+%    \end{macrocode}
+%    First, set the \Lcount{cl@level} according to the sectioning
+%    level within which the environment is called.
+%    \begin{macrocode}
+  \setcounter{cl@level}{6}
+  \ifnum\value{sssssclause}=0 \setcounter{cl@level}{5} \fi
+  \ifnum\value{ssssclause}=0 \setcounter{cl@level}{4} \fi
+  \ifnum\value{sssclause}=0 \setcounter{cl@level}{3} \fi
+  \ifnum\value{ssclause}=0 \setcounter{cl@level}{2} \fi
+  \ifnum\value{sclause}=0 \setcounter{cl@level}{1} \fi
+  \ifnum\value{clause}=0 \setcounter{cl@level}{0} \fi
+%    \end{macrocode}
+%    Now redefine an appropriate (s)clause definition to get a number
+%    on one line, followed by the heading on the next line 
+%    with a bold normal font. A new paragraph is not started after
+%    the heading, and there is no entry in the ToC.
+%    As this is done within the
+%    group automatically set up be the environment, any original definitions
+%    will get restored afterwards.
+%    \begin{macrocode}
+  \ifcase\value{cl@level} % 0, NOT YET IN A CLAUSE
+    \ClassWarning{iso}{Definitions started before the initial clause}
+    \renewcommand{\@defcl}[1]{\setcounter{note}{0}\setcounter{example}{0}
+      \par
+      \addvspace{\beforecskip}
+      \@afterindentfalse
+      \refstepcounter{clause}
+      {\raggedright\bfseries \theclause\\ ##1\\}}
+%    \end{macrocode}
+%    Do similar things for the other cases.
+%    \begin{macrocode}
+  \or % 1, called in a clause
+    \renewcommand{\@defcl}[1]{\setcounter{note}{0}\setcounter{example}{0}
+      \par
+      \addvspace{\beforescskip}
+      \@afterindentfalse
+      \refstepcounter{sclause}
+      {\raggedright\bfseries \thesclause\\ ##1\\}}
+  \or % 2, called in an sclause
+    \renewcommand{\@defcl}[1]{\setcounter{note}{0}\setcounter{example}{0}
+      \par
+      \addvspace{\beforesscskip}
+      \@afterindentfalse
+      \refstepcounter{ssclause}
+      {\raggedright\bfseries \thessclause\\ ##1\\}}
+  \or % 3, called in an ssclause
+    \renewcommand{\@defcl}[1]{\setcounter{note}{0}\setcounter{example}{0}
+      \par
+      \addvspace{\beforesscskip}
+      \@afterindentfalse
+      \refstepcounter{sssclause}
+      {\raggedright\bfseries \thesssclause\\ ##1\\}}
+  \or % 4, called in an sssclause
+    \renewcommand{\@defcl}[1]{\setcounter{note}{0}\setcounter{example}{0}
+      \par
+      \addvspace{\beforesscskip}
+      \@afterindentfalse
+      \refstepcounter{ssssclause}
+      {\raggedright\bfseries \thessssclause\\ ##1\\}}
+  \or % 5, called in an ssssclause
+    \renewcommand{\@defcl}[1]{\setcounter{note}{0}\setcounter{example}{0}
+      \par
+      \addvspace{\beforesscskip}
+      \@afterindentfalse
+      \refstepcounter{sssssclause}
+      {\raggedright\bfseries \thesssssclause\\ ##1\\}}
+  \else % 5+, called in an sssssclause or lower
+    \ClassWarning{iso}{Definitions too deeply nested}
+    \renewcommand{\@defcl}[1]{
+      \par
+      \addvspace{\beforesscskip}
+      \@afterindentfalse
+      \refstepcounter{sssssclause}
+      {\raggedright\bfseries \thesssssclause\\ ##1\\}}
+  \fi}%
+  {}
+%    \end{macrocode}
+% \end{environment}
+% 
+% \begin{macro}{\definition}
+%    Within a |definitions| environment the command 
+%    |\definition{|\meta{phrase}|}{|\meta{definition text}|}|
+%    is used to specify and define each term. It uses the sectional heading
+%    definition stored in |\@defcl| set up by the environment.
+%    \begin{macrocode}
+\newcommand{\definition}[2]{\@defcl{#1} #2}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{Listing of symbols and abbreviations}
+%
+%    Another possible element in a standard is the listing of symbols
+%    and abbreviations. This is similar to the original |definitions|
+%    listing, except that terms are not treated as clauses.
+%
+% \begin{environment}{symbols}
+% \begin{macro}{\symbollabel}
+%    \begin{macrocode}
+\newcommand{\symbollabel}[1]{{#1 \hfill}}
+%    \end{macrocode}
+% \end{macro}
+%    \begin{macrocode}
+\newenvironment{symbols}{\list{}%
+    {\itemindent 0em \leftmargin 8em
+     \labelsep 1em \labelwidth 5em
+     \let\makelabel\symbollabel}}%
+    {\endlist}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{macro}{\symboldef}
+%    Within a |symbols| environment the command 
+%    |\symboldef{|\meta{symbol}|}{|\meta{meaning}|}|
+%    is used to specify and explain each symbol or abbreviation.
+%    \begin{macrocode}
+\newcommand{\symboldef}[2]{\item[#1] #2}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{Listing of scope items}
+%
+%    Another possible element in a standard is the listing of
+%    items that are within the scope; conversely, listing
+%    of items that are out of scope may also be useful.
+%
+% \begin{environment}{inscope}
+% \begin{environment}{outofscope}
+%    We define synonyms for the |itemize| list environment, and
+%    initiate the lists with some boilerplate. Use as, for example:
+%    \begin{verbatim}
+%    \begin{inscope}{international standard}
+%      \item ...
+%      \item ...
+%    \end{inscope}
+%    \end{verbatim}
+%    \begin{macrocode}
+\newenvironment{inscope}[1]{%
+  \inscopename #1:
+  \begin{itemize}}%
+  {\end{itemize}}
+\newenvironment{outofscope}[1]{%
+  \outofscopename #1:
+  \begin{itemize}}%
+  {\end{itemize}}
+%    \end{macrocode}
+% \end{environment}
+% \end{environment}
+%
+%
+% \subsection{Setting parameters for existing environments}
+%
+% \subsubsection{Array and tabular}
+%
+% \begin{macro}{\arraycolsep}
+%    The columns in an array environment are separated by
+%    2|\arraycolsep|.
+%    \begin{macrocode}
+\setlength\arraycolsep{4\p@}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\tabcolsep}
+%    The columns in an tabular environment are separated by
+%    2|\tabcolsep|.
+%    \begin{macrocode}
+\setlength\tabcolsep{4\p@}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\arrayrulewidth}
+%    The width of rules in the array and tabular environments is given
+%    by\\ |\arrayrulewidth|.
+%    \begin{macrocode}
+\setlength\arrayrulewidth{.4\p@}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\doublerulesep}
+%    The space between adjacent rules in the array and tabular
+%    environments is given by |\doublerulesep|.
+%    \begin{macrocode}
+\setlength\doublerulesep{2\p@}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{Tabbing}
+%
+% \begin{macro}{\tabbingsep}
+%    This controls the space that the |\'| command puts in. (See
+%    \LaTeX{} manual for an explanation.)
+%    \begin{macrocode}
+\setlength\tabbingsep{\labelsep}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{Minipage}
+%
+% \begin{macro}{\@minipagerestore}
+%    The macro |\@minipagerestore| is called upon entry to a minipage
+%    environment to set up things that are to be handled differently
+%    inside a minipage environment. In the current styles, it does
+%    nothing.
+% \end{macro}
+%
+% \begin{macro}{\@mpfootins}
+%    Minipages have their own footnotes; |\skip||\@mpfootins| plays
+%    same r\^ole for footnotes in a minipage as |\skip||\footins| does
+%    for ordinary footnotes.
+%
+%    \begin{macrocode}
+\skip\@mpfootins = \skip\footins
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{Framed boxes}
+%
+% \begin{macro}{\fboxsep}
+%    The space left by |\fbox| and |\framebox| between the box and the
+%    text in it.
+% \begin{macro}{\fboxrule}
+%    The width of the rules in the box made by |\fbox| and |\framebox|.
+%    \begin{macrocode}
+\setlength\fboxsep{3\p@}
+\setlength\fboxrule{.4\p@}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \subsubsection{Equation and eqnarray}
+%
+%    |equation| and |eqnarray| counters are not required by ISO, and
+%    the equations are to be left-justified. The default is for the
+%    left-hand side of equations to be flushleft.
+
+% \begin{macro}{\theequation}
+%    The equation counter will be reset at beginning of a new chapter
+%    and the equation number will be prefixed by the chapter number.
+%
+%    This code  must follow the |\chapter| definition, or more exactly
+%    the definition of the chapter counter.
+%    \begin{macrocode}
+\renewcommand{\theequation}{\arabic{equation}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\jot}
+%    |\jot| is the extra space added between lines of an eqnarray
+%    environment. The default value is used.
+%    \begin{macrocode}
+% \setlength\jot{3pt}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@eqnnum}
+%    The macro |\@eqnnum| defines how equation numbers are to appear in
+%    equations. Again the default is used.
+%
+%    \begin{macrocode}
+% \def\@eqnnum{(\theequation)}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Floating objects}
+%
+%    The file \file{latex.dtx} only defines a number of tools with
+%    which floating objects can be defined. This is done in the
+%    document class. It needs to define the following macros for each
+%    floating object of type \texttt{TYPE} (e.g., \texttt{TYPE} =
+%    figure).
+%
+%    \begin{description}
+%    \item[\texttt{\bslash fps@TYPE}]
+%        The default placement specifier for floats of type
+%        \texttt{TYPE}.
+%
+%    \item[\texttt{\bslash ftype@TYPE}]
+%        The type number for floats of type \texttt{TYPE}.  Each
+%        \texttt{TYPE} has associated a unique positive \texttt
+%        {TYPE} number, which is a power of two.  E.g., figures might
+%        have type number 1, tables type number 2, programs type
+%        number 4, etc.
+%
+%    \item[\texttt{\bslash ext@TYPE}]
+%        The file extension indicating the file on which the contents
+%        list for float type \texttt{TYPE} is stored.  For example,
+%        |\ext@figure| = `lof'.
+%
+%    \item[\texttt{\bslash fnum@TYPE}]
+%        A macro to generate the figure number for a caption. For
+%        example, |\fnum@TYPE| == `Figure |\thefigure|'.
+%
+%    \item[\texttt{\bslash @makecaption}{\meta{num}}{\meta{text}}]
+%        A macro to make a caption, with \meta{num} the value produced
+%        by |\fnum@...| and \meta{text} the text of the caption. It
+%        can assume it's in a |\parbox| of the appropriate width.
+%        This will be used for \emph{all} floating objects.
+%
+%    \end{description}
+%
+%    The actual environment that implements a floating object such as
+%    a figure is defined using the macros |\@float| and |\end@float|,
+%    which are defined in \file{latex.dtx}.
+%
+%    An environment that implements a single column floating object is
+%    started with |\@float{|\texttt{TYPE}|}[|\meta{placement}|]| of type
+%    \texttt{TYPE} with \meta{placement} as the placement specifier.
+%    The default value of \meta{PLACEMENT} is defined by |\fps@TYPE|.
+%
+%    The environment is ended by |\end@float|.  E.g., |\figure| ==
+%    |\@float|{figure}, |\endfigure| == |\end@float|.
+%
+% \subsubsection{Figure}
+%
+%    Here is the implementation of the figure environment.
+%
+% \begin{macro}{\c@figure}
+%    First we have to allocate a counter to number the figures. In this
+%    class figures are numbered sequentially.
+%    \begin{macrocode}
+\newcounter{figure}
+\renewcommand{\thefigure}{\@arabic\c@figure}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\fps@figure}
+% \begin{macro}{\ftype@figure}
+% \begin{macro}{\ext@figure}
+% \begin{macro}{\fnum@figure}
+%    Here are the parameters for the floating objects of type `figure'.
+%    \begin{macrocode}
+\def\fps@figure{tbp}
+\def\ftype@figure{1}
+\def\ext@figure{lof}
+\def\fnum@figure{\figurename~\thefigure}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\iffigs}
+%    We define a flag to tell whether the document contains any figures.
+%    Elsewhere a flag, |\ifinfloat|, is defined to tell if we are in a float.
+%    \begin{macrocode}
+\newif\iffigs\figsfalse
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@initisofig}
+%    At the start of a |figure| environment we have to set a flag and do 
+% some work to deal with the ISO requirements
+% for the ToC, and also zero the floatnote counter.
+% \changes{v2.2}{2000/01/10}{Added \cs{@initisofig} command}
+%    \begin{macrocode}
+\newcommand{\@initisofig}{%
+  \iffigs\else\figstrue
+    \if@filesw \immediate\write\@mainaux{%
+      \string\gdef\string\setfigs{%
+         \string\floatlist{\listfigurename}{lof}}}
+    \fi
+  \fi
+%    \end{macrocode}
+%    Now deal with the possibility that the float may contain notes.
+%    \begin{macrocode}
+  \infloattrue\setcounter{floatnote}{0}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{environment}{figure}
+% \begin{environment}{figure*}
+%    This is the definition of the actual environment. The form with the
+%    |*| is used for double column figures. 
+%    \begin{macrocode}
+\newenvironment{figure}{%
+  \@initisofig
+  \@float{figure}}%
+%    \end{macrocode}
+%    At the end of the environment we are no longer in a float.
+%    \begin{macrocode}
+  {\end@float\infloatfalse}
+%    \end{macrocode}
+%    The starred version is similar.
+%    \begin{macrocode}
+\newenvironment{figure*}{%
+  \@initisofig
+  \@dblfloat{figure}}%
+ {\end@dblfloat\infloatfalse}
+%    \end{macrocode}
+% \end{environment}
+% \end{environment}
+%
+% \subsubsection{Table}
+%
+%    Here is the implementation of the table environment. It is very
+%    much the same as the figure environment, the additional complication
+%    being that we have to flag that we are in a table, as well as 
+%    being in a float.
+%
+% \begin{macro}{\c@table}
+%    First we have to allocate a counter to number the tables. In this
+%    class tables are numbered sequentially.
+%    \begin{macrocode}
+\newcounter{table}
+\renewcommand{\thetable}{\@arabic\c@table}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\fps@table}
+% \begin{macro}{\ftype@table}
+% \begin{macro}{\ext@table}
+% \begin{macro}{\fnum@table}
+%    Here are the parameters for the floating objects of type `table'.
+%    \begin{macrocode}
+\def\fps@table{tbp}
+\def\ftype@table{2}
+\def\ext@table{lot}
+\def\fnum@table{\tablename~\thetable}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\iftabs}
+%    We define a flag to tell whether the document contains any tables.
+%    Elsewhere a flag, |\ifinfloat|, is defined to tell if we are in a float.
+%    \begin{macrocode}
+\newif\iftabs\tabsfalse
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@initisotab}
+%    Initial code at the start of a |table| environment.
+% \changes{v2.2}{2000/01/10}{Added \cs{@initisotab} command}
+%    \begin{macrocode}
+\newcommand{\@initisotab}{%
+  \iftabs\else\tabstrue
+    \if@filesw \immediate\write\@mainaux{%
+      \string\gdef\string\settabs{%
+        \string\floatlist{\listtablename}{lot}}}
+    \fi
+  \fi
+  \infloattrue\setcounter{floatnote}{0}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{environment}{table}
+% \begin{environment}{table*}
+%    This is the definition of the actual environment. The form with the
+%    |*| is used for double column tables.
+%    \begin{macrocode}
+\newenvironment{table}{%
+  \@initisotab
+  \@float{table}}%
+ {\end@float\infloatfalse}
+%    \end{macrocode}
+%    The starred version is similar.
+%    \begin{macrocode}
+\newenvironment{table*}{%
+  \@initisotab
+  \@dblfloat{table}}%
+ {\end@dblfloat\infloatfalse}
+%    \end{macrocode}
+% \end{environment}
+% \end{environment}
+%
+% \subsubsection{A bottom float}
+%
+%    We define an additional float environment. Unless something
+%    additional is done, this will not be listed in the table
+%    of contents.
+%
+% \begin{macro}{\c@bottomfloat}
+% \begin{macro}{\thebottomfloat}
+%    First we have to allocate a counter to number the float.
+%    \begin{macrocode}
+\newcounter{bottomfloat}
+\renewcommand{\thebottomfloat}{\@arabic\c@bottomfloat}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\fps@bottomfloat}
+% \begin{macro}{\ftype@bottomfloat}
+% \begin{macro}{\ext@bottomfloat}
+% \begin{macro}{\fnum@bottomfloat}
+%    Here are the parameters for the floating objects of type `bottomfloat'.
+%    \begin{macrocode}
+\def\fps@bottomfloat{b}
+\def\ftype@bottomfloat{4}
+\def\ext@bottomfloat{lbf}
+\def\fnum@bottomfloat{\thebottomfloat}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{environment}{bottomfloat}
+% \begin{environment}{bottomfloat*}
+%    This is the definition of the actual environment. The form with the
+%    |*| is used for double column floats.
+%    \begin{macrocode}
+\newenvironment{bottomfloat}%
+                {\@float{bottomfloat}}%
+                {\end@float}
+\newenvironment{bottomfloat*}%
+               {\@dblfloat{bottomfloat}}%
+               {\end@dblfloat}
+%    \end{macrocode}
+% \end{environment}
+% \end{environment}
+%
+%
+% \subsubsection{Captions}
+%
+% \begin{macro}{\@makecaption}
+%    The |\caption| command calls |\@makecaption| to format the
+%    caption of floating objects. It gets two arguments,
+%    \meta{number}, the number of the floating object and \meta{text},
+%    the text of the caption. Usually \meta{number} contains a string
+%    such as `Figure 3.2'. The macro can assume it is called inside a
+%    |\parbox| of right width, with |\normalsize|.
+%
+% \begin{macro}{\abovecaptionskip}
+% \begin{macro}{\belowcaptionskip}
+%    These lengths contain the amount of white space to leave above
+%    and below the caption.
+%    \begin{macrocode}
+\newlength\abovecaptionskip
+\newlength\belowcaptionskip
+\setlength\abovecaptionskip{10\p@}
+\setlength\belowcaptionskip{10\p@}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+%    The definition of this macro is |\long| in order to allow more
+%    then one paragraph in a caption.
+%    \begin{macrocode}
+\long\def\@makecaption#1#2{%
+  \vskip\abovecaptionskip
+%    \end{macrocode}
+%    We want to see if the caption fits on one line on the page,
+%    therefore we first typeset it in a temporary box.
+%    \begin{macrocode}
+  \sbox\@tempboxa{{\captionsize\bfseries #1 -- #2}}%
+%    \end{macrocode}
+%    We can the measure its width. It that is larger than the current
+%    |\hsize| we typeset the caption as a centered paragraph.
+%    \begin{macrocode}
+  \ifdim \wd\@tempboxa >\hsize
+    {\centering {\captionsize\bfseries #1 -- #2}\par}
+%    \end{macrocode}
+%    If the caption fits, we center it. Because this uses an |\hbox|
+%    directly in vertical mode, it does not execute the |\everypar|
+%    tokens; the only thing that could be needed here is resetting the
+%    `minipage flag' so we do this explicitly.
+%    \begin{macrocode}
+  \else
+    \global \@minipagefalse
+    \hbox to\hsize{\hfil\box\@tempboxa\hfil}%
+  \fi
+  \vskip\belowcaptionskip}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\contcaption}
+%    The |\contcaption| command can be used to put a `continuation'
+%    caption into a float. It neither increments the float number
+%    nor makes any entry in the toc listings.
+%
+%    It is called as 
+%    |\contcaption{|\meta{continued/concluded}|}{|\meta{optional text}|}|
+%    \begin{macrocode}
+\newcommand{\contcaption}{\@contcaption\@captype}
+%    \end{macrocode}
+% \begin{macro}{\@contcaption}
+%    This does the work for us.
+%    \begin{macrocode}
+\long\def\@contcaption#1#2{%
+    \begingroup
+        \@parboxrestore
+        \normalsize
+        \@makecaption{\csname fnum@#1\endcsname}{\ignorespaces #2}\par
+    \endgroup}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%    
+%
+% \subsection{Font changing}
+%
+%    Here we supply the declarative font changing commands that were
+%    common in \LaTeX\ version 2.09 and earlier. These commands work
+%    in text mode \emph{and} in math mode. They are provided for
+%    compatibility, but one should start using the |\text...| and
+%    |\math...| commands instead. These commands are defined using
+%    |\DeclareTextFontCommand|, a command with three arguments: the
+%    user command to be defined; \LaTeX\ commands to execute in text
+%    mode and \LaTeX\ commands to execute in math mode.
+%
+%  \begin{macro}{\rm}
+%  \begin{macro}{\tt}
+%  \begin{macro}{\sf}
+%
+%    The commands to change the family. When in compatibility mode we
+%    select the `default' font first, to get \LaTeX2.09 behviour.
+%    \begin{macrocode}
+\DeclareOldFontCommand{\rm}{\normalfont\rmfamily}{\mathrm}
+\DeclareOldFontCommand{\sf}{\normalfont\sffamily}{\mathsf}
+\DeclareOldFontCommand{\tt}{\normalfont\ttfamily}{\mathtt}
+%    \end{macrocode}
+%  \end{macro}
+%  \end{macro}
+%  \end{macro}
+%
+%  \begin{macro}{\bf}
+%    The command to change to the bold series. One should use
+%    |\mdseries| to explicitly switch back to medium series.
+%    \begin{macrocode}
+\DeclareOldFontCommand{\bf}{\normalfont\bfseries}{\mathbf}
+%    \end{macrocode}
+%  \end{macro}
+%
+%  \begin{macro}{\sl}
+%  \begin{macro}{\it}
+%  \begin{macro}{\sc}
+%
+%    And the commands to change the shape of the font. The slanted and
+%    small caps shapes are not available by default as math alphabets,
+%    so those changes do nothing in math mode. However, we do warn the
+%    user that the selection will not have any effect.One should use
+%    |\upshape| to explicitly change back to the upright shape.
+%    \begin{macrocode}
+\DeclareOldFontCommand{\it}{\normalfont\itshape}{\mathit}
+\DeclareOldFontCommand{\sl}{\normalfont\slshape}{\@nomath\sl}
+\DeclareOldFontCommand{\sc}{\normalfont\scshape}{\@nomath\sc}
+%    \end{macrocode}
+%  \end{macro}
+%  \end{macro}
+%  \end{macro}
+%
+% \begin{macro}{\cal}
+% \begin{macro}{\mit}
+%
+%    The commands |\cal| and |\mit| should only be used in math mode,
+%    outside math mode they have no effect. Currently the New Font
+%    Selection Scheme defines these commands to generate warning
+%    messages. Therefore we have to define them `by hand'.
+%    \begin{macrocode}
+\DeclareRobustCommand*{\cal}{\@fontswitch{\relax}{\mathcal}}
+\DeclareRobustCommand*{\mit}{\@fontswitch{\relax}{\mathnormal}}
+%    \end{macrocode}
+%  \end{macro}
+%  \end{macro}
+%
+% \subsection{Urls, etc}
+%
+% \changes{v2.1}{1999/02/15}{Added the isourl command}
+% ISO uses its own format for typesetting urls. This is implemented here
+% via the \file{url} package.
+% \begin{macro}{\url}
+% \begin{macro}{\isourl}
+% The |\url{|\meta{text}|}| command is provided by the \file{url} package. 
+% It may be used for typesetting email addresses. The 
+% |\isourl{|\meta{text}|}| command typesets \meta{text} in the format 
+% required by ISO for an url; that is, the address is underlined and enclosed
+% within (not-underlined) angle brackets.
+%
+% NOTE: The underlining prohibits linebreaking in the url. I also tried
+% the \file{ulem} package's |\uline| command, but this also prevented any
+% linebreaking, so we might as well stick to the \TeX{} |\underline|.
+% \changes{v2.3}{2002/01/10}{Removed underline from \cs{isourl}}
+%    \begin{macrocode}
+%%\newcommand{\isourl}[1]{\texttt{<}\underline{\url{#1}}\texttt{>}}
+\newcommand{\isourl}[1]{\texttt{<}\url{#1}\texttt{>}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+%
+% \section{Cross Referencing} \label{sec:xref}
+%
+% \subsection{Label referencing}
+%
+% \begin{macro}{\aref}
+% \begin{macro}{\bref}
+% \begin{macro}{\cref}
+% \begin{macro}{\eref}
+% \begin{macro}{\fref}
+% \begin{macro}{\nref}
+% \begin{macro}{\tref}
+% \begin{macro}{\pref}
+%     Named references to labeled elements. |\bref{|\meta{label id}|}| is
+%     a reference to a labeled informative bibliographic element (similar
+%     to the standard \LaTeX\ |\cite| command. The others are to named
+%     elements of the document.
+% \changes{v2.3}{2001/07/06}{Added \cs{pref}}
+%    \begin{macrocode}
+\newcommand{\aref}[1]{\annexrefname~\ref{#1}}
+\newcommand{\bref}[1]{[\ref{#1}]}
+\newcommand{\cref}[1]{\clauserefname~\ref{#1}}
+\newcommand{\eref}[1]{\examplerefname~\ref{#1}}
+\newcommand{\fref}[1]{\figurerefname~\ref{#1}}
+\newcommand{\nref}[1]{\noterefname~\ref{#1}}
+\newcommand{\tref}[1]{\tablerefname~\ref{#1}}
+\newcommand{\pref}[1]{\pagerefname~\pageref{#1}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \subsection{Table of Contents, etc.}
+%
+%     A |\section| command writes a
+%     |\contentsline{section}{|\meta{title}|}{|\meta{page}|}| command
+%     on the \file{.toc} file, where \meta{title} contains the
+%     contents of the entry and \meta{page} is the page number. If
+%     sections are being numbered, then \meta{title} will be of the
+%     form |\numberline{|\meta{num}|}{|\meta{heading}|}| where
+%     \meta{num} is the number produced by |\thesection|.  Other
+%     sectioning commands work similarly.
+%
+%     A |\caption| command in a `figure' environment writes
+%
+%     |\contentsline{figure}{\numberline{|\meta{num}|}{|%
+%                    \meta{caption}|}}{|\meta{page}|}|
+%
+%     on the .\file{lof} file, where \meta{num} is the number produced
+%     by |\thefigure| and \meta{caption} is the figure caption.  It
+%     works similarly for a `table' environment.
+%
+%    The command |\contentsline{|\meta{name}|}| expands to
+%    |\l@|\meta{name}.  So, to specify the table of contents, we must
+%    define |\l@chapter|, |\l@section|, |\l@subsection|, ... ; to
+%    specify the list of figures, we must define |\l@figure|; and so
+%    on.  Most of these can be defined with the |\@dottedtocline|
+%    command, which works as follows.
+%
+%    |\@dottedtocline{|\meta{level}|}{|\meta{indent}|}{|^^A
+%                      \meta{numwidth}|}{|^^A
+%                      \meta{title}|}{|\meta{page}|}|
+%
+%    \begin{description}
+%    \item[\meta{level}] An entry is produced only if\meta{ level}
+%        $<=$ value of the \Lcount{tocdepth} counter.  Note,
+%        |\chapter| is level 0, |\section| is level 1, etc.
+%    \item[\meta{indent}] The indentation from the outer left margin
+%        of the start   of the contents line.
+%    \item[\meta{numwidth}] The width of a box in which the section
+%        number is to go, if \meta{title} includes a |\numberline|
+%        command.
+%    \end{description}
+%
+% \begin{macro}{\@pnumwidth}
+% \begin{macro}{\@tocrmarg}
+% \begin{macro}{\@dotsep}
+%    This command uses the following three parameters, which are set
+%    with a |\newcommand| (so em's can be used to make them depend upon
+%    the font).
+%    \begin{description}
+%    \item[\texttt{\bslash @pnumwidth}] The width of a box in which the
+%        page number is put.
+%    \item[\texttt{\bslash @tocrmarg}] The right margin for multiple
+%        line entries.  One wants |\@tocrmarg| $\ge$ |\@pnumwidth|
+%    \item[\texttt{\bslash @dotsep}] Separation between dots, in mu
+%        units. Should be defined as a number like 2 or 1.7
+%    \end{description}
+%
+%    \begin{macrocode}
+\newcommand{\@pnumwidth}{1.55em}
+\newcommand{\@tocrmarg} {2.55em}
+\newcommand{\@dotsep}{4.5}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\tocentryskip}
+% \begin{macro}{\tocbaseline}
+% \begin{macro}{\tocskip}
+%    We define two lengths and a utility command.
+%    \begin{macrocode}
+\newlength{\tocentryskip} \setlength{\tocentryskip}{1em}
+\newlength{\tocbaseline} \setlength{\tocbaseline}{20pt}
+\newcommand{\tocskip}[1]{%
+    \addtocontents{toc}{\protect\vspace{#1}}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \subsubsection{Table of Contents}
+%
+% \begin{macro}{\tableofcontents}
+%    This macro is used to request that \LaTeX{} produces a table of
+%    contents. In this class the tables of
+%    contents, figures etc. are always set in single-column style.
+%
+% \changes{v1}{1995/05/31}{Added `page' above page numbers in 
+%         table of contents.}
+% \changes{v2.3}{2001/07/06}{copyright at foot of page ii, not ToC}
+%    \begin{macrocode}
+\newcommand{\tableofcontents}{%
+    \if@twocolumn
+      \@restonecoltrue\onecolumn
+    \else
+      \@restonecolfalse
+    \fi
+%    \end{macrocode}
+%    If the document is copyrighted, then the copyright notice is
+%    placed at the foot of page ii.
+%    \begin{macrocode}
+%%%    \setcounter{page}{2}
+%%%    \thispagestyle{startpage}
+%%%    \mbox{}
+%%%    \ifc@pyright\@copyrighttext\fi
+%    \end{macrocode}
+%    Set the title for the toc, which must start on page (iii) of the
+%    document. The actual table of contents is made by calling
+%    |\@starttoc{toc}|.
+%    \begin{macrocode}
+%%%    \cleardoublepage
+    \setcounter{page}{3}
+    \pagestyle{headings}
+    \hbox to \textwidth{{\Cfont \contentsname}\hfil\pagename}
+%    \end{macrocode}
+% Add a locator for a bookmark.
+% \changes{v2.4}{2002/07/22}{Added bookmark to \cs{tableofcontents}}
+%    \begin{macrocode}
+    \ifisohyper
+      \pdfbookmark[1]{\contentsname}{isotoc}%
+    \fi
+    \begingroup
+        \parskip\z@
+        \@starttoc{toc}
+    \endgroup
+%    \end{macrocode}
+%    Finish by restoring two column mode if necessary.
+%    \begin{macrocode}
+    \if@restonecol\twocolumn\fi}
+%    \end{macrocode}
+% \end{macro}
+%    \begin{macrocode}
+%    \end{macrocode}
+%
+%    Each sectioning command needs an additional macro  to format its
+%    entry in the table of contents, as described above. In this class
+%    the formatting depends on whether or not the |sect| option
+%    is used.
+% \begin{macro}{\l@clause}
+% \begin{macro}{\l@sclause}
+% \begin{macro}{\l@ssclause}
+% \begin{macro}{\l@sssclause}
+% \begin{macro}{\l@ssssclause}
+% \begin{macro}{\l@sssssclause}
+% \begin{macro}{\l@annex}
+%    First the default specifications.
+%    \begin{macrocode}
+\newcommand{\l@clause}{\@dottedtocline{1}{0em}{2.3em}}
+\newcommand{\l@sclause}{\@dottedtocline{2}{1.5em}{3.2em}}
+\newcommand{\l@ssclause}{\@dottedtocline{3}{3em}{4.1em}}
+\newcommand{\l@sssclause}{\@dottedtocline{4}{4.5em}{5em}}
+\newcommand{\l@ssssclause}{\@dottedtocline{5}{6em}{5.9em}}
+\newcommand{\l@sssssclause}{\@dottedtocline{6}{7.5em}{6.8em}}
+\newcommand{\l@annex}{\@dottedtocline{1}{0em}{11.0em}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+%    In this class lists of floats are made to appear as though they
+%    were an integral part of the table of contents. Further, headings
+%    are only printed if there is at least one float of the given kind
+%    in the body of the document.
+%
+% \begin{macro}{\floatlist}
+%    For print a heading for a list of floats.
+% \changes{v2}{1997/12/04}{Doubled beforeskip in ToC}
+% \changes{v2}{1997/12/04}{Added \cs{nopagebreak} after heading text}
+%    \begin{macrocode}
+\newcommand{\floatlist}[2]{%
+    \vspace{2\tocentryskip}
+    \hbox to \textwidth{\bfseries #1\hfil}
+    \vspace*{\tocentryskip}
+    \nopagebreak
+    \begingroup
+        \parskip\z@ 
+        \@starttoc{#2}
+    \endgroup}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{List of figures}
+%
+%
+% \begin{macro}{\iffigs}
+%   A flag for figure floats.
+%    \begin{macrocode}
+\newif\iffigs\figsfalse
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\listoffigures}
+%    This macro is used to request that \LaTeX{} produces a list of
+%    figures.
+%
+%    \begin{macrocode}
+\newcommand{\listoffigures}{%
+    \ifx\undefined\setfigs\else\setfigs\fi}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\loftnumberline}
+% Used to add a dash after a figure/table number in the listing.
+% \changes{v2.3}{2001/07/06}{Added \cs{loftnumberline}}
+%    \begin{macrocode}
+\newcommand{\loftnumberline}[1]{#1 --- }
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\l@figure}
+%    This macro produces an entry in the list of figures.
+% Note that \verb*?Figure M.999 ? is 6.15em.
+% \changes{v11}{1997/11/24}{Increased ToC figure number space from 2.3em to 3.0em (caters for M.999)}
+% \changes{v2.3}{2001/07/06}{Increased ToC fignum space to 7.5em to cater for name}
+%    \begin{macrocode}
+\newcommand{\l@figure}{\@dottedtocline{1}{0em}{7.5em}}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\renewcommand{\l@figure}[2]{%
+  \vskip \z@ \@plus.2\p@
+  {%
+   \leftskip 0em
+   \rightskip \@tocrmarg
+   \parfillskip -\rightskip
+   \parindent 0em\@afterindenttrue
+   \interlinepenalty\@M
+   \leavevmode
+   \@tempdima 3.15em
+   \advance\leftskip \@tempdima \null\nobreak\hskip -\leftskip
+   {\let\numberline\loftnumberline \normalfont\figurename{} #1}\nobreak
+   \loftfillnum{#2}}
+}
+
+\newcommand{\loftfillnum}[1]{\normalfont%
+  {\leaders\hbox{$\m@th\mkern 4.5mu\hbox{.}\mkern 4.5mu$}\hfill}\nobreak
+  \hb@xt@\@pnumwidth{\hfil #1}\par}
+
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{List of tables}
+%
+% \begin{macro}{\iftabs}
+%   A flag for table floats.
+%    \begin{macrocode}
+\newif\iftabs\tabsfalse
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\listoftables}
+%    This macro is used to request that \LaTeX{} produces a list of
+%    tables. It is very similar to |\listoffigures|. Note that
+% \verb*?Table M.999 ? is 5.75em.
+%
+%    \begin{macrocode}
+\newcommand{\listoftables}{%
+    \ifx\undefined\settabs\else\settabs\fi}
+%    \end{macrocode}
+%
+% \begin{macro}{\l@table}
+%    This macro produces an entry in the list of tables.
+% \changes{v2.3}{2001/07/06}{Defined \cs{l@table} as a macro}
+%    \begin{macrocode}
+\newcommand{\l@table}{\@dottedtocline{1}{0em}{6.5em}}
+
+\renewcommand{\l@table}[2]{%
+  \vskip \z@ \@plus.2\p@
+  {%
+   \leftskip 0em
+   \rightskip \@tocrmarg
+   \parfillskip -\rightskip
+   \parindent 0em\@afterindenttrue
+   \interlinepenalty\@M
+   \leavevmode
+   \@tempdima 2.75em
+   \advance\leftskip \@tempdima \null\nobreak\hskip -\leftskip
+   {\let\numberline\loftnumberline \normalfont\tablename{} #1}\nobreak
+   \loftfillnum{#2}}
+}
+
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\@caption}
+% This is a reimplementation of the kernel |\@caption| macro (ltfloat.dtx)
+% to cater for the peculiarity of putting the float name before the number in
+% the List of\ldots
+% \changes{v2.3}{2001/07/06}{Redefined the \cs{@caption} kernel macro}
+%    \begin{macrocode}
+\long\def\@isocaption#1[#2]#3{%
+  \par
+  \addcontentsline{\csname ext@#1\endcsname}{#1}%
+    {\protect\numberline{{\@nameuse{#1name}} {\@nameuse{the#1}} --- }%
+    {\ignorespaces #2}}%
+  \begingroup
+    \@parboxrestore
+    \if@minipage
+      \@setminipage
+    \fi
+    \normalsize
+    \@makecaption{\csname fnum@#1\endcsname}{\ignorespaces #3}\par
+  \endgroup}
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{ToC and clause numbering}
+%
+%  Commands are provided, based on the \Lpack{tocvsec2} package, for changing
+% the section numbering level and the ToC entry level.
+% \changes{v2.2}{2000/01/10}{Added tocvsec2-like commands}
+%
+% \begin{macro}{\if@knownclause}
+% \begin{macro}{\@setclcnt}
+% Helper macro to set a sectioning-related counter. Use as
+% |\@setclcnt{|\meta{sec}|}{|\meta{counter}|}| to set \Lcount{counter}
+% to the level of \meta{sec}.
+%    \begin{macrocode}
+\newif\if@knownclause
+\newcommand{\@setclcnt}[2]{
+  \@knownclausefalse
+  \if\isostringsequal{#1}{none}
+    \setcounter{#2}{-10}
+    \@knownclausetrue
+  \fi
+  \if\isostringsequal{#1}{clause}
+    \setcounter{#2}{1}
+    \@knownclausetrue
+  \fi
+  \if\isostringsequal{#1}{sclause}
+    \setcounter{#2}{2}
+    \@knownclausetrue
+  \fi
+  \if\isostringsequal{#1}{ssclause}
+    \setcounter{#2}{3}
+    \@knownclausetrue
+  \fi
+  \if\isostringsequal{#1}{sssclause}
+    \setcounter{#2}{4}
+    \@knownclausetrue
+  \fi
+  \if\isostringsequal{#1}{ssssclause}
+    \setcounter{#2}{5}
+    \@knownclausetrue
+  \fi
+  \if\isostringsequal{#1}{sssssclause}
+    \setcounter{#2}{6}
+    \@knownclausetrue
+  \fi
+  \if\isostringsequal{#1}{all}
+    \setcounter{#2}{50}
+    \@knownclausetrue
+  \fi
+  \if@knownclause\else
+    \ClassError{isov2}{%
+      Unknown clause command name (#1)
+    }{%
+      I'll ignore it. Type \space <return> and I'll continue.\MessageBreak
+      If you haven't mistyped the name then use \protect\setcounter\space instead.}
+  \fi
+}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\settocdepth}
+% |\settocdepth{|\meta{sec}|}| is the user command for setting 
+% \Lcount{tocdepth} in the \file{.toc} file to the value corresponding to
+% \meta{sec}. It can only be used after the preamble.
+%    \begin{macrocode}
+\newcommand{\settocdepth}[1]{%
+  \@knownclausefalse
+  \if\isostringsequal{#1}{none}
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{-10}}
+    \@knownclausetrue
+  \fi
+  \if\isostringsequal{#1}{clause}
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
+    \@knownclausetrue
+  \fi
+  \if\isostringsequal{#1}{sclause}
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+    \@knownclausetrue
+  \fi
+  \if\isostringsequal{#1}{ssclause}
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
+    \@knownclausetrue
+  \fi
+  \if\isostringsequal{#1}{sssclause}
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{4}}
+    \@knownclausetrue
+  \fi
+  \if\isostringsequal{#1}{ssssclause}
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{5}}
+    \@knownclausetrue
+  \fi
+  \if\isostringsequal{#1}{sssssclause}
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{6}}
+    \@knownclausetrue
+  \fi
+  \if\isostringsequal{#1}{all}
+    \addtocontents{toc}{\protect\setcounter{tocdepth}{50}}
+    \@knownclausetrue
+  \fi
+  \if@knownclause\else
+    \ClassError{isov2}{%
+      Unknown clause command name (#1)
+    }{%
+      I'll ignore it. Type \space <return> and I'll continue.}
+  \fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\maxtocdepth}
+% |\maxtocdepth{|\meta{sec}|}| can be used to initialise \Lcount{tocdepth}
+% to the value corresponding to \meta{sec}. This can only be used
+% between the end of the preamble and the |\tableofcontents| command.
+%    \begin{macrocode}
+\newcommand{\maxtocdepth}[1]{%
+  \@setclcnt{#1}{tocdepth}
+}
+%    \end{macrocode}
+% \end{macro}
+% 
+% \begin{macro}{\setsecnumdepth}
+% |\setsecnumdepth{|\meta{sec}|}| is the user command for setting
+% \Lcount{secnumdepth} to the value for \meta{sec}. It can only be used after
+% the preamble.
+%    \begin{macrocode}
+\newcommand{\setsecnumdepth}[1]{\leavevmode%
+  \@setclcnt{#1}{secnumdepth}
+}
+%    \end{macrocode}
+% \end{macro}
+% 
+% \begin{macro}{\maxsecnumdepth}
+% |\maxsecnumdepth{|\meta{sec}|}| can be used to initialise 
+% \Lcount{secnumdepth}
+% after the preamble to the value corresponding to \meta{sec}.
+%    \begin{macrocode}
+\newcommand{\maxsecnumdepth}[1]{%
+  \@setclcnt{#1}{secnumdepth}
+}
+%    \end{macrocode}
+% \end{macro}
+% 
+%
+%
+% \subsection{Bibliography}
+%
+%    This class does not implement a bibliography. The |references|
+%    environment is defined instead.
+%
+%  \subsection{The index}
+%
+% \begin{environment}{theindex}
+% \changes{v2.2}{2000/01/10}{Reconfigured theindex to use \cs{fibicl@use}}
+%    The environment `theindex' can be used for indices. It makes an
+%    index with one column, with each entry a separate paragraph. At
+%    the user level the commands |\item|, |\subitem| and |\subsubitem|
+%    are used to produce index entries of various levels. When a new
+%    letter of the alphabet is encountered an amount of |\indexspace|
+%    white space can be added.
+%
+%    ISO requires that an index, if present, must be the last element
+%    in the document.
+%
+%
+%    \begin{macrocode}
+\newenvironment{theindex}%
+  {\clearpage
+   \typeout{Index}%
+   \refstepcounter{clause}%
+   \tocskip{\tocentryskip}%
+   \addcontentsline{toc}{index}{\indexname}%
+   \columnseprule \z@
+   \onecolumn{\fibicl@use*{\indexname}}
+   \parindent\z@
+   \parskip\z@ \@plus .3\p@\relax
+   \let\item\@idxitem}%
+  {\clearpage}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{macro}{\l@index}
+%   Format the index entry in the table of contents.
+%    \begin{macrocode}
+\newcommand{\l@index}{\@dottedtocline{1}{0em}{0pt}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@idxitem}
+% \begin{macro}{\subitem}
+% \begin{macro}{\subsubitem}
+%    Thsee macros are used to format the entries in the index. 
+%    \begin{macrocode}
+\newcommand{\@idxitem}  {\par\hangindent 40\p@}
+\newcommand{\subitem}   {\par\hangindent 40\p@ \hspace*{20\p@}}
+\newcommand{\subsubitem}{\par\hangindent 40\p@ \hspace*{30\p@}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\indexspace}
+%    The amount of white space that is inserted between `letter
+%    blocks' in the index.
+%    \begin{macrocode}
+\newcommand{\indexspace}{\par \vskip 10\p@ \@plus5\p@ \@minus3\p@\relax}
+%    \end{macrocode}
+% \end{macro}
+%
+%    The program GenIndex, written for processing ISO documents,
+%    takes an \file{.idx} file and converts it to a |theindex| format.
+%    The following are the formatting commands output by GenIndex.
+%
+% \begin{macro}{\indexfill}
+% \begin{macro}{\sindexfill}
+% \begin{macro}{\ssindexfill}
+%    Thse define the format of leaders between the (sub-) topic and
+%    the page number. ISO requires a dotted line between each index
+%    entry and the page number.
+%    \begin{macrocode}
+\newcommand{\indexfill}{\dotfill}
+\newcommand{\sindexfill}{\dotfill}
+\newcommand{\ssindexfill}{\dotfill}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\indexsee}
+% \begin{macro}{\indexseealso}
+%    These format entries of type `see \ldots' and `see also \ldots'.
+%    \begin{macrocode}
+\newcommand{\indexsee}[1]{\par \hspace*{2em} \emph{see} #1}
+\newcommand{\indexseealso}[1]{\par \hspace*{2em} \emph{see also} #1}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\alphaindexspace}
+% \begin{macro}{\otherindexspace}
+%    These format the space between each alphabetic block of entries,
+%    and correspondingly for entries that begin with an analpahbetic 
+%    character. ISO requires no additional spacing.
+%   
+%    These commands take one parameter, intended to be the
+%    (letter) heading for the next block of entries. For example,
+%    we could have defined:
+%    \begin{verbatim}
+%    \newcommand{\alphaindexspace}[1]{\indexspace
+%                                     {\bfseries #1}}
+%    \end{verbatim}
+%    for printing a vertical space and a bold heading.
+%    \begin{macrocode}
+\newcommand{\alphaindexspace}[1]{}
+\newcommand{\otherindexspace}[1]{}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+%    For good measure we provide a style file for users of the
+%    {\sc makeindex} program.
+%
+%    \begin{macrocode}
+%</iso>
+%<*ist>
+    %%%%iso.ist  Makeindex style file for ISO documents
+group_skip "\n\n"       % no vertical space between blocks
+headings_flag 0         % make sure headings are turned off
+delim_0 " \\dotfill "   % dot leaders between entry and page numbers
+delim_1 " \\dotfill "
+delim_2 " \\dotfill "
+
+%</ist>
+%<*iso>
+%    \end{macrocode}
+%
+% \subsection{Footnotes}
+%
+% \begin{macro}{\footnoterule}
+%    Usually, footnotes are separated from the main body of the text
+%    by a small rule. This rule is drawn by the macro |\footnoterule|.
+%    We have to make sure that the rule takes no vertical space (see
+%    \file{plain.tex}) so we compensate for the natural heigth of the
+%    rule of 0.4pt by adding the right amount of vertical skip.
+%
+%    To prevent the rule from colliding with the footnote we first add
+%    a little negative vertical skip, then we put the rule and make
+%    sure we end up at the same point where we begun this operation.
+%    \begin{macrocode}
+\renewcommand{\footnoterule}{%
+  \kern-3\p@
+  \hrule width .4\columnwidth
+  \kern 2.6\p@}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\c@footnote}
+%    Footnotes are numbered sequentially throughout the document.
+%     ISO requires footnotes to be a superscripted arabic numeral
+%     with a right parenthesis. The counter is predefined.
+%    \begin{macrocode}
+% \newcounter{footnote}
+\renewcommand{\thefootnote}{\arabic{footnote})}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@makefntext}
+%    The footnote mechanism of \LaTeX{} calls the macro |\@makefntext|
+%    to produce the actual footnote. The macro gets the text of the
+%    footnote as its argument and should use |\@thefnmark| as the mark
+%    of the footnote. The macro |\@makefntext|is called when
+%    effectively inside a |\parbox| of width |\columnwidth| (i.e.,
+%    with |\hsize| = |\columnwidth|).
+%
+%   An example of what can be achieved is given by the following piece
+%   of \TeX\ code.
+% \begin{verbatim}
+%          \long\def\@makefntext#1{%
+%             \@setpar{\@@par
+%                      \@tempdima = \hsize
+%                      \advance\@tempdima-10pt
+%                      \parshape \@ne 10pt \@tempdima}%
+%             \par
+%             \parindent 1em\noindent
+%             \hbox to \z@{\hss\@makefnmark}#1}
+% \end{verbatim}
+%    The effect of this definition is that all lines of the footnote
+%    are indented by 10pt, while the first line of a new paragraph is
+%    indented by 1em. To change these dimensions, just substitute the
+%    desired value for `10pt' (in both places) or `1em'.  The mark is
+%    flushright against the footnote.
+%
+%    In this document class we use a simpler macro, in which the
+%    footnote text is set like an ordinary text paragraph, with no
+%    indentation except on the first line of a paragraph, and the
+%    first line of the footnote. Thus, all the macro must do is set
+%    |\parindent| to the appropriate value for succeeding paragraphs
+%    and put the proper indentation before the mark.
+%
+%
+%    \begin{macrocode}
+\long\def\@makefntext#1{%
+    \parindent 1em%
+    \noindent
+    \hbox to 1.8em{\hss\@makefnmark}#1}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\@makefnmark}
+%    The footnote markers that are printed in the text to point to the
+%    footnotes should be produced by the macro |\@makefnmark|. We use
+%    the default definition for it.
+%    \begin{macrocode}
+%\def\@makefnmark{\hbox{$^{\@thefnmark}\m@th$}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \section{Version control tools} \label{sec:vct}
+%
+%    When preparing an international standard the document goes through
+%    several iterations. In particular it may change due to international
+%    ballot comments. The commands provided may be used to identify
+%    changes made to a document during its life cycle.
+%
+% \subsection{Print control}
+%
+%    Members of the development group often need to see the changes
+%    between document versions, while the general public does not.
+% \begin{macro}{\ifchangemarks}
+%    This controls the appearence of the version controls defined
+%    below.
+%    \begin{macrocode}
+\newif\ifchangemarks\changemarksfalse
+%    \end{macrocode}
+%   The version controls only work properly when the |draft| option
+%   is in effect. Also, the command |\changemarkstrue| must be
+%   put in the document preamble.
+% \end{macro}
+%
+% \begin{macro}{\v@rid}
+%    This acts as an alias for |\marginpar| when both |changemarks| is
+%    true and the |draft| option is in effect, otherwise it throws
+%    away its two arguments.
+%    \begin{macrocode}
+\newcommand{\v@rid}[2]{%
+    \ifchangemarks
+       \ifdr@ftd@c
+           \marginpar[#1]{#2}%
+    \fi\fi}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Change marking}
+%
+%    The following commands flag changes in the typeset document. Each of
+%    the commands takes one parameter which is intended to be a 
+%    `change number' for tracking purposes. Some also take a text
+%    parameter which is the changed text.
+%
+% \begin{macro}{\editorial}
+%    |\editorial{|\meta{change id}|}|
+%    Places the \meta{change id} in the document to indicate an editorial
+%    change.
+%    \begin{macrocode}
+\newcommand{\editorial}[1]{%
+  \@bsphack
+    \ifchangemarks
+        \v@rid{\small\hfill$^{#1}$ED}%
+        {\small ED$^{#1}$\hfill}%
+    \fi\@esphack}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\added}
+%    |\added{|\meta{text}|}{|\meta{change id}|}|
+%    Flags the additional \meta{text} with the \meta{change id}.
+%    \begin{macrocode}
+\long\def\added#1#2{%
+  \@bsphack
+    \ifchangemarks
+        \v@rid{\small\hfill$^{#2}\Rightarrow$}%
+        {\small $\Leftarrow^{#2}$\hfill}%
+        \emph{#1}%
+    \else
+       #1
+    \fi\@esphack}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\deleted}
+%    |\deleted{|\meta{change id}|}|
+%    Places the \meta{change id} in the document to indicate that
+%    some text has been deleted.
+%    \begin{macrocode}
+\newcommand{\deleted}[1]{%
+  \@bsphack
+    \ifchangemarks
+        \v@rid{\small\hfill$^{#1}\Leftarrow$}%
+        {\small $\Rightarrow^{#1}$\hfill}%
+    \fi\@esphack}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\moved}
+%    |\moved{|\meta{text}|}{|\meta{change id}|}|
+%    Flags the moved \meta{text} with the \meta{change id}.
+%    \begin{macrocode}
+\long\def\moved#1#2{%
+  \@bsphack
+    \ifchangemarks
+        \v@rid{\small\hfill$^{#2}\Leftrightarrow$}%
+        {\small $\Leftrightarrow^{#2}$\hfill}%
+        \emph{#1}%
+    \else
+       #1
+    \fi\@esphack}
+%    \end{macrocode}
+% \end{macro}
+%
+% \section{Structure and boilerplate} \label{sec:bp}
+%
+%    ISO standard documents have certain required elements and boilerplate.
+%
+% \subsection{Structural elements}
+%
+% \begin{environment}{foreword}
+%    The |foreword| environment initializes the front matter for a standard
+%    and starts an unnumbered foreword clause. To ensure that the 
+%    front matter is set in single column we use an environment.
+% \changes{v2}{1997/12/04}{Added Foreword to ToC}
+% \changes{v2.1}{1999/02/15}{Deleted Foreword from ToC}
+% \changes{v2.2}{2000/01/10}{Reconfigured Foreword to use \cs{fibicl@use}}
+% \changes{v2.4}{2002/07/22}{Added bookmark to the foreword}
+%    \begin{macrocode}
+\newenvironment{foreword}%
+  {\tableofcontents
+   \listoffigures
+   \listoftables
+   \clearpage
+   \if@twocolumn
+     \@restonecoltrue\onecolumn
+   \else
+     \@restonecolfalse
+   \fi
+   \fibicl@use*{\forewordname}%
+%%    \tocskip{\tocentryskip}%
+%%    \addcontentsline{toc}{clause}{\forewordname}%
+   \ifisohyper
+     \pdfbookmark[1]{\forewordname}{isofwd}%
+   \fi}%
+  {\if@restonecol\twocolumn\fi}
+%    \end{macrocode}    
+% \end{environment}
+%
+% \begin{macro}{\@copyrighttext}
+%    This command sets up the copyright notice on the first page of
+%    the table of contents. The text is set in a |bottomfloat|
+%    environment in a small size.
+%    \begin{macrocode}
+\newcommand{\@copyrighttext}{%
+  \vfill
+%%%    \begin{bottomfloat}[b]
+        \begin{small}
+        \copyrightnotice
+        \end{small}
+%%%    \end{bottomfloat}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{environment}{introduction}
+%    Starts a new unnumbered introduction clause, the body of which is set
+%    in single column, so we use an environment.
+% \changes{v2}{1997/12/04}{Added Introduction to ToC}
+% \changes{v2.1}{1999/02/15}{Deleted Introduction from Toc}
+% \changes{v2.2}{2000/01/10}{Changed introduction to use \cs{fibicl@use}}
+% \changes{v2.4}{2002/07/22}{Added bookmark to introduction}
+%    \begin{macrocode}
+\newenvironment{introduction}%
+  {\clearpage
+   \if@twocolumn
+     \@restonecoltrue\onecolumn
+   \else
+     \@restonecolfalse
+   \fi
+   \fibicl@use*{\introductionname}%
+%%    \tocskip{\tocentryskip}
+%%    \addcontentsline{toc}{clause}{\introductionname}%
+   \ifisohyper
+     \pdfbookmark[1]{\introductionname}{isointro}
+   \fi}%
+  {\if@restonecol\twocolumn\fi}
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{macro}{\scopeclause}
+%    Starts a new numbered scope clause. 
+% This is given the label |;i1| as it is the first numbered clause.
+% \changes{v2.2}{2000/01/10}{Scope clause labelled ;i1}
+%    \begin{macrocode}
+\newcommand{\scopeclause}{\clause{\scopename}\label{;i1}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\normrefsclause}
+%    Starts a new numbered normative references clause. 
+% This is given the label |;i2| as it is the second numbered clause.
+% \changes{v2.2}{2000/01/10}{Normrefs clause labelled ;i2}
+%    \begin{macrocode}
+\newcommand{\normrefsclause}{\clause{\normrefsname}\label{;i2}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\defclause}
+% \begin{macro}{\symclause}
+% \begin{macro}{\abbclause}
+% \begin{macro}{\defsymclause}
+% \begin{macro}{\defabbclause}
+% \begin{macro}{\symabbclause}
+% \begin{macro}{\defsymabbclause}
+%    These macros start new clauses for definitions, symbols and abbreviations.
+%    ISO allows these to be grouped in various ways, depending on the
+%    amount of material in the respective categories.
+% These are each given the label |;i3| as one should be the third numbered clause.
+% \changes{v2.2}{2000/01/10}{Definition clauses labelled ;i3}
+%    \begin{macrocode}
+\newcommand{\defclause}{\clause{\defname}\label{;i3}}
+\newcommand{\symclause}{\clause{\symname}\label{;i3}}
+\newcommand{\abbclause}{\clause{\abbname}\label{;i3}}
+\newcommand{\defsymclause}{\clause{\defsymname}\label{;i3}}
+\newcommand{\defabbclause}{\clause{\defabbname}\label{;i3}}
+\newcommand{\symabbclause}{\clause{\symabbname}\label{;i3}}
+\newcommand{\defsymabbclause}{\clause{\defsymabbname}\label{;i3}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\defsubclause}
+% \begin{macro}{\symsubclause}
+% \begin{macro}{\abbsubclause}
+% \begin{macro}{\defsymsubclause}
+% \begin{macro}{\defabbsubclause}
+% \begin{macro}{\symabbsubclause}
+%    These macros start new sub-clauses for definitions, symbols and abbreviations.
+%    ISO allows these to be grouped in various ways, depending on the
+%    amount of material in the respective categories.
+%    \begin{macrocode}
+\newcommand{\defsubclause}{\sclause{\defname}}
+\newcommand{\symsubclause}{\sclause{\symname}}
+\newcommand{\abbsubclause}{\sclause{\abbname}}
+\newcommand{\defsymsubclause}{\sclause{\defsymname}}
+\newcommand{\defabbsubclause}{\sclause{\defabbname}}
+\newcommand{\symabbsubclause}{\sclause{\symabbname}}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\fcandaclause}
+%    This macro starts a clause `Fundamental concepts and assumptions'.
+%    The actual title is given by the value of |\fcandaname|.
+%    \begin{macrocode}
+\newcommand{\fcandaclause}{\clause{\fcandaname}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\bibannex}
+%    This macro starts a bibliography (which used to be an
+%     informative annex).
+%
+% \changes{v2}{1997}{Bibliography is no longer an informative annex}
+% \changes{v2.2}{2000/01/10}{Reconfigured \cs{bibannex} to use \cs{fibicl@use}}
+%    \begin{macrocode}
+\newcommand{\bibannex}{%
+  \typeout{Bibliography}
+  \clearpage
+  \fibicl@use*{\bibname}
+  \tocskip{\tocentryskip}
+  \addcontentsline{toc}{index}{\bibname}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Boilerplate}
+%
+%    ISO defines the wording of certain textual elements within a
+%    standard.
+%
+%    This class has been prepared for standard documents in the
+%    English language. The boilerplate text commands must be 
+%    redefined for other languages.
+%
+% \begin{macro}{\copyrightnotice}
+%    The required English text of the copyright notice.
+% \changes{v2.3}{2001/07/06}{Text of \cs{copyrightnotice} changed}
+%    \begin{macrocode}
+\newcommand{\copyrightnotice}{%
+\copyright\quad \copyrightname\quad \thesyear\newline
+All rights reserved. Unless otherwise specified, no part of
+this publication may be reproduced or utilized in any form or
+by any means, electronic or mechanical, including photocopying
+and microfilm, without permission in writing from %%% the publisher.
+%%%\makebox[\textwidth][r]{%
+%%%ISO/IEC Copyright Office $\bullet$ Case Postale 56 $\bullet$
+%%%CH-1211 Gen{\`e}ve 20 $\bullet$ Switzerland}
+%%\vspace{\baselineskip}\newline
+%%\hspace*{1em} International Organization for Standardization\newline
+%%\hspace*{1em} Case Postale 56 $\bullet$ CH-2111 Gen{\`e}ve 20 $\bullet$ Switzerland
+either ISO at the address below or ISO's member body in the country
+of the requester.
+\par
+\noindent ISO copyright office \\
+Case postale 56. CH-1211 Geneva 20 \\
+Tel. +41 22 749 01 11 \\
+Fax  +41 22 734 10 79 \\
+E-mail \texttt{copyright@iso.ch} \\
+Web \texttt{www.iso.ch}
+%    \end{macrocode}
+%    For an IS or a Tech Report, need a blank line and place of printing
+%    \begin{macrocode}
+%%\ifisst@ndard \ifc@pyright
+%%    \vspace{\baselineskip}\newline\noindent
+%%    Printed in Switzerland
+%%\fi\fi
+%%\ift@chrep \ifc@pyright
+%%    \vspace{\baselineskip}\newline\noindent
+%%    Printed in Switzerland
+%%\fi\fi
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\fwdbp}
+%
+%    The prescribed text of the initial paragraphs in an ISO Standard
+% Foreword.
+%    \begin{macrocode}
+\newcommand{\fwdbp}{\input{isofwdbp}}
+%    \end{macrocode}
+%
+%    The following is the text contained in the file \file{isofwdbp.tex}.
+% \changes{v2.1}{1999/02/15}{Change to foreword boilerplate}
+% \changes{v2.3}{2001/07/06}{Change to foreword boilerplate}
+% \changes{v2.3}{2001/08/29}{Yet another ISO change to foreword boilerplate}
+%    \begin{macrocode}
+%</iso>
+%<*fwd1>
+\ProvidesFile{isofwdbp.tex}[2001/08/29 Boilerplate for start of Foreword]
+
+ISO (the International Organization for Standardization) is a worldwide
+federation of national standards bodies (ISO member bodies). The work
+of preparing International Standards is normally carried out through
+ISO technical committees. Each member body interested in a subject for
+which a technical committee has been established has the right to be
+represented on that committee. International organizations,
+governmental and non-governmental, in liaison with ISO, also take part
+in the work. ISO collaborates closely with the International
+Electrotechnical Commission (IEC) on all matters of electrotechnical
+standardization.
+
+International Standards are drafted in accordance with the rules given
+in the ISO/IEC Directives, Part~2.
+
+The main task of technical committees is to prepare International Standards.
+Draft International Standards adopted by the technical committees are
+circulated to the member bodies for voting. Publication as an
+International Standard requires approval by at least 75\% of the member
+bodies casting a vote.
+\par
+
+%</fwd1>
+%<*iso>
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\tspasfwdbp}
+%
+%    The prescribed text of the initial paragraphs in an ISO 
+% Technical Specification or PAS Foreword.
+%    \begin{macrocode}
+\newcommand{\tspasfwdbp}{\input{tspasfwdbp}}
+%    \end{macrocode}
+%
+%    The following is the text contained in the file \file{tspasfwdbp.tex}.
+% \changes{v2.3}{2001/07/06}{Added TS/PAS foreword boilerplate}
+% \changes{v2.3}{2002/01/10}{Modified TS/PAS foreword boilerplate}
+%    \begin{macrocode}
+%</iso>
+%<*tspasfwd1>
+\ProvidesFile{tspasfwdbp.tex}[2001/07/06 Boilerplate for start of TS/PAS Foreword]
+
+ISO (the International Organization for Standardization) is a worldwide
+federation of national standards bodies (ISO member bodies). The work
+of preparing International Standards is normally carried out through
+ISO technical committees. Each member body interested in a subject for
+which a technical committee has been established has the right to be
+represented on that committee. International organizations,
+governmental and non-governmental, in liaison with ISO, also take part
+in the work. ISO collaborates closely with the International
+Electrotechnical Commission (IEC) on all matters of electrotechnical
+standardization.
+
+International Standards are drafted in accordance with the rules given
+in the ISO/IEC Directives, Part~2.
+
+    The main task of technical committees is to prepare International
+Standards.
+Draft International Standards adopted by the technical committees are
+circulated to the member bodies for voting. Publication as an
+International Standard requires approval by at least 75\% of the member
+bodies casting a vote.
+
+    In other circumstances, particularly when there is an urgent market
+requirement for such documents, a technical committee may decide to
+publish other types of normative document:
+\begin{itemize}
+\item an ISO Publicly Available Specification (ISO/PAS) represents an
+agreement between technical experts in an ISO working group and is
+accepted for publication if it is approved by more than 50\% of the
+members of the parent committee casting a vote;
+
+\item an ISO Technical Specification (ISO/TS) represents an agreement
+between the members of a technical committee and is accepted for
+publication if it is approved by 2/3 of the members of the committee
+casting a vote.
+\end{itemize}
+
+    An ISO/PAS or ISO/TS is reviewed every three years with a view to
+deciding whether it can be transformed into an International Standard.
+\par
+
+%</tspasfwd1>
+%    \end{macrocode}
+% \end{macro}
+%
+%    The following is the text contained in the file \file{trfwd1.tex}.
+%    \begin{macrocode}
+%<*trfwd1>
+   %% trfwd1.tex  Boilerplate for start of a tech rep Foreword clause
+%
+
+    ISO (the International Organization for Standardization) is a worldwide
+federation of national standards bodies (ISO member bodies). The work
+of preparing International Standards is normally carried out through
+ISO technical committees. Each member body interested in a subject for
+which a technical committee has been established has the right to be
+represented on that committee. International organizations,
+governmental and non-governmental, in liaison with ISO, also take part
+in the work. ISO collaborates closely with the International
+Electrotechnical Commission (IEC) on all matters of electrotechnical
+standardization.
+
+    International Standards are drafted in accordance with the rules
+given in the ISO/IEC Directives, Part 3.
+
+    The main task of technical committees is to prepare International 
+Standards. Draft International Standards adopted by the technical
+committees are circulated to the member bodies for voting. Publication
+as an International Standard requires approval by at least 75\% of the
+member bodies casting a vote.
+
+    In other circumstances, particularly when there is an urgent market
+requirement for such documents, a technical committee may decide to
+publish other types of normative document:
+\begin{itemize}
+\item an ISO Publicly Available Specification (ISO/PAS) represents an
+agreement between technical experts in an ISO working group and is
+accepted for publication if it is approved by more than 50\% of the
+members of the parent committee casting a vote;
+
+\item an ISO Technical Specification (ISO/TS) represents an agreement
+between the members of a technical committee and is accepted for
+publication if it is approved by 2/3 of the members of the committee
+casting a vote.
+\end{itemize}
+
+    An ISO/PAS or ISO/TS is reviewed every three years with a view to
+deciding whether it can be transformed into an International Standard.
+\par
+
+
+%</trfwd1>
+%<*iso>
+%    \end{macrocode}
+%
+%
+% \begin{macro}{\trfwdbpi}
+% \begin{macro}{\trfwdbpii}
+% \changes{v2.1}{1999/03/19}{Removed trfwdbpii command}
+%    Required texts for a technical report foreword.
+%    Use as: |\trfwdbpii{|\meta{application field}|}|.
+%    \begin{macrocode}
+\newcommand{\trfwdbpi}{\input{trfwd1}}
+\newcommand{\trfwdbpii}[1]{%
+  \ClassError{iso}{The \protect\trfwdpbii\space command has been removed}%
+     {Type <return> to proceed, and change your source file before 
+      running LaTeX again.}
+}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\intropatents}
+%  |\intropatents| is the boilerplate for the last Introduction
+% paragraph dealing with potential additional patent rights. 
+% \changes{v2.3}{2001/07/06}{Added \cs{fwdpatents} macro}
+% \changes{v2.3}{2001/08/29}{Changed \cs{fwdpatents} macro}
+% \changes{v2.3}{2002/01/10}{Changed \cs{fwdpatents} macro to \cs{intropatents}}
+%    \begin{macrocode}
+\newcommand{\intropatents}{\par
+  Attention is drawn to the possibility that some of the elements of this 
+document may be the subject of patent rights 
+other than those mentioned above. 
+ISO [and/or] IEC shall not be held responsible
+for identifying any or all such patent rights.\par}
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\fwdnopatents}
+%  |\fwdnopatents| is the boilerplate for the Foreword
+% paragraph dealing with potential patent rights. 
+% \changes{v2.3}{2001/08/29}{Added \cs{fwdnopatents} macro}
+%    \begin{macrocode}
+\newcommand{\fwdnopatents}{\par
+  Attention is drawn to the possibility that some of the elements of this 
+document may be the subject of patent rights.
+ISO shall not be held responsible
+for identifying any or all such patent rights.\par}
+
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{macro}{\normrefbp}
+%    The required text for the introduction
+%    of the normative references clause. Use as:
+%    |\normrefbp{|\meta{standard identifier}|}|
+% \changes{v2}{1997/11/30}{\cs{normrefbp} boilerplate modified}
+%    \begin{macrocode}
+\newcommand{\normrefbp}[1]{%
+
+The following normative documents contain provisions which, through
+reference in this text, constitute provisions of this #1.
+For dated references, subsequent amendments to, or revisions of,
+any of these publications do not apply.
+However, parties
+to agreements based on this #1
+are encouraged to investigate the possibility of applying
+the most recent editions of the normative documents indicated below.
+For undated references, the latest edition of the normative
+document referred to applies.
+Members of ISO and IEC maintain registers of currently
+valid International Standards.
+
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \section{Initialization} \label{sec:init}
+%
+% \subsection{Words and phrases}
+% 
+% \begin{macro}{\annexname}
+% \begin{macro}{\bibname}
+% \begin{macro}{\contentsname}
+% \begin{macro}{\defname}
+% \begin{macro}{\symname}
+% \begin{macro}{\abbname}
+% \begin{macro}{\defabbname}
+% \begin{macro}{\defsymname}
+% \begin{macro}{\defsymabbname}
+% \begin{macro}{\fcandaname}
+% \begin{macro}{\forewordname}
+% \begin{macro}{\indexname}
+% \begin{macro}{\informativename}
+% \begin{macro}{\introductionname}
+% \begin{macro}{\normativename}
+% \begin{macro}{\normrefsname}
+% \begin{macro}{\scopename}
+% \begin{macro}{\sectionname}
+% \begin{macro}{\symabbname}
+% This document class is for documents prepared in the English language.
+% To prepare a version for another language, various English words 
+% and phrases must
+% be replaced.  The English elements that require replacement are
+% defined below in command names.
+%
+%    This list is for titles of document sections.
+%
+% \changes{v2.1}{1999/02/15}{Changed defname, defabbname, defsymname, defsymabbname}
+%    \begin{macrocode}
+\newcommand{\abbname}{Abbreviations}
+\newcommand{\annexname}{Annex}
+\newcommand{\bibname}{Bibliography}
+\newcommand{\contentsname}{Contents}
+\newcommand{\defname}{Terms and definitions}
+\newcommand{\defabbname}{Terms, definitions, and abbreviations}
+\newcommand{\defsymname}{Terms, definitions, and symbols}
+\newcommand{\defsymabbname}{Terms, definitions, abbreviations, and symbols}
+\newcommand{\fcandaname}{Fundamental concepts and assumptions}
+\newcommand{\forewordname}{Foreword}
+\newcommand{\indexname}{Index}
+\newcommand{\informativename}{informative}
+\newcommand{\introductionname}{Introduction}
+\newcommand{\normativename}{normative}
+\newcommand{\normrefsname}{Normative references}
+\newcommand{\scopename}{Scope}
+\newcommand{\sectionname}{Section}
+\newcommand{\symname}{Symbols}
+\newcommand{\symabbname}{Symbols and abbreviations}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\copyrightname}
+% \begin{macro}{\examplename}
+% \begin{macro}{\figurename}
+% \begin{macro}{\inscopename}
+% \begin{macro}{\ISname}
+% \begin{macro}{\listannexname}
+% \begin{macro}{\listfigurename}
+% \begin{macro}{\listtablename}
+% \begin{macro}{\notename}
+% \begin{macro}{\outofscopename}
+% \begin{macro}{\pagename}
+% \begin{macro}{\tablename}
+% \begin{macro}{\tbpname}
+%
+%    These are the names and phrases used for general elements.
+%
+% \changes{v2}{1997/11/30}{\cs{examplesname} and \cs{notesname} deleted}
+% \changes{v2.3}{2001/07/06}{Additional forms of \cs{ISname}}
+%    \begin{macrocode}
+\newcommand{\copyrightname}{ISO}
+\newcommand{\examplename}{EXAMPLE}
+ %%%\newcommand{\examplesname}{EXAMPLES}
+\newcommand{\figurename}{Figure}
+\newcommand{\inscopename}{The following are within the scope of this }
+\newcommand{\ISname}{INTERNATIONAL STANDARD}
+\iffdisstandard\renewcommand{\ISname}{FINAL DRAFT INTERNATIONAL STANDARD}\fi
+\ifdisstandard\renewcommand{\ISname}{DRAFT INTERNATIONAL STANDARD}\fi
+\ifcdstandard\renewcommand{\ISname}{COMMITTEE DRAFT}\fi
+\ifwdstandard\renewcommand{\ISname}{WORKING DRAFT}\fi
+\iftechrep\renewcommand{\ISname}{TECHNICAL REPORT}\fi
+\iftechspec\renewcommand{\ISname}{TECHNICAL SPECIFICATION}\fi
+\ifpaspec\renewcommand{\ISname}{PUBLICLY AVAILABLE SPECIFICATION}\fi
+\ifotherdoc\renewcommand{\ISname}{}\fi
+\newcommand{\listannexname}{Annexes}
+\newcommand{\listfigurename}{Figures}
+\newcommand{\listtablename}{Tables}
+\newcommand{\notename}{NOTE}
+ %%%\newcommand{\notesname}{NOTES}
+\newcommand{\outofscopename}{The following are outside the scope of this }
+\newcommand{\pagename}{Page}
+\newcommand{\tablename}{Table}
+\newcommand{\tbpname}{To be published.}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\annexrefname}
+% \begin{macro}{\clauserefname}
+% \begin{macro}{\examplerefname}
+% \begin{macro}{\figurerefname}
+% \begin{macro}{\noterefname}
+% \begin{macro}{\tablerefname}
+% \begin{macro}{\pagerefname}
+%     These are the names for referenced document elements. Except when
+%     starting a sentence or referring to a figure, references to document 
+%     elements start with
+%     a lower case letter.
+% \changes{v2}{1997/11/30}{\cs{figurename} changed to print Figure}
+% \changes{v2}{1997/11/30}{\cs{tablerefname} changed to print Table}
+% \changes{v2}{1997/11/30}{Added \cs{noterefname} command}
+% \changes{v2.3}{2001/07/06}{Added \cs{pagerefname} command}
+%    \begin{macrocode}
+\newcommand{\annexrefname}{annex}
+\newcommand{\clauserefname}{clause}
+\newcommand{\examplerefname}{example}
+\newcommand{\figurerefname}{Figure}
+\newcommand{\noterefname}{note}
+\newcommand{\tablerefname}{Table}
+\newcommand{\pagerefname}{page}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\abstractname}
+% \begin{macro}{\appendixname}
+% \begin{macro}{\chaptername}
+% \begin{macro}{\partname}
+% \begin{macro}{\refname}
+%    These names are used in the standard \LaTeX\ classes but are not
+%    applicable in this class. We just make them null.
+%    \begin{macrocode}
+\newcommand{\abstractname}{}
+\newcommand{\appendixname}{}
+\newcommand{\chaptername}{}
+\newcommand{\partname}{}
+\newcommand{\refname}{}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \subsection{Date}
+%
+% \begin{macro}{\today}
+%    This macro uses the \TeX\ primitives |\month|, |\day| and |\year|
+%    to provide the date of the \LaTeX-run.
+%    \begin{macrocode}
+\newcommand{\today}{\ifcase\month\or
+  January\or February\or March\or April\or May\or June\or
+  July\or August\or September\or October\or November\or December\fi
+  \space\number\day, \number\year}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Two column mode}
+%
+% \begin{macro}{\columnsep}
+%    This gives the distance between two columns in two column mode.
+%    \begin{macrocode}
+\setlength\columnsep{10\p@}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\columnseprule}
+%    This gives the width of the rule between two columns in two
+%    column mode. We have no visible rule.
+%    \begin{macrocode}
+\setlength\columnseprule{0\p@}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{The page style}
+%    We use the page style \pstyle{headings} by
+%    default and start with roman numbering for the
+%    front matter, this being reset to arabic by the title
+%    or first main matter section/clause. 
+%    \begin{macrocode}
+\pagestyle{headings}
+\pagenumbering{roman}
+%    \end{macrocode}
+%    We set the sectional counters to zero and the |tocdepth| to
+%    one (clauses only listed).
+%    \begin{macrocode}
+\setcounter{clause}{0}
+\setcounter{annex}{0}
+\setcounter{tocdepth}{1}
+%    \end{macrocode}
+%
+%
+% \subsection{Single or double sided printing}
+%
+%
+%    We do not try to make each page as long as all the others, even
+%    though it is two-side printing.
+%    \begin{macrocode}
+\@twosidetrue
+\raggedbottom
+%    \end{macrocode}
+%    When the \Lopt{twocolumn} option was specified we call
+%    |\twocolumn| to activate this mode. We try to make each column as
+%    long as the others, but call |sloppy| to make our life easier.
+%    \begin{macrocode}
+\if@twocolumn
+  \twocolumn
+  \sloppy
+  \flushbottom
+%    \end{macrocode}
+%    Normally we call |\onecolumn| to initiate typesetting in one
+%    column.
+%    \begin{macrocode}
+\else
+  \onecolumn
+\fi
+%    \end{macrocode}
+%
+%    The end of the class definitions.
+%    \begin{macrocode}
+%</iso>
+%    \end{macrocode}
+%
+% 
+%
+% \section{The \file{askinc} package} \label{sec:askinc}
+%
+%    This package provides an interactive `include' facility. It was developed
+%    by Phil Spiby of CADDETC, Leeds, United Kingdom in the late eighties.
+%    \begin{macrocode}
+%<*inc>
+%    \end{macrocode}
+%
+% \begin{macro}{\infile}
+%    The |\infile{|\meta{file name}|}| command is a cross between the
+%    |\input| and |\include| commands. When this package is used, at
+%    runtime the user is asked to interactively specify a comma-seperated
+%    list of the names of |\infile|d files that are to be processed. In
+%    this sense it acts like the |\include| and |\includeonly| pair of
+%    commands. If no list is entered at the terminal (by hitting the
+%    \meta{RETURN} key) then all |\infile|d files are processed. In this
+%    sense it acts like the |\input| command. However, like the |\include|
+%    command, an |\infile|d file cannot contain any other |\infile|d file.
+%
+% \begin{macro}{temp}
+%    Define a counter \Lcount{temp} for general use within the include files.
+%    This is required to ensure that the contents of |\incfiles| is
+%    used and not |\incfiles| the string.
+%    \begin{macrocode}
+\newcounter{temp}
+%    \end{macrocode}
+% \end{macro}
+%    Now for the rest of the definition.
+%    \begin{macrocode}
+\def\readinclude#1\endread{\gdef\myincludeonly{\includeonly{#1}}}
+\long\def\stripspace#1 \nextspace{#1}
+\typeout{Which files do you want processing ?}
+\message{enter names (separated by commas) or <RET> for all.}
+\message{}\global\read-1 to\incfiles
+\if\incfiles\par\let\infile\input
+\else\let\infile\include
+\edef\incfiles{\expandafter\stripspace\incfiles\nextspace}
+\expandafter\readinclude\incfiles\endread\myincludeonly\fi
+%    \end{macrocode}
+% \end{macro}
+%
+%    The end of the askinc package.
+%    \begin{macrocode}
+%</inc>
+%    \end{macrocode}
+%
+%
+%
+%
+%
+%
+% \bibliographystyle{alpha}
+%
+% \begin{thebibliography}{GMS94}
+%
+% \bibitem[GMS94]{GOOSSENS94}
+% Michel Goossens, Frank Mittelbach, and Alexander Samarin.
+% \newblock \emph{The LaTeX Companion}.
+% \newblock Addison-Wesley Publishing Company, 1994.
+%
+% \bibitem[ISO97]{ISOD397}
+%  ISO/IEC Directives Part 3.
+%  \newblock \emph{Drafting and presentation of International
+%   Standards}, Third edition, 1997.
+%
+% \bibitem[ISO01]{ISOD201}
+% ISO/IEC Directives Part 2.
+% \newblock \emph{Rules for the structure and drafting
+%  of International Standards}, Fourth edition, 2001.
+%
+% \bibitem[Wil96]{PRW96i}
+% Peter~R. Wilson.
+% \newblock \emph{{LaTeX for standards: The LaTeX package files user manual}}.
+% \newblock NIST Report NISTIR, June 1996.
+%
+% \end{thebibliography}
+%
+%
+% \Finale
+%
+\endinput
+
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+
+
+

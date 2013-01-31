@@ -1,0 +1,1987 @@
+%\iffalse
+%<*copyright>
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Rangen.sty package,                  2000-3-05        %%
+%% Copyright (C) 1999-2002  D. P. Story                 %%
+%%   dpstory@uakron.edu                                 %%
+%%                                                      %%
+%% This program can redistributed and/or modified under %%
+%% the terms of the LaTeX Project Public License        %%
+%% Distributed from CTAN archives in directory          %%
+%% macros/latex/base/lppl.txt; either version 1 of the  %%
+%% License, or (at your option) any later version.      %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%</copyright>
+%<package>\NeedsTeXFormat{LaTeX2e}[1997/12/01]
+%<package>\ProvidesPackage{rangen}
+%<package> [2009/04/18 v1.3e Rangen: Generate Random Questions (dps)]
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage[colorlinks,hyperindex]{hyperref}
+%\pdfstringdefDisableCommands{\let\\\textbackslash}
+%\EnableCrossrefs \CodelineIndex
+\begin{document}
+  \GetFileInfo{rangen.sty}
+%  \settowidth{\oddsidemargin}{0pt}%
+%   \setlength{\evensidemargin}{0pt}
+%   \setlength{\marginparsep}{0pt}
+%    \setlength{\marginparwidth}{0pt}
+%  \setlength\textwidth{6in}
+%  \hoffset=.5in
+%  \hsize = 6in
+  \title{\textsf{Rangen}\texorpdfstring{\\}{:} Random Generation of Integer, Rational, and Real Numbers with
+    Applications to the \texttt{exercise}, \texttt{quiz}, and \texttt{shortquiz} environments of \textsf{Exerquiz}}
+  \author{D. P. Story\\
+    Email: \texttt{dpstory@uakron.edu}}
+  \date{processed \today}
+  \maketitle
+  \tableofcontents
+  \let\Email\texttt
+  \DocInput{rangen.dtx}
+  \PrintIndex
+\end{document}
+%</driver>
+% \fi
+% \MakeShortVerb{|}
+% \StopEventually{}
+%
+% \DoNotIndex{\def,\edef,\gdef,\xdef,\global,\long,\let}
+% \DoNotIndex{\expandafter,\string,\the,\ifx,\else,\fi}
+% \DoNotIndex{\csname,\endcsname,\relax,\begingroup,\endgroup}
+% \DoNotIndex{\DeclareTextCommand,\DeclareTextCompositeCommand}
+% \DoNotIndex{\space,\@empty,\special}
+%
+%    \begin{macrocode}
+%<*package>
+%    \end{macrocode}
+% \section{Introduction}
+%
+% This package provides some  commands for creating randomly generated integers, rational,
+% and real numbers.  There are options for specifying constraints on the generation of the numbers.
+% Companion JavaScript functions are developed to use these random numbers as part of a
+% question in a \texttt{shortquiz} or \texttt{quiz}. The syntax of this package can be used
+% to pose number-related questions, the JavaScript can be used to create the answer to the
+% question based on a formula. You'll have to see it to believe it.
+%
+% \section{The Main Code}
+%
+% \subsection{Declare Options}
+%
+% This package has not options, but uses the really nice \textsf{lcg} Package,
+% by Erich Janka (\texttt{janka@utanet.at}). We simply pass any
+% options on to \textsf{lcd}.
+%    \begin{macrocode}
+\newcount\seedCnt
+\DeclareOption{testmode}{%
+    \InputIfFileExists{\jobname.seed}{}{\def\thisseed{1}}%
+    \PassOptionsToPackage{seed=\thisseed}{lcg}%
+    \AtEndOfPackage{\reseedEachRun}%
+}
+\def\reseedEachRun{%
+    \seedCnt=\thisseed
+    \advance\seedCnt1\relax
+    \newwrite \rngWrite
+    \immediate\openout\rngWrite \jobname.seed
+    \immediate\write\rngWrite{\string\def\string\thisseed{\the\seedCnt}}
+    \immediate\closeout\rngWrite
+}
+\def\RNG@Dec{.}
+\DeclareOption*{\PassOptionsToPackage{\CurrentOption}{lcg}}
+\ProcessOptions
+\RequirePackage{lcg}[2008/09/10]
+%    \end{macrocode}
+% Save the seed value so we can reproduce the same pseudo-random number sequence.
+%    \begin{macrocode}
+\edef\rng@saveSeed{\the\cr@nd}
+%    \end{macrocode}
+% There are three data types: Integer, Rational, and Real. The following macros
+% gives each of these types a numerical value, 0, 1 and 2, respectively.
+%    \begin{macrocode}
+\newcount\loopCnt
+\def\maxLoopLimit{10}
+\def\typeCodeForz{0}
+\def\typeCodeForq{1}
+\def\typeCodeForr{2}
+%    \end{macrocode}
+% Some scratch count registers
+%    \begin{macrocode}
+\newcount\rng@cnta
+\newcount\rng@cntb
+%    \end{macrocode}
+% A random variable is specified using a control sequence, e.g. \cs{a}. The following macro
+% extracts the underlying name of the command, e.g. \verb+\@gtVarName{\a}+ expands to \texttt{a},
+% and returns the name as the expansion of the macro \cs{@varName}.
+%    \begin{macrocode}
+\def\@getVarName#1{%
+    \edef\@varName{\expandafter\@gobble\string#1}%
+}
+%    \end{macrocode}
+% The command \cs{@getVarType} takes one argument, a random variable, e.g., \cs{a}. This
+% command defines a macro \cs{varType} which expands to the data type the random variable is.
+%    \begin{macrocode}
+\def\@getVarType#1{%
+    \@getVarName{#1}\edef\varType{\csname typeof@\@varName\endcsname}}
+%    \end{macrocode}
+% \subsection{GCD and Rational Reduction Commands}
+%    \begin{macro}{\gcd}
+% Here we use Euclid's Algorithm to find the greatest common divisor of two integers.
+%    \begin{macrocode}
+\def\gcd#1#2{{% #1 = a, #2 = b
+    \ifnum#2=0 \edef\next{#1}\else
+        \@tempcnta=#1 \@tempcntb=#2 \divide\@tempcnta by\@tempcntb
+        \multiply\@tempcnta by\@tempcntb  % q*b
+        \@tempcntb=#1
+        \advance\@tempcntb by-\@tempcnta % remainder in \@tempcntb
+        \ifnum\@tempcntb=0
+            \@tempcnta=#2
+            \ifnum\@tempcnta < 0 \@tempcnta=-\@tempcnta\fi
+            \xdef\gcd@next{\noexpand%
+                \def\noexpand\thegcd{\the\@tempcnta}}%
+        \else
+            \xdef\gcd@next{\noexpand\gcd{#2}{\the\@tempcntb}}%
+        \fi
+    \fi}\gcd@next
+}
+%    \end{macrocode}
+%    \end{macro}
+%    \begin{macro}{\lcm}
+% Now compute the least common multiple
+%    \begin{macrocode}
+\def\lcm#1#2{% #1 = a, #2 = b
+    \gcd{#1}{#2}%
+    {\@tempcnta=#1
+    \multiply\@tempcnta by#2
+    \divide\@tempcnta by\thegcd
+    \xdef\thelcm{\the\@tempcnta}}%
+}
+%    \end{macrocode}
+%    \end{macro}
+%    \begin{macro}{\amodb}
+% Modular arithmetic \texttt{a mod b}, returns its results
+% as a macro \cs{retnmod}.
+%    \begin{macrocode}
+\def\amodb#1#2{% #1 = a, #2 = b
+    {\@tempcnta=#1
+    \divide\@tempcnta by#2
+    \multiply\@tempcnta by#2
+    \@tempcntb=#1
+    \advance\@tempcntb by-\@tempcnta
+    \xdef\retnmod{\the\@tempcntb}}%
+}
+%    \end{macrocode}
+%    \end{macro}
+%    \begin{macro}{\reduceFrac}
+% Reduce a fraction to lowest terms. The first argument is the numerator and the second
+% argument is the denominator. This command computes the \texttt{gcd} of the two integers,
+% divides each by the \texttt{gcd}, and returns the results in the two scratch count
+% registers \cs{@tempcnta} and \cs{@tempcntb}.
+%    \begin{macrocode}
+\newcommand\reduceFrac[2]
+{%
+    \gcd{#1}{#2}{\@tempcnta=#1 \divide\@tempcnta by\thegcd
+    \@tempcntb=#2 \divide\@tempcntb by\thegcd
+    \ifnum\@tempcntb<0\relax
+%    \end{macrocode}
+% Always have the denominator as positive.
+%    \begin{macrocode}
+        \@tempcntb=-\@tempcntb
+        \@tempcnta=-\@tempcnta
+    \fi
+    \xdef\rfNumer{\the\@tempcnta}\xdef\rfDenom{\the\@tempcntb}}%
+}
+%    \end{macrocode}
+%    \end{macro}
+%    \begin{macro}{\convertRatTo}
+% Converts a fraction \texttt{a/b} (\texttt{\#1/\#2}) to a denominator of \texttt{\#3}. Will return
+% new numerator in \cs{rnd@Cnta} register.  This will be exact if
+% \texttt{\#2} divides \texttt{\#3}.
+%    \begin{macrocode}
+\def\convertRatTo#1#2#3{{%
+    \@tempcnta=#3
+    \multiply\@tempcnta by#1
+    \divide\@tempcnta by#2
+    \xdef\rng@retn@num{\the\@tempcnta}%
+}}
+%    \end{macrocode}
+%    \end{macro}
+%    \begin{macro}{\RNGadd}
+% This is the support for rational arithmetic (addition and subtraction).
+% Adds two rational numbers, \texttt{\#1} and \texttt{\#2} together. These two rational numbers must have been defined
+% already, possibly by \cs{defineQ}. Usage: \verb+\RNGadd\a\b+. This macro returns a rational number:
+% the numerator in the \cs{rfNumer} command, and the denominator in the \cs{rfDenom} command.
+% For example,
+%\begin{verbatim}
+%\defineQ\a{1}{3}\defineQ\b{3}{5}\RNGadd\a\b
+%\makeatletter
+%The sum of $\frac{\nOf\a}{\dOf\a} + \frac{\nOf\b}{\dOf\b}
+%        = \frac{\rfNumer}{\rfDenom}$
+%\makeatother
+%\end{verbatim}
+%This code typesets as $\frac{1}{3}+\frac{3}{5}=\frac{14}{15}$.
+%    \begin{macrocode}
+\newcommand\RNGadd[2]{%
+    \rng@cnta=\nOf#1 \multiply\rng@cnta by\dOf#2
+    \rng@cntb=\nOf#2 \multiply\rng@cntb by\dOf#1
+    \advance\rng@cnta by\the\rng@cntb
+    \rng@cntb=\dOf#1 \multiply\rng@cntb by\dOf#2
+    \reduceFrac{\the\rng@cnta}{\the\rng@cntb}
+}
+%    \end{macrocode}
+%    \end{macro}
+% This is a simple macro for detecting if the argument \texttt{\#1}
+% is a macro or not. Used when interval definitions of the
+% \cs{RandomZ/Q/R} macros.
+%    \begin{macrocode}
+\def\rng@isControl#1{\@ifundefined{\expandafter\@gobble\string#1}%
+    {\let\rng@isC@ntrol=0}{\let\rng@isC@ntrol=1}}
+%    \end{macrocode}
+% This command determines if its argument has an \texttt{*}
+% prefixed or post-fixed to its argument.
+% If \cs{rng@isStariii} equals \texttt{*}, then an \texttt{*} exists.
+% \begin{itemize}
+%   \item If there is no \texttt{*}, then the argument is \texttt{\#1}
+%   \item \cs{rng@isStariii} equals \texttt{*}, there is \texttt{*},
+%   If the argument has the form \cs{*a}, then \cs{rng@isStari} is \cs{@empty}
+%   and the argument, stripped of the \texttt{*}, is given as \cs{rng@isStarii}
+%   \item \cs{rng@isStariii} equals \texttt{*}, there is \texttt{*},
+%   If the argument has the form \cs{a*}, then \cs{rng@isStarii} is \cs{@empty}
+%   and the argument, stripped of the \texttt{*}, is given as \cs{rng@isStari}
+%\end{itemize}
+%    \begin{macrocode}
+\def\rng@existStar#1{\rng@existSt@r#1**\@nil}
+\def\rng@existSt@r#1*#2*#3\@nil{\def\rng@isStari{#1}%
+    \def\rng@isStarii{#2}\def\rng@isStariii{#3}%
+}
+\def\rng@NameEndpoint#1{%
+    \ifx\rng@isStari\@empty
+        \edef#1{\expandafter\noexpand\rng@isStarii}%
+    \else\ifx\rng@isStarii\@empty
+        \edef#1{\expandafter\noexpand\rng@isStari}%
+    \fi\fi
+}
+%    \end{macrocode}
+% \subsection{Define an Integer and a Rational}
+%    \begin{macro}{\defineZ}
+% Define a integer for use in other macros.
+%    \begin{macrocode}
+\newcommand\defineZ[2]
+{%
+    \@getVarName#1\relax
+    \expandafter\def\csname typeof@\@varName\endcsname{0}%
+    \expandafter\edef\csname n@\@varName\endcsname{#2}%
+    \expandafter\edef\csname d@\@varName\endcsname{1}%
+    \edef\display@TeXfmt{#2}\edef\inline@TeXfmt{#2}%
+    \ifnum#2=1\relax\rng@makeOneFmtDefns
+    \else\ifnum#2=-1\relax\rng@makeMinusOneFmtDefns
+    \else\rng@makeOtherFmtDefns\fi\fi
+    \expandafter\let\csname\@varName*\endcsname\display@TeXfmt
+    \expandafter\let\csname\@varName!\endcsname\inline@TeXfmt
+    \expandafter\edef\csname\@varName\endcsname{#2}%
+}
+%    \end{macrocode}
+%    \end{macro}
+%    \begin{macro}{\defineQ}
+% The following macro defines a rational number. Usage
+% \verb+\defineQ\a{1}{2}+. This defines the rational number 1/2 and
+% gives it a name, \cs{a}.
+%    \begin{macrocode}
+\newcommand\defineQ[3]
+{%
+    \@getVarName#1\relax
+    \expandafter\def\csname typeof@\@varName\endcsname{1}%
+    \expandafter\edef\csname n@\@varName\endcsname{#2}%
+    \expandafter\edef\csname d@\@varName\endcsname{#3}%
+    \edef\display@TeXfmt{\frac{#2}{#3}}\edef\inline@TeXfmt{#2/#3}%
+    \ifnum#2=#3\relax\rng@makeOneFmtDefns
+    \else\ifnum#2=-#3\relax\rng@makeMinusOneFmtDefns
+    \else\rng@makeOtherFmtDefns\fi\fi
+    \expandafter\let\csname\@varName*\endcsname\display@TeXfmt
+    \expandafter\let\csname\@varName!\endcsname\inline@TeXfmt
+    \expandafter\edef\csname\@varName\endcsname{#2/#3}%
+    \simplifyCurrentQ
+}
+%    \end{macrocode}
+%    \end{macro}
+%    \begin{macro}{\defineR}
+% This macro computes: (1) \cs{rng@intpart}; (2) \cs{rng@fracpart};
+% (3) \cs{rndnDec} (the number of decimals of the fractional part);
+% (4) \cs{rndPower} (the power of ten determined by \cs{rndnDec}).
+%    \begin{macrocode}
+\newcommand{\defineR}[2]{%
+    \@getVarName{#1}\RNGparseDec{#2}%
+    \expandafter\def\csname typeof@\@varName\endcsname{2}%
+    \reduceFrac{\rng@intpart\rng@fracpart}{\rndPower}%
+    \expandafter\edef\csname n@\@varName\endcsname{\rfNumer}%
+    \expandafter\edef\csname d@\@varName\endcsname{\rfDenom}%
+    \edef\display@TeXfmt{#2}\edef\inline@TeXfmt{#2}%
+    \ifnum\rfNumer=1\relax\rng@makeOneFmtDefns
+    \else\ifnum\rfNumer=-1\relax\rng@makeMinusOneFmtDefns
+    \else\rng@makeOtherFmtDefns\fi\fi
+    \expandafter\let\csname\@varName*\endcsname\display@TeXfmt
+    \expandafter\let\csname\@varName!\endcsname\inline@TeXfmt
+    \expandafter\edef\csname\@varName\endcsname{#2}%
+    \simplifyCurrentR
+}
+\newcommand{\simplifyCurrentR}{%
+    \ifnum\csname d@\@varName\endcsname=1
+    \expandafter\defineZ
+    \csname\@varName\endcsname{\csname n@\@varName\endcsname}\fi
+}
+%    \end{macrocode}
+%    \end{macro}
+%    \begin{macrocode}
+\def\rng@makeOneFmtDefns{%
+% inline
+    \expandafter\def\csname\@varName!e\endcsname{}%
+    \expandafter\def\csname\@varName!c\endcsname{}%
+% display
+    \expandafter\def\csname\@varName*e\endcsname{}%
+    \expandafter\def\csname\@varName*c\endcsname{}%
+}
+\def\rng@makeMinusOneFmtDefns{%
+% inline
+    \expandafter\def\csname\@varName!e\endcsname{-1}%
+    \expandafter\def\csname\@varName!c\endcsname{-}%
+% display
+    \expandafter\def\csname\@varName*e\endcsname{-1}%
+    \expandafter\def\csname\@varName*c\endcsname{-}%
+}
+\def\rng@makeOtherFmtDefns{%
+% inline
+    \expandafter\let\csname\@varName!e\endcsname\inline@TeXfmt
+    \expandafter\let\csname\@varName!c\endcsname\inline@TeXfmt
+% display
+    \expandafter\let\csname\@varName*e\endcsname\display@TeXfmt
+    \expandafter\let\csname\@varName*c\endcsname\display@TeXfmt
+}
+%    \end{macrocode}
+%
+% \subsection{Parse a Number}
+%
+% \subsubsection{Parsing a Rational}
+%
+%    \begin{macro}{\RNGparseRat}
+%    \begin{macrocode}
+\def\RNGparseRat#1{\expandafter\@chkslash#1//\@nil}
+\def\@chkslash#1/#2/#3\@nil{%
+    \def\rng@num{#1}\def\rng@denom{#2}%
+    \def\rng@parseQ@iii{#3}%
+    \ifx\rng@denom\@empty\def\rng@denom{1}\fi
+}
+%    \end{macrocode}
+%    \end{macro}
+%
+% \subsubsection{Parsing a Real}
+%
+%    \begin{macro}{\RNGparseDec}
+% The argument \texttt{\#1} is a decimal number (or integer)
+% This macro computes: (1) \cs{rng@intpart}; (2) \cs{rng@fracpart};
+% (3) \cs{rndnDec} (the number of decimals of the fractional part);
+% (4) \cs{rndPower} (the power of ten determined by \cs{rndnDec}).
+% These variables will be overwritten the next time this command
+% is executed.
+%    \begin{macrocode}
+\newcommand{\RNGparseDec}[1]{\edef\parse@argi{#1}%
+    \expandafter\@chkdec\parse@argi..\@nil}
+\def\@chkdec#1.#2.#3\@nil{%
+    \def\rng@intpart{#1}\def\rng@fracpart{#2}%
+    \def\rng@parseR@iii{#3}\rng@getnDec}
+\def\rng@getnDec{%
+    \begingroup
+        \ifx\rng@fracpart\@empty\gdef\rndnDec{0}\gdef\rndPower{1}\else
+        \count0=0\relax\count2=1\relax
+        \expandafter\cntNumDec\rng@fracpart\end\fi
+    \endgroup}
+\def\cntNumDec#1#2\end{%
+    \advance\count0by1
+    \def\rng@arg{#2}%
+    \ifx\rng@arg\@empty
+        \xdef\rndnDec{\the\count0}%
+        \xdef\rndPower{1\@nameuse{rng@tz\the\count0}}%
+        \let\rng@next\relax
+    \else
+        \def\rng@next{\cntNumDec#2\end}%
+    \fi\rng@next
+}
+%    \end{macrocode}
+%    \end{macro}
+%    \begin{macro}{\nDivisionsPowerOfTen}
+% This is a control of how many nodes to create in an interval
+% of real numbers, as defined by \cs{RandomR}. The argument is
+% an integer between 1 and 4 inclusive.
+%    \begin{macrocode}
+\newcommand{\nDivisionsPowerOfTen}[1]{%
+    \begingroup
+    \count0=#1\relax
+    \ifnum\count0>4\relax
+        \PackageError{rangen}{Number of subdivisions too large}%
+        {Reduce the argument of \string\nDivisionsPowerOfTen.}%
+    \else
+        \ifnum\count0<1\relax
+        \PackageError{rangen}{Number of subdivisions too large}%
+        {Increase the argument of \string\nDivisionsPowerOfTen.}%
+    \fi\fi
+    \xdef\RNGpowerOfTen{1\@nameuse{rng@tz#1}}%
+    \endgroup
+}
+\nDivisionsPowerOfTen{2}
+%    \end{macrocode}
+%    \end{macro}
+%\subsection{Creating Random Things}
+%\subsubsection{Random Integer}
+%    \begin{macro}{\RandomZ}
+% Randomly generates an integer in the specified range of values.
+%\begin{verbatim}
+%[#1] Optional parameter to modify the variable.
+% #2  The random variable being defined, e.g., \a
+% #3  lower limit of random integer
+% #4  upper limit of random integer
+%\end{verbatim}
+%    \begin{macrocode}
+\newcommand\RandomZ[4][]
+{%
+    \def\rng@ne@values{}%
+    \setkeys{rangen}{ne,#1}%
+%    \end{macrocode}
+% Now see if there is an \texttt{*}, and get un-stripped
+% argument.
+%
+% The \cs{rng@isControl} lets \cs{rng@isC@ntrol} to 0 if the arg is undefined,
+% and lets \cs{rng@isC@ntrol} to 1 if it is defined.
+% Check the left endpoint:
+%    \begin{macrocode}
+    \let\rng@CtrlLEP=0\let\rng@CtrlUEP=0%
+    \let\rng@makeLEPStrict=0\let\rng@makeUEPStrict=0%
+%    \end{macrocode}
+% \paragraph*{Left endpoint.}
+%    \begin{macrocode}
+    \rng@existStar{#3}\rng@NameEndpoint{\rng@LEP}%
+    \if\rng@isStariii*\edef\tmp@exp{%
+        \noexpand\rng@isControl{\expandafter\noexpand\rng@LEP}}\tmp@exp
+        \if\rng@isC@ntrol1% a control sequence
+            \let\rng@CtrlLEP=1\let\rng@makeLEPStrict=1%
+%    \end{macrocode}
+% The LEP is a control sequence with a star, we need to increment the value
+% of \cs{rng@LEP} to the next largest integer.
+%    \begin{macrocode}
+            \edef\tmp@exp{\noexpand%
+                \@getVarType{\expandafter\noexpand\rng@LEP}}\tmp@exp
+            \ifcase\varType % integer
+                \rng@cnta=\rng@LEP
+            \or % rational
+                \rng@dima=\expandafter\nOf\rng@LEP pt
+                \divide\rng@dima by\expandafter\dOf\rng@LEP
+                \defineR{\rng@LEP}{\strip@pt\rng@dima}%
+                \RNGparseDec{\rng@LEP}%
+                \rng@cnta=\rng@intpart
+            \or % real
+                \defineR{\rng@LEP}{\rng@LEP}%
+                \RNGparseDec{\rng@LEP}%
+                \rng@cnta=\rng@intpart
+            \fi
+            \advance\rng@cnta by1\relax
+            \defineZ{\rng@LEP}{\the\rng@cnta}%
+        \else
+%    \end{macrocode}
+% Not a control sequence but has a star
+%    \begin{macrocode}
+            \defineZ{\rng@LEP}{\rng@LEP}%
+        \fi
+    \else
+%    \end{macrocode}
+% No star, control sequence or not?
+%    \begin{macrocode}
+        \rng@isControl{#3}%
+        \if\rng@isC@ntrol1% control sequence
+            \let\rng@CtrlLEP=1%
+            \def\rng@LEP{#3}%
+            \@getVarType{#3}%
+            \ifcase\varType % integer
+                \defineZ{\rng@LEP}{#3}%
+            \or % rational
+                \rng@dima=\nOf{#3}pt
+                \divide\rng@dima by\dOf{#3}%
+                \defineR{\rng@LEP}{\strip@pt\rng@dima}%
+                \RNGparseDec{\rng@LEP}%
+                \defineZ{\rng@LEP}{\rng@intpart}%
+            \or % real
+                \defineR{\rng@LEP}{\rng@LEP}%
+                \RNGparseDec{\rng@LEP}%
+                \defineZ{\rng@LEP}{\rng@intpart}%
+            \fi
+        \else
+%    \end{macrocode}
+% A number, no star
+%    \begin{macrocode}
+            \defineZ{\rng@LEP}{#3}%
+        \fi
+    \fi
+%    \end{macrocode}
+% \paragraph*{Right endpoint.}
+%    \begin{macrocode}
+    \rng@existStar{#4}\rng@NameEndpoint{\rng@UEP}%
+    \if\rng@isStariii*\edef\tmp@exp{%
+        \noexpand\rng@isControl{\expandafter\noexpand\rng@UEP}}\tmp@exp
+        \if\rng@isC@ntrol1% a control sequence
+            \let\rng@CtrlUEP=1\let\rng@makeUEPStrict=1%
+%    \end{macrocode}
+% The UEP is a control sequence with a star, we need to increment the value
+% of \cs{rng@UEP} to the next largest integer.
+%    \begin{macrocode}
+            \edef\tmp@exp{\noexpand%
+                \@getVarType{\expandafter\noexpand\rng@UEP}}\tmp@exp
+            \ifcase\varType % integer
+                \rng@cnta=\rng@UEP
+            \or % rational
+                \rng@dima=\expandafter\nOf\rng@UEP pt
+                \divide\rng@dima by\expandafter\dOf\rng@UEP
+                \defineR{\rng@UEP}{\strip@pt\rng@dima}%
+                \RNGparseDec{\rng@UEP}%
+                \rng@cnta=\rng@intpart
+            \or % real
+                \defineR{\rng@UEP}{\rng@UEP}%
+                \RNGparseDec{\rng@UEP}%
+                \rng@cnta=\rng@intpart
+            \fi
+            \advance\rng@cnta by-1\relax
+            \defineZ{\rng@UEP}{\the\rng@cnta}%
+        \else
+%    \end{macrocode}
+% Not a control sequence but has a star
+%    \begin{macrocode}
+            \defineZ{\rng@UEP}{\rng@UEP}%
+        \fi
+    \else
+%    \end{macrocode}
+% No star, control sequence or not?
+%    \begin{macrocode}
+        \rng@isControl{#4}%
+        \if\rng@isC@ntrol1% control sequence
+            \let\rng@CtrlUEP=1%
+            \def\rng@UEP{#4}%
+            \@getVarType{#4}%
+            \ifcase\varType % integer
+                \defineZ{\rng@UEP}{#4}%
+            \or % rational
+                \rng@dima=\nOf{#4}pt
+                \divide\rng@dima by\dOf{#4}%
+                \defineR{\rng@UEP}{\strip@pt\rng@dima}%
+                \RNGparseDec{\rng@UEP}%
+                \defineZ{\rng@UEP}{\rng@intpart}%
+            \or % real
+                \defineR{\rng@UEP}{\rng@UEP}%
+                \RNGparseDec{\rng@UEP}%
+                \defineZ{\rng@UEP}{\rng@intpart}%
+            \fi
+        \else
+%    \end{macrocode}
+% A number, no star, assume it is an integer
+%    \begin{macrocode}
+            \defineZ{\rng@UEP}{#4}%
+        \fi
+    \fi
+%    \end{macrocode}
+% \textbf{To Do.} Check if LEP is less than UEP, if not, notify user.
+% Save the random variable, e.g., \cs{a}
+%    \begin{macrocode}
+    \def\@currentName{#2}%
+%    \end{macrocode}
+% Record the variable type
+%    \begin{macrocode}
+    \@getVarName{#2}%
+    \expandafter\def\csname typeof@\@varName\endcsname{0}%
+%    \end{macrocode}
+% Save the range of this variable
+%    \begin{macrocode}
+    \expandafter\edef\csname first@\@varName\endcsname{\rng@LEP}%
+    \expandafter\edef\csname last@\@varName\endcsname{\rng@UEP}%
+%    \end{macrocode}
+% Now get a value for the variable using \cs{rand}, defined in \texttt{lcg}
+%    \begin{macrocode}
+    \rng@chgrand[first=\rng@LEP,last=\rng@UEP]\rand
+%    \end{macrocode}
+% Now define the integer.
+%    \begin{macrocode}
+    \defineZ{#2}{\arabic{rand}}%
+%    \end{macrocode}
+% \paragraph*{Constraints}
+% We have a random Z, we now try to satisfy the \texttt{ne} condition.
+%
+% The macro \cs{rangen@ne} can be of the form \verb!{1,3,4,5}!. We try to
+% satisfy all the conditions specified by \cs{rangen@ne}
+%    \begin{macrocode}
+    \ifx\rangen@ne\@empty\else\loopCnt=0\relax
+%    \end{macrocode}
+% We will try a total number of \cs{maxLoopLimit} to meet the required
+% conditions.
+%    \begin{macrocode}
+        \@whilenum\loopCnt<\maxLoopLimit\do{%
+%    \end{macrocode}
+% Set \cs{rng@cnta=1}, if \cs{rng@cnta} is still 1 at the end of this
+% loop, the condition is satisfied.
+% conditions.
+%    \begin{macrocode}
+            \rng@cnta=1\relax
+%    \end{macrocode}
+% We use a \cs{@for} loop to run through all the NE values
+%    \begin{macrocode}
+            \@for\ne@@tmp:=\rangen@ne\do{%
+%    \end{macrocode}
+% If the current RV is equal to the current NE value, we fail, so we
+% ``and'' a zero into the \cs{rng@cnta} register.
+%    \begin{macrocode}
+                \ifnum\value{rand}=\ne@@tmp\relax
+                    \multiply\rng@cnta0\relax
+                \else
+%    \end{macrocode}
+% \dots otherwise, we ``and'' a one.
+%    \begin{macrocode}
+                    \multiply\rng@cnta1\relax
+                \fi
+            }%
+%    \end{macrocode}
+% If \cs{rng@cnt} is still equal to 1, all conditions have been met,
+% in this case we set \verb!\loopCnt=\maxLoopLimit! so we can exit the outer loop.
+%    \begin{macrocode}
+            \ifnum\rng@cnta=1\relax % all conditions met
+                \loopCnt=\maxLoopLimit
+            \else % if \rng@cnta \ne 1, try again
+%    \end{macrocode}
+% Otherwise, we increment the loop, see if we have gone the limit, if
+% not, loop back with a new random choice.
+%    \begin{macrocode}
+                \advance\loopCnt1\relax
+                \ifnum\loopCnt=\maxLoopLimit
+                    \PackageWarning{rangen}{Not all conditions met
+                        after \maxLoopLimit\space tries}%
+                \else
+                    \rng@chgrand[first=\rng@LEP,last=\rng@UEP]\rand
+                \fi
+            \fi
+        }%
+    \fi
+%    \end{macrocode}
+% Whether we fail or succeed, we'll go with the last RV. Hopefully, the
+% author is aware of the log file, and re-compile, possibly with a
+% wider range for the variable, or with a larger value of \cs{maxLoopLimit}.
+%
+%    \begin{macrocode}
+    \defineZ{#2}{\arabic{rand}}%
+}
+%    \end{macrocode}
+%    \end{macro}
+%    \begin{macrocode}
+\def\updateZ#1#2{%
+    \@getVarName#1\relax
+    \expandafter\edef\csname\@varName\endcsname{#2}%
+    \expandafter\edef\csname n@\@varName\endcsname{#2}%
+    \expandafter\edef\csname d@\@varName\endcsname{1}%
+}
+%    \end{macrocode}
+%\subsubsection{Random Rational}
+%    \begin{macro}{\RandomQ}
+% Randomly generate a rational number. The parameters for \cs{RandomQ} are
+%\begin{verbatim}
+%[#1] Optional parameter to modify the variable.
+% #2  The random variable being defined, e.g., \a
+%[#3] maximum denominator permitted (optional)
+% #4  rational number for lower endpoint of range
+% #5  rational number for upper endpoint of range
+%\end{verbatim}
+% Here, it is assume that the first rational number is less than the second.  This macro
+% will randomly generate a rational number between rat1 and rat2, with a maximum denominator
+% specified in \texttt{\#3}.
+%
+% \medskip\noindent\textbf{Note: }To allow for random endpoints, if one or both are real numbers, we convert
+% them to rational numbers in \cs{@RandomQ}.
+%
+% We begin by getting the first two parameters:
+%\begin{verbatim}
+%[#1] Optional parameter to modify the variable.
+% #2  The random variable being defined, e.g., \a
+%\end{verbatim}
+%    \begin{macrocode}
+\newcommand{\RandomQ}[2][]
+{%
+    \setkeys{rangen}{ne,#1}%
+    \def\rq@currentName{#2}%
+    \@RandomQ
+}
+%    \end{macrocode}
+% We use \cs{@RandomQ} to get the last three parameters of \cs{RandomQ}.
+% If the endpoints are not rational, they are converted to rationals.
+%\begin{verbatim}
+%[#1] maximum denominator permitted (optional)
+% #2  rational number for lower endpoint of range
+% #3  rational number for upper endpoint of range
+%\end{verbatim}
+%    \begin{macrocode}
+\newcommand{\@RandomQ}[3][]
+{%
+%    \end{macrocode}
+% Now see if there is an \texttt{*}, and get un-stripped
+% argument.
+%
+% The \cs{rng@isControl} lets \cs{rng@isC@ntrol} to 0 if the arg is undefined,
+% and lets \cs{rng@isC@ntrol} to 1 if it is defined.
+% Check the left endpoint:
+%    \begin{macrocode}
+    \let\rng@CtrlLEP=0\let\rng@CtrlUEP=0%
+    \let\rng@makeLEPStrict=0\let\rng@makeUEPStrict=0%
+%    \end{macrocode}
+% \paragraph*{Left endpoint}
+%    \begin{macrocode}
+    \rng@existStar{#2}\rng@NameEndpoint{\rng@LEP}%
+    \if\rng@isStariii*\edef\tmp@exp{\noexpand%
+            \rng@isControl{\expandafter\noexpand\rng@LEP}}\tmp@exp
+        \if\rng@isC@ntrol1% a control sequence
+            \let\rng@CtrlLEP=1\let\rng@makeLEPStrict=1%
+%    \end{macrocode}
+% The LEP is a control sequence we get its type and convert to rational
+%    \begin{macrocode}
+            \edef\tmp@exp{\noexpand%
+                \@getVarType{\expandafter\noexpand\rng@LEP}}\tmp@exp
+            \ifcase\varType % integer
+                \defineQ{\rng@LEP}{\rng@LEP}{1}%
+            \or % rational
+                \edef\tmp@exp{\noexpand%
+                \defineQ{\noexpand\rng@LEP}{\expandafter\nOf\rng@LEP}%
+                    {\expandafter\dOf\rng@LEP}}\tmp@exp
+            \or % real
+                \defineR{\rng@LEP}{\rng@LEP}%
+                \RNGparseDec{\rng@LEP}%
+                \defineQ{\rng@LEP}{\rng@intpart}{\rng@fracpart}%
+            \fi
+        \else
+%    \end{macrocode}
+% Not a control sequence but has a star, a number, we assume rational
+%    \begin{macrocode}
+            \RNGparseRat{\rng@LEP}%
+            \defineQ{\rng@UEP}{\rng@intpart}{\rng@fracpart}%
+        \fi
+    \else
+%    \end{macrocode}
+% No star, is it a control sequence or not?
+%    \begin{macrocode}
+        \rng@isControl{#2}%
+        \if\rng@isC@ntrol1% a control sequence
+            \@getVarType{#2}%
+            \ifcase\varType % integer
+                \defineQ{\rng@LEP}{#2}{1}%
+            \or % rational
+                \defineQ{\rng@LEP}{\nOf{#2}}{\dOf{#2}}%
+            \or % real
+                \defineR{\rng@LEP}{#2}%
+                \RNGparseDec{\rng@LEP}%
+                \defineQ{\rng@LEP}{\rng@intpart}{\rng@fracpart}%
+            \fi
+        \else % a number, required to be rational
+            \RNGparseRat{#2}%
+            \defineQ{\rng@LEP}{\rng@num}{\rng@denom}%
+        \fi
+    \fi
+%    \end{macrocode}
+% \paragraph*{Right endpoint}
+%    \begin{macrocode}
+    \rng@existStar{#3}\rng@NameEndpoint{\rng@UEP}%%
+    \if\rng@isStariii*%
+        \edef\tmp@exp{\noexpand%
+            \rng@isControl{\expandafter\noexpand\rng@UEP}}\tmp@exp
+        \if\rng@isC@ntrol1% a control sequence
+            \let\rng@CtrlUEP=1\let\rng@makeUEPStrict=1%
+%    \end{macrocode}
+% The UEP is a control sequence we get its type and convert to rational
+%    \begin{macrocode}
+            \edef\tmp@exp{\noexpand%
+                \@getVarType{\expandafter\noexpand\rng@UEP}}\tmp@exp
+            \ifcase\varType % integer
+                \defineQ{\rng@UEP}{\rng@UEP}{1}%
+            \or % rational
+                \edef\tmp@exp{\noexpand%
+                \defineQ{\noexpand\rng@UEP}{\expandafter\nOf\rng@UEP}%
+                    {\expandafter\dOf\rng@UEP}}\tmp@exp
+            \or % real
+                \defineR{\rng@UEP}{\rng@UEP}%
+                \RNGparseDec{\rng@UEP}%
+                \defineQ{\rng@UEP}{\rng@intpart}{\rng@fracpart}%
+            \fi
+        \else
+%    \end{macrocode}
+% Not a control sequence but has a star, a number, we assume rational
+%    \begin{macrocode}
+            \RNGparseRat{\rng@UEP}%
+            \defineQ{\rng@UEP}{\rng@intpart}{\rng@fracpart}%
+        \fi
+    \else
+%    \end{macrocode}
+% No star, is it a control sequence or not?
+%    \begin{macrocode}
+        \rng@isControl{#3}%
+        \if\rng@isC@ntrol1% a control sequence
+            \@getVarType{#3}%
+            \ifcase\varType % integer
+                \defineQ{\rng@UEP}{#3}{1}%
+            \or % rational
+                \defineQ{\rng@UEP}{\nOf{#3}}{\dOf{#3}}%
+            \or % real
+                \defineR{\rng@UEP}{#3}%
+                \RNGparseDec{\rng@UEP}%
+                \defineQ{\rng@UEP}{\rng@intpart}{\rng@fracpart}%
+            \fi
+        \else % a number, required to be rational
+            \RNGparseRat{#3}%
+            \defineQ{\rng@UEP}{\rng@num}{\rng@denom}%
+        \fi
+    \fi
+    \@@RandomQ{#1}{\nOf{\rng@LEP}}{\dOf{\rng@LEP}}%
+        {\nOf{\rng@UEP}}{\dOf{\rng@UEP}}%
+}
+%    \end{macrocode}
+% Once all the parameters have been acquired, and
+% any needed conversions are made, we call \cs{@@RandomQ} which
+% actually generates the random rational.
+%\begin{verbatim}
+% #1 maximum denominator permitted
+% #2 numerator of first rational
+% #3 denominator of first rational
+% #4 numerator of second rational
+% #5 denominator of second rational
+%\end{verbatim}
+%    \begin{macrocode}
+\newcommand{\@@RandomQ}[5]
+{%
+%    \end{macrocode}
+% Now take parameters \texttt{\#2}--\texttt{\#5}, and make into two rationals
+%    \begin{macrocode}
+    \updateQ\@rqi{#2}{#3}\updateQ\@rqii{#4}{#5}%
+%    \end{macrocode}
+% Find least common multiple between \texttt{\#3}, \texttt{\#5} and \texttt{\#1}
+%    \begin{macrocode}
+    \lcm{#3}{#5}\edef\@thelcm{\thelcm}%
+    \def\@maxDenom{#1}%
+    \ifx\@maxDenom\@empty\edef\@maxDenom{\@thelcm}\else
+        \lcm{\@thelcm}{#1}\edef\@thelcm{\thelcm}\fi
+%    \end{macrocode}
+% Now convert all rationals to have a denominator of \cs{@thelcm}
+%    \begin{macrocode}
+    \convertRatTo{\nOf\@rqi}{\dOf\@rqi}{\@thelcm}%
+    \updateQ\@@rqi{\rng@retn@num}{\@thelcm}%
+    \convertRatTo{\nOf\@rqii}{\dOf\@rqii}{\@thelcm}%
+    \updateQ\@@rqii{\rng@retn@num}{\@thelcm}%
+%    \end{macrocode}
+% get divisor
+%    \begin{macrocode}
+    \rng@cnta=\@thelcm \divide\rng@cnta by\@maxDenom
+    \edef\@divisor{\the\rng@cnta}%
+%    \end{macrocode}
+% Round up lower limit
+%    \begin{macrocode}
+    \rng@cnta=\nOf\@@rqi
+    \divide\rng@cnta by\@divisor
+    \advance\rng@cnta by1
+%    \end{macrocode}
+% Round down the upper limit
+%    \begin{macrocode}
+    \rng@cntb=\nOf\@@rqii\divide\rng@cntb by\@divisor
+%    \end{macrocode}
+% If a strict inequality is requested, we creep in a little.
+%    \begin{macrocode}
+    \if\rng@makeLEPStrict1\advance\rng@cnta1\relax\fi
+    \if\rng@makeUEPStrict1\advance\rng@cntb-1\relax\fi
+%    \end{macrocode}
+% construct numerator
+%    \begin{macrocode}
+    \expandafter\@getVarName\rq@currentName
+    \let\save@varName\@varName
+    \expandafter\edef\csname first@n@\@varName\endcsname{\the\rng@cnta}%
+    \expandafter\edef\csname last@n@\@varName\endcsname{\the\rng@cntb}%
+    \expandafter\edef\csname first@d@\@varName\endcsname{\@maxDenom}%
+    \expandafter\edef\csname last@d@\@varName\endcsname{\@maxDenom}%
+    \edef\rng@LEP{\csname first@n@\@varName\endcsname}%
+    \edef\rng@UEP{\csname last@n@\@varName\endcsname}%
+%\typeout{\@varName: first=\rng@LEP,last=\rng@UEP}%
+    \rng@chgrand[first=\rng@LEP,last=\rng@UEP]\rand
+%    \end{macrocode}
+% Record the random variable name, e.g., \cs{a}, ...
+%    \begin{macrocode}
+    \let\@currentName\rq@currentName
+    \expandafter\@getVarName\rq@currentName
+    \expandafter\defineQ\@currentName{\arabic{rand}}{\@maxDenom}%
+    \simplifyCurrentQ
+    \expandafter\defineQ\@currentName{\expandafter\nOf\@currentName}%
+        {\expandafter\dOf\@currentName}%
+%    \end{macrocode}
+%
+% \paragraph*{Constraints}
+%
+% We now attempt to satisfy the NE constraints.
+%    \begin{macrocode}
+    \ifx\rangen@ne\@empty\else\loopCnt=0\relax
+        \@whilenum\loopCnt<\maxLoopLimit\do{%
+            \rng@cnta=1\relax
+            \@for\ne@@tmp:=\rangen@ne\do{%
+%    \end{macrocode}
+% Define a rational by the name of \cs{cmp@Name}, then make  it have
+% the same denominator as \cs{@currentName}.
+%    \begin{macrocode}
+                \let\save@currentName\rq@currentName
+                \RNGparseRat{\ne@@tmp}%
+                \defineQ{\cmp@Name}{\rng@num}{\rng@denom}%
+                \let\@varName\save@varName
+                \syncronizeQs{\@varName}%
+                \ifnum\csname n@\@varName\endcsname=\n@cmp@Name
+                    \multiply\rng@cnta0\relax
+                \else
+                    \multiply\rng@cnta1\relax
+                \fi
+            }%
+            \ifnum\rng@cnta=1\relax % all conditions met
+                \loopCnt=\maxLoopLimit
+            \else % if \rng@cnta \ne 1, try again
+                \advance\loopCnt1\relax
+                \ifnum\loopCnt=\maxLoopLimit
+                    \PackageWarning{rangen}{Not all conditions met
+                        after \maxLoopLimit\space tries}%
+                \else
+                    \rng@chgrand[first=\rng@LEP,last=\rng@UEP]\rand
+                    \expandafter\@getVarName\rq@currentName
+                    \expandafter\defineQ\@currentName{\arabic{rand}}%
+                        {\@maxDenom}%
+                \fi
+            \fi
+        }%
+    \fi
+    \simplifyCurrentQ
+    \expandafter\defineQ\@currentName{\expandafter\nOf\@currentName}%
+        {\expandafter\dOf\@currentName}%
+%    \end{macrocode}
+% If the denominator is equal to 1, let's change the data type to an integer.
+%    \begin{macrocode}
+    \let\@currentName\rq@currentName
+    \expandafter\@getVarName\rq@currentName
+    \ifnum\csname d@\@varName\endcsname=1\relax\expandafter
+        \defineZ\@currentName{\expandafter\nOf\@currentName}%
+    \fi
+    \simplifyCurrentQ
+}
+%    \end{macrocode}
+%    \end{macro}
+%    \begin{macro}{\updateQ}
+% Updates the value of a rational number, its  numerator and denominator
+% without changing any of the format macros.
+%    \begin{macrocode}
+\newcommand\updateQ[3]
+{%
+    \@getVarName#1\relax
+    \expandafter\edef\csname\@varName\endcsname{#2/#3}%
+    \expandafter\edef\csname n@\@varName\endcsname{#2}%
+    \expandafter\edef\csname d@\@varName\endcsname{#3}%
+}
+%    \end{macrocode}
+%    \end{macro}
+% A macro for performing routine adjustments on a rational number.
+%    \begin{macrocode}
+\def\simplifyCurrentQ
+{%
+%    \end{macrocode}
+% Reduce fraction: Reduce the fraction to its lowest terms.
+%    \begin{macrocode}
+    \reduceFrac{\csname n@\@varName\endcsname}%
+        {\csname d@\@varName\endcsname}%
+%    \end{macrocode}
+% \cs{reduceFrac} returns results in \cs{@tempcnta} and \cs{@tempcntb}, now
+% update the numerator and denominator
+%    \begin{macrocode}
+    \expandafter\edef\csname n@\@varName\endcsname{\rfNumer}%
+    \expandafter\edef\csname d@\@varName\endcsname{\rfDenom}%
+%    \end{macrocode}
+% If the numerator is zero, then zero out \cs{@varName} and special format
+%    \begin{macrocode}
+    \ifnum\csname n@\@varName\endcsname=0
+        \expandafter\edef\csname\@varName\endcsname{0}%
+        \edef\display@TeXfmt{0}\edef\inline@TeXfmt{0}%
+    \else
+%    \end{macrocode}
+% If numerator equals denominator, just replace by 1
+%    \begin{macrocode}
+       \ifnum\csname n@\@varName\endcsname=\csname d@\@varName\endcsname
+            \expandafter\defineZ\csname\@varName\endcsname{1}%
+       \else
+%    \end{macrocode}
+% If numerator equals -denominator, just replace by -1
+%    \begin{macrocode}
+            \ifnum\csname n@\@varName\endcsname
+                =-\csname d@\@varName\endcsname
+                \expandafter\defineZ\csname\@varName\endcsname{-1}%
+            \else
+%    \end{macrocode}
+% If denominator equals 1, modify value; otherwise, ok.
+%    \begin{macrocode}
+                \ifnum\csname d@\@varName\endcsname=1
+                    \expandafter\defineZ\csname\@varName\endcsname
+                        {\csname n@\@varName\endcsname}%
+                \else
+                    \expandafter\edef\csname \@varName\endcsname{%
+                    \csname n@\@varName\endcsname/%
+                        \csname d@\@varName\endcsname}%
+                    \edef\display@TeXfmt{%
+                        \frac{\csname n@\@varName\endcsname}
+                            {\csname d@\@varName\endcsname}}%
+                    \edef\inline@TeXfmt{%
+                        \csname n@\@varName\endcsname/%
+                            \csname d@\@varName\endcsname}%
+                    \expandafter\let
+                    \csname\@varName*\endcsname\display@TeXfmt
+                \fi
+            \fi
+        \fi
+    \fi
+}
+%    \end{macrocode}
+%    \begin{macro}{\nOf}
+%    \begin{macro}{\dOf}
+%    \begin{macro}{\iOf}
+%    \begin{macro}{\typeOf}
+% User access to numerator and denominator of random variables.
+%    \begin{macrocode}
+\newcommand\nOf[1]{\csname n@\expandafter\@gobble\string#1\endcsname}
+\newcommand\dOf[1]{\csname d@\expandafter\@gobble\string#1\endcsname}
+%    \end{macrocode}
+% For a variable created by \cs{RandomL}, the index of the number chosen (1-based)
+% can be accessed through the \cs{iOf} command.
+%    \begin{macrocode}
+\newcommand{\iOf}[1]{\csname i@\expandafter\@gobble\string#1\endcsname}
+%    \end{macrocode}
+% Get the type of a RV, \cs{ifnum}\cs{typeOf}\cs{a}=0 (integer), 1 (rational), 2 (real),
+% 3 (literal, created by \cs{RandomP}).
+%    \begin{macrocode}
+\newcommand\typeOf[1]{%
+    \csname typeof@\expandafter\@gobble\string#1\endcsname}
+%    \end{macrocode}
+%    \end{macro}
+%    \end{macro}
+%    \end{macro}
+%    \end{macro}
+%
+%\subsubsection{Random Real}
+%
+% We attempt to generate a random real number, in a given interval of real numbers.
+%
+% The following are some data and switches used by \cs{RandomReal}.
+%    \begin{macrocode}
+\newif\iftrailingzeros\trailingzerosfalse
+\@namedef{rng@tz1}{0}
+\@namedef{rng@tz2}{00}
+\@namedef{rng@tz3}{000}
+\@namedef{rng@tz4}{0000}
+\@namedef{rng@tz5}{00000}
+\@namedef{rng@tz6}{000000}
+\@namedef{rng@tz7}{0000000}
+\@namedef{rng@tz8}{00000000}
+\def\rng@true{true}\def\rng@false{false}
+\newdimen\rng@dima
+\newdimen\rng@dimb
+\newdimen\rng@dimc
+%    \end{macrocode}
+%    \begin{macro}{\RandomR}
+% Create a real number at random within the given interval. For example,
+%\begin{verbatim}
+%   \RandomR[<key-values>]{\a}{3.45}{6.45}
+%\end{verbatim}
+%    \begin{macro}{round}
+%    \begin{macro}{showzeros}
+% The key-value pairs recognized by \cs{RandomZ|Q|R}.
+%    \begin{macrocode}
+\define@key{rangen}{ne}[]{\edef\rangen@ne{#1}}
+\define@key{rangen}{round}[]{\def\rangen@round{#1}}
+\define@key{rangen}{showzeros}[]{\def\rangen@showzeros{#1}%
+    \ifx\rangen@showzeros\@empty\global\trailingzerostrue\else
+    \ifx\rangen@showzeros\rng@true\global\trailingzerostrue\else
+    \global\trailingzerosfalse\fi\fi}
+\define@key{rangen}{index}[]{\edef\rangen@index{#1}}
+%    \end{macrocode}
+%    \end{macro}
+%    \end{macro}
+%\begin{verbatim}
+%[#1] = options
+% #2  = name of real to correct
+% #3  = lower endpoint of interval
+% #4  = upper endpoint of interval
+%\end{verbatim}
+%    \begin{macrocode}
+\newcommand{\RandomR}[4][]{%
+     \setkeys{rangen}{ne,round,showzeros=false,#1}%
+%    \end{macrocode}
+% Now see if there is an \texttt{*}, and get un-stripped
+% argument.
+%
+% The \cs{rng@isControl} lets \cs{rng@isC@ntrol} to 0 if the arg is undefined,
+% and lets \cs{rng@isC@ntrol} to 1 if it is defined.
+% Check the left endpoint:
+%    \begin{macrocode}
+    \let\rng@CtrlLEP=0\let\rng@CtrlUEP=0%
+    \let\rng@makeLEPStrict=0\let\rng@makeUEPStrict=0%
+    \def\rng@lcg@first{0}\edef\rng@lcg@last{\RNGpowerOfTen}%
+%    \end{macrocode}
+% \paragraph{Left endpoint.} Check the left endpoint:
+%    \begin{macrocode}
+    \rng@existStar{#3}\rng@NameEndpoint{\rng@LEP}%
+    \if\rng@isStariii*\edef\tmp@exp{\noexpand%
+            \rng@isControl{\expandafter\noexpand\rng@LEP}}\tmp@exp
+        \if\rng@isC@ntrol1% a control sequence
+            \let\rng@CtrlLEP=1\let\rng@makeLEPStrict=1%
+            \def\rng@lcg@first{1}%
+%    \end{macrocode}
+% The LEP is a control sequence with a star. Convert LEP to a real
+% number as needed.
+%    \begin{macrocode}
+            \edef\tmp@exp{\noexpand%
+                \@getVarType{\expandafter\noexpand\rng@LEP}}\tmp@exp
+            \ifcase\varType % integer
+                \defineR{\rng@LEP}{\rng@LEP\RNG@Dec}%
+            \or % rational
+                \rng@dima=\expandafter\nOf\rng@LEP pt
+                \divide\rng@dima by\expandafter\dOf\rng@LEP
+                \defineR{\rng@LEP}{\strip@pt\rng@dima}%
+            \or % real
+                \defineR{\rng@LEP}{\rng@LEP}%
+            \fi
+%    \end{macrocode}
+% Not a control sequence, but has a star
+%    \begin{macrocode}
+        \else
+            \defineR{\rng@LEP}{\rng@LEP}%
+        \fi
+    \else
+%    \end{macrocode}
+% No star, control sequence or not?
+%    \begin{macrocode}
+        \rng@isControl{#3}%
+        \if\rng@isC@ntrol1% control sequence
+            \let\rng@CtrlLEP=1\def\rng@LEP{#3}%
+            \@getVarType{#3}%
+            \ifcase\varType % integer
+                \defineR{\rng@LEP}{\rng@LEP\RNG@Dec}%
+            \or % rational
+                \rng@dima=\nOf{#3}pt
+                \divide\rng@dima by\dOf{#3}%
+                \defineR{\rng@LEP}{\strip@pt\rng@dima}%
+            \or % real
+                \defineR{\rng@LEP}{\rng@LEP}%
+            \fi
+        \else
+%    \end{macrocode}
+% A number, no star, number is required to be real
+%    \begin{macrocode}
+            \defineR{\rng@LEP}{#3}%
+        \fi
+    \fi
+%    \end{macrocode}
+% \paragraph{Right endpoint.} Check the right endpoint:
+%    \begin{macrocode}
+    \rng@existStar{#4}\rng@NameEndpoint{\rng@UEP}%
+    \if\rng@isStariii*\edef\tmp@exp{\noexpand%
+            \rng@isControl{\expandafter\noexpand\rng@UEP}}\tmp@exp
+        \if\rng@isC@ntrol1% a control sequence
+            \let\rng@CtrlUEP=1\let\rng@makeUEPStrict=1%
+            \rng@cnta=\rng@lcg@last\advance\rng@cnta-1\relax
+            \edef\rng@lcg@last{\the\rng@cnta}%
+%    \end{macrocode}
+% The UEP is a control sequence with a star. Convert UEP to a real
+% number as needed.
+%    \begin{macrocode}
+            \edef\tmp@exp{\noexpand%
+                \@getVarType{\expandafter\noexpand\rng@UEP}}\tmp@exp
+            \ifcase\varType % integer
+                \defineR{\rng@UEP}{\rng@UEP\RNG@Dec}%
+            \or % rational
+                \rng@dima=\expandafter\nOf\rng@UEP pt
+                \divide\rng@dima by\expandafter\dOf\rng@UEP
+                \defineR{\rng@UEP}{\strip@pt\rng@dima}%
+            \or % real
+                \defineR{\rng@UEP}{\rng@UEP}%
+            \fi
+%    \end{macrocode}
+% Not a control sequence, but has a star
+%    \begin{macrocode}
+        \else
+            \defineR{\rng@UEP}{\rng@UEP}%
+        \fi
+    \else
+%    \end{macrocode}
+% No star, control sequence or not?
+%    \begin{macrocode}
+        \rng@isControl{#4}%
+        \if\rng@isC@ntrol1% control sequence
+            \let\rng@CtrlUEP=1\def\rng@UEP{#4}%
+            \@getVarType{#4}%
+            \ifcase\varType % integer
+                \defineR{\rng@UEP}{\rng@UEP\RNG@Dec}%
+            \or % rational
+                \rng@dima=\nOf{#4}pt
+                \divide\rng@dima by\dOf{#4}%
+                \defineR{\rng@UEP}{\strip@pt\rng@dima}%
+            \or % real
+                \defineR{\rng@UEP}{\rng@UEP}%
+            \fi
+        \else
+%    \end{macrocode}
+% A number, no star, number is required to be real
+%    \begin{macrocode}
+            \defineR{\rng@UEP}{#4}%
+        \fi
+    \fi
+%    \end{macrocode}
+% Prepare to generate the random real
+%    \begin{macrocode}
+    \def\@currentName{#2}\@getVarName{#2}%
+%    \end{macrocode}
+% Save upper and lower endpoints where they are expected to be.
+%    \begin{macrocode}
+    \expandafter\edef\csname first@\@varName\endcsname{\rng@LEP}%
+    \expandafter\edef\csname last@\@varName\endcsname{\rng@UEP}%
+%    \end{macrocode}
+% Get a random real, and declare it to be a real number using \cs{defineR}.
+%    \begin{macrocode}
+    \rng@getRandomR
+    \defineR{#2}{\strip@pt\rng@dima}%
+%    \end{macrocode}
+% Round and remove trailing zeros.
+%    \begin{macrocode}
+    \ifx\rangen@round\@empty\else
+        \RNGround{#2}{#2}{\rangen@round}%
+        \rng@dima=#2pt\relax
+        \defineR{#2}{\strip@pt\rng@dima}%
+    \fi
+%    \end{macrocode}
+% \paragraph{Constraints.} Let's try to apply constraints. We only allow one constraint.
+%    \begin{macrocode}
+    \ifx\rangen@ne\@empty\else\loopCnt=0\relax
+        \@whilenum\loopCnt<\maxLoopLimit\do{%
+            \rng@cnta=1\relax
+            \@for\ne@@tmp:=\rangen@ne\do{%
+                \rng@dima=#2pt
+                \ifdim\rng@dima=\ne@@tmp pt\relax
+                \multiply\rng@cnta0\relax\else
+                \multiply\rng@cnta1\relax\fi
+            }%
+            \ifnum\rng@cnta=1\relax % all conditions met
+                \loopCnt=\maxLoopLimit
+            \else % if \rng@cnta \ne 1, try again
+                \advance\loopCnt1\relax
+                \ifnum\loopCnt=\maxLoopLimit
+                    \PackageWarning{rangen}{Not all conditions met
+                        after \maxLoopLimit\space tries}%
+                \else
+                    \rng@getRandomR
+                    \defineR{#2}{\strip@pt\rng@dima}%
+%    \end{macrocode}
+% Round and remove trailing zeros.
+%    \begin{macrocode}
+                    \ifx\rangen@round\@empty\else
+                        \RNGround{#2}{#2}{\rangen@round}%
+                        \rng@dima=#2pt\relax
+                        \defineR{#2}{\strip@pt\rng@dima}%
+                    \fi
+                \fi
+            \fi
+        }%
+    \fi
+%    \end{macrocode}
+% \paragraph{Formatting.} Begin formatting of the real, keys recognized are
+% \texttt{round} and \texttt{showzeros}.
+%    \begin{macrocode}
+    \rnd@ProcessRealFormat{#2}%
+%    \end{macrocode}
+% We declare our number.
+%    \begin{macrocode}
+    \def\@currentName{#2}%
+    \defineR{#2}{#2}%
+}
+%    \end{macrocode}
+% Get a new random real and return it in the  \cs{rng@dima}
+%    \begin{macrocode}
+\def\rng@getRandomR{%
+%    \end{macrocode}
+% Put the endpoints in dimension registers so we can subtract them.
+%    \begin{macrocode}
+    \rng@dima=\rng@LEP pt
+    \rng@dimb=\rng@UEP pt
+%    \end{macrocode}
+% Compute the difference between upper and lower, then strip off the \texttt{pt},
+% to make it a decimal number.
+%    \begin{macrocode}
+    \advance\rng@dimb-\rng@dima
+%    \edef\r@getDiff{\strip@pt\rng@dimb}%
+%    \end{macrocode}
+% Get a random integer from the interval 0 to \cs{RNGpowerOfTen}.
+% the default value of the latter command is 100, and it can be changed
+% using \cs{nDivisionsPowerOfTen}. The idea is to divide the interval
+% from the lower bound to the upper bound into \cs{RNGpowerOfTen} nodes,
+% and we choose one of these nodes are random.
+%
+% If the endpoints where strict, then we changed \cs{rng@lcg@first}
+% from 0 to 1 (if the lower endpoint is strict); and changed
+% \cs{rng@lcg@last} from \cs{RNGpowerOfTen} to \texttt{\string\RNGpowerOfTen-1}
+% (if the upper end point is strict).
+%    \begin{macrocode}
+    \rng@chgrand[first=\rng@lcg@first,last=\rng@lcg@last]\rand
+%    \end{macrocode}
+% Divide the length of the interval by \cs{RNGpowerOfTen},
+% and store the result in \cs{rng@dimb}, then multiply
+% that by \verb!\arabic{rand}!.
+%    \begin{macrocode}
+    \divide\rng@dimb by\RNGpowerOfTen\relax
+    \rng@dimb=\arabic{rand}\rng@dimb
+%    \end{macrocode}
+% Finally, the left-end point is still in \cs{rng@dima}
+% we add the result in \cs{rng@dimb} to \cs{rng@dima}
+% to compute our random rational.
+%    \begin{macrocode}
+    \advance\rng@dima by\rng@dimb
+}
+\def\rnd@ProcessRealFormat#1{%
+    \ifx\rangen@round\@empty
+        \rng@dima=#1pt\relax
+        \defineR{#1}{\strip@pt\rng@dima}%
+    \else
+        \RNGround{#1}{#1}{\rangen@round}%
+        \rng@dima=#1pt\relax
+        \defineR{#1}{\strip@pt\rng@dima}%
+        \iftrailingzeros
+            {\RNGparseDec{#1}\count0=\decPls\relax
+             \advance\count0-\rndnDec\relax
+             \ifnum\count0>0\relax\xdef#1{%
+                \rng@intpart\RNG@Dec\rng@fracpart%
+\@nameuse{rng@tz\the\count0}}%
+             \fi}%
+             \defineR{#1}{#1}%
+        \fi
+    \fi
+}
+%    \end{macrocode}
+%    \end{macro}
+%
+% \subsubsection{Random Sign}
+%    \begin{macro}{\RandomS}
+% We randomly generate a \texttt{+} or \texttt{-} sign
+% for addition and subtraction. The first optional argument
+% is a rational number between 0 and 1. The default is \texttt{1/2}.
+% This number represents the probably of a \texttt{+} sign.
+%    \begin{macrocode}
+\newcommand{\RandomS}[2][1/2]{%
+    \RNGparseRat{#1}%
+    \ifnum\rng@num<0\relax
+        \PackageError{rangen}{A positive numerator is required}%
+        {The rational number must be between 0 and 1}\fi
+    \ifnum\rng@denom<0\relax
+    \PackageError{rangen}{A positive denominator is required}%
+    {The rational number must be between 0 and 1}\fi
+    \ifnum\rng@num>\rng@denom\relax
+    \PackageError{rangen}{The rational must be between 0 and 1}%
+    {The rational number must be between 0 and 1}\fi
+    \rng@chgrand[first=1,last=\rng@denom]\rand
+    \@getVarName{#2}%
+    \ifnum\value{rand}>\rng@num\relax\def#2{-}%
+    \rng@makeMinusOneFmtDefns
+    \def\display@TeXfmt{-}\def\inline@TeXfmt{-}%
+    \else\def#2{+}\rng@makeOneFmtDefns
+    \def\display@TeXfmt{}\def\inline@TeXfmt{}\fi
+    \expandafter\let\csname\@varName*\endcsname\display@TeXfmt
+    \expandafter\let\csname\@varName!\endcsname\inline@TeXfmt
+}
+%    \end{macrocode}
+%    \end{macro}
+%
+%    \subsubsection{Random Number from a List}
+%
+%    \begin{macro}{\RandomL}
+% Select a number of any type from a comma-delimited list.
+%\begin{verbatim}
+% \RandomL[key-values]{\RV}{<comma-delimited list>}
+%\end{verbatim}
+% Currently, the only key recognized is the \texttt{index} key.
+% If the \texttt{index} key is specified, the number whose index is specified
+% is retrieved from the list.
+%    \begin{macrocode}
+\newcommand{\RandomL}[3][]{%
+    \let\rangen@index\@empty
+    \setkeys{rangen}{#1}%
+    \rng@cnta=0\relax\@for\@@tmp:=#3\do{%
+    \advance\rng@cnta1\relax}\edef\n@rng@listItems{\the\rng@cnta}%
+    \ifx\rangen@index\@empty
+        \rng@chgrand[first=1,last=\n@rng@listItems]\rand
+    \else
+        \rng@cnta=\rangen@index
+        \advance\rng@cnta-1\relax
+        \amodb{\rng@cnta}{\n@rng@listItems}%
+        \rng@cnta=\retnmod
+        \advance\rng@cnta1\relax
+        \value{rand}=\rng@cnta
+    \fi
+    \@getVarName{#2}%
+    \expandafter\edef\csname i@\@varName\endcsname{\arabic{rand}}%
+    \rng@cnta=0\relax\@for\@@tmp:=#3\do{%
+    \advance\rng@cnta1\relax\ifnum\rng@cnta=\arabic{rand}%
+    \edef\rng@choice{\@@tmp}\fi}%
+    \def\@currentName{#2}%
+%    \end{macrocode}
+% Now, determine the type of this choice, and make appropriate
+% data type definition.
+%    \begin{macrocode}
+    \RNGparseDec{\rng@choice}%
+    \if\rng@parseR@iii\RNG@Dec\defineR{#2}{\rng@choice}%
+    \else\RNGparseRat{\rng@choice}%
+    \if\rng@parseQ@iii/\defineQ{#2}{\rng@num}{\rng@denom}%
+    \else\defineZ{#2}{\rng@choice}\fi\fi
+}
+%    \end{macrocode}
+%    \end{macro}
+
+%    \subsubsection{Random Problem from a List}
+%
+%    \begin{macro}{\RandomP}
+% Select a literal from a comma-delimited list of literals.
+%\begin{verbatim}
+% \RandomP[key-values]{\RV}{<comma-delimited list>}
+%\end{verbatim}
+% Currently, the only key recognized is the \texttt{index} key.
+% If the \texttt{index} key is specified, the number whose index is specified
+% is retrieved from the list.
+%    \begin{macrocode}
+\newcommand{\RandomP}[3][]{%
+    \let\rangen@index\@empty
+    \setkeys{rangen}{#1}%
+    \rng@cnta=0\relax\@for\@@tmp:=#3\do{%
+    \advance\rng@cnta1\relax}\edef\n@rng@listItems{\the\rng@cnta}%
+    \ifx\rangen@index\@empty
+        \rng@chgrand[first=1,last=\n@rng@listItems]\rand
+    \else
+        \rng@cnta=\rangen@index
+        \advance\rng@cnta-1\relax
+        \amodb{\rng@cnta}{\n@rng@listItems}%
+        \rng@cnta=\retnmod
+        \advance\rng@cnta1\relax
+        \value{rand}=\rng@cnta
+    \fi
+    \@getVarName{#2}%
+    \expandafter\edef\csname i@\@varName\endcsname{\arabic{rand}}%
+    \rng@cnta=0\relax\@for\@@tmp:=#3\do{%
+    \advance\rng@cnta1\relax\ifnum\rng@cnta=\arabic{rand}%
+    \rng@toks=\expandafter{\@@tmp}\edef#2{\the\rng@toks}%
+    \expandafter\def\csname typeof@\@varName\endcsname{3}\fi}%
+}
+%    \end{macrocode}
+%    \end{macro}
+%
+%    \subsubsection{Random Index}
+%
+%    \begin{macro}{\RandomI}
+% This command creates an implied list of \verb!{1, 2, 3,...,n}!,
+% and randomly selects a number from this list. The result is
+% defined as an integer, and held in the macro \texttt{\#1}.
+%\begin{verbatim}
+%   \Random{\i}{n} --> select \i from {1, 2, 3,...,n} at random
+%\end{verbatim}
+%A random index, \cs{i}, created by \cs{RandomI}, can be used
+%in the \cs{RandomL} command; for example,
+%\begin{verbatim}
+%   \RandomL[index=\i]{\a}{17,\rPI,3/4,\rE,88,1/2}
+%\end{verbatim}
+%The value of \cs{a} is determined by the index \cs{i}.
+%    \begin{macrocode}
+\newcommand{\RandomI}[2]{%
+    \rng@chgrand[first=1,last=#2]\rand
+    \defineZ{#1}{\arabic{rand}}%
+    \expandafter\edef\csname i@\@varName\endcsname{\arabic{rand}}%
+}
+%    \end{macrocode}
+%    \end{macro}
+%
+%   \subsection{Some Constants}
+%
+%    \begin{macro}{\zZero}
+%    \begin{macro}{\zOne}
+%    \begin{macro}{\zMinusOne}
+%    \begin{macro}{\rPI}
+%    \begin{macro}{\rE}
+% Define three convenience integers corresponding to $0$, $1$, and $-1$.
+%    \begin{macrocode}
+\defineZ{\zZero}{0}
+\defineZ{\zOne}{1}
+\defineZ{\zMinusOne}{-1}
+\defineR{\rPI}{3.1415927}
+\defineR{\rE}{2.7182818}
+%    \end{macrocode}
+%    \end{macro}
+%    \end{macro}
+%    \end{macro}
+%    \end{macro}
+%    \end{macro}
+%
+% This macro takes \cs{@varName} and \cs{cmp@Name} and converts to the same common
+% denominator. This makes it easy to make comparisons between two rational numbers.
+%    \begin{macrocode}
+\def\syncronizeQs#1{\edef\sync@arg{#1}%
+    \lcm{\csname d@\sync@arg\endcsname}{\d@cmp@Name}%
+    \edef\@thelcm{\thelcm}%
+    \convertRatTo{\n@cmp@Name}{\d@cmp@Name}{\@thelcm}%
+    \updateQ\cmp@Name{\rng@retn@num}{\@thelcm}%
+    \convertRatTo{\csname n@\sync@arg\endcsname}%
+        {\csname d@\sync@arg\endcsname}{\@thelcm}\expandafter
+    \defineQ\csname\sync@arg\endcsname{\rng@retn@num}{\@thelcm}%
+}
+%    \end{macrocode}
+% \subsection{Formatting Commands}
+%    \begin{macro}{\ds}
+%    \begin{macro}{\eds}
+%    \begin{macro}{\cds}
+% Displays an alternate representation (\textbf display\textbf style) of the random variable. Usage \cs{ds}\cs{a}.
+% This displays the contents of \cs{display@TeXfmt} for this variable. The value of \cs{display@TeXfmt}
+% is effected by the formatting commands above.
+%
+% For a rational number \cs{a}, the expression \cs{ds}\cs{a} expands either to the special format representation, or
+% to a rational of the form $\frac{p}{q}$.
+%    \begin{macrocode}
+\newcommand\ds[1]{%
+    \expandafter\csname\expandafter\@gobble\string#1*\endcsname
+}
+\newcommand\eds[1]{%
+    \expandafter\csname\expandafter\@gobble\string#1*e\endcsname
+}
+\newcommand\cds[1]{%
+    \expandafter\csname\expandafter\@gobble\string#1*c\endcsname
+}
+%    \end{macrocode}
+%    \end{macro}
+%    \end{macro}
+%    \end{macro}
+%    \begin{macro}{\fmt}
+%    \begin{macro}{\efmt}
+%    \begin{macro}{\cfmt}
+% Displays a special format for the random variable. Usage \cs{ds}\cs{a}.
+% This displays the contents of \cs{display@TeXfmt} for this variable.
+% Same as \cs{ds}, but does not display a display style if there is not
+% special formatting.
+%
+% For a rational number \cs{a}, the expression \cs{ds}\cs{a} expands either to the special format representation, or
+% to a rational of the form $p/q$.
+%    \begin{macrocode}
+\newcommand\fmt[1]{%
+    \expandafter\csname\expandafter\@gobble\string#1!\endcsname
+}
+\newcommand\efmt[1]{%
+    \expandafter\csname\expandafter\@gobble\string#1!e\endcsname
+}
+\newcommand\cfmt[1]{%
+    \expandafter\csname\expandafter\@gobble\string#1!c\endcsname
+}
+%    \end{macrocode}
+%    \end{macro}
+%    \end{macro}
+%    \end{macro}
+%    \begin{macro}{\js}
+% Used within \cs{CorrAnsButton} to get a more precise expansion of a variable. Used with variables
+% that have been defined using \cs{defineDepVar}. When you say \verb+\js\m+, for example,
+% the \cs{eval@JSfmt} is expanded.
+% \par\medskip\noindent
+% \textbf{Usage:} \verb+\CorrAnsButton*{y = \js\m\space x }+
+%    \begin{macrocode}
+\newcommand\js[1]{%
+    \expandafter\csname\expandafter\@gobble\string#1!*\endcsname
+}
+%    \end{macrocode}
+%    \end{macro}
+%
+% \subsection{Commands specialized to Reals}
+
+%    \begin{macro}{\RNGround}
+% Round \texttt{\#1} to \texttt{\#3} decimal places, and leave result in \texttt{\#2}.
+%    \begin{macrocode}
+\def\RNGround#1#2#3{%
+    \begingroup
+    \def\rng@ctrlName{#1}%
+    \def\rng@sourceName{#2}%
+    \def\rng@nDecPl{#3}%
+    \RNGparseDec{#2}%
+    \ifnum\rndnDec<#3\relax
+        \xdef\theseDigits{\rng@fracpart}%
+        \let\rng@next\relax
+    \else
+        \count0=0\relax
+        \gdef\theseDigits{}%
+        \def\rng@next{\expandafter\@rng@round\rng@fracpart\end}%
+    \fi
+    \rng@next
+    \xdef\decPls{\@ifundefined{save@rng@nDecPl}%
+        {\rng@nDecPl}{\save@rng@nDecPl}}%
+    \ifx\theseDigits\@empty
+    \xdef#1{\rng@intpart}\else
+    \xdef#1{\rng@intpart\RNG@Dec\theseDigits}\fi
+    \endgroup
+}
+\def\@rng@round#1{%
+    \ifx#1\end\let\rng@next\relax
+    \else
+        \ifnum\rng@nDecPl=0\relax
+            \ifnum#1>4\relax
+                \count0=\rng@intpart\relax
+                \ifnum\rng@intpart<0\relax
+                    \advance\count0by-1\relax
+                \else
+                    \advance\count0by1\relax
+                \fi
+                \xdef\rng@intpart{\the\count0}%
+            \fi
+            \gdef\theseDigits{}%
+            \let\rng@next\rng@gobbletoend
+        \else
+            \advance\count0by1\relax
+            \ifnum\count0=\rng@nDecPl\relax
+                \def\rng@next{\@@rng@round#1}%
+            \else
+                \xdef\theseDigits{\theseDigits#1}%
+                \let\rng@next\@rng@round
+            \fi
+        \fi
+    \fi
+    \rng@next
+}
+\def\rng@gobbletoend#1\end{}
+\def\@@rng@round#1#2{%
+    \ifx#2\end%
+        \xdef\theseDigits{\theseDigits#1}%
+        \let\rng@next\relax
+    \else
+        \ifnum#2>4\relax\count2=#1\relax
+            \ifnum\count2=9\relax
+                \count0=\rng@nDecPl\relax
+                \ifnum\count0=1\relax
+                    \count0=\rng@intpart\relax
+                    \ifnum\rng@intpart<0\relax
+                        \advance\count0by-1\relax
+                    \else
+                        \advance\count0by1\relax
+                    \fi
+                    \xdef\rng@intpart{\the\count0}%
+                    \let\rng@next\rng@gobbletoend
+                \else
+                    \advance\count0by-1\relax\expandafter
+                    \xdef\rng@sourceName{%
+                        \rng@intpart\RNG@Dec\theseDigits#1}%
+                    \edef\save@rng@nDecPl{\rng@nDecPl}%
+                    \edef\rng@next{\noexpand\RNGround{%
+                        \expandafter\noexpand\rng@ctrlName}%
+                        {\expandafter\noexpand\rng@sourceName}%
+                        {\the\count0}\noexpand\rng@gobbletoend}%
+                \fi
+            \else
+                \advance\count2by1\relax
+                \xdef\theseDigits{\theseDigits\the\count2}%
+                \let\rng@next\rng@gobbletoend
+            \fi
+        \else % \ifnum#2<=4
+            \xdef\theseDigits{\theseDigits#1}%
+            \let\rng@next\rng@gobbletoend
+        \fi
+    \fi
+    \rng@next
+}
+%    \end{macrocode}
+%    \end{macro}
+% Used with \cs{CorrAnsButton} and \texttt{rngCorrAnsButton}, like so,
+%\begin{verbatim}
+% \CorrAnsButton{rEval(\strAns)}*{rngCorrAnsButton\RNGprintf{\%.2f}}
+%\end{verbatim}
+%    \begin{macrocode}
+\def\RNGprintf#1{("#1",\@gobble}
+%    \end{macrocode}
+%
+% \subsection{User Defined Dependent Variables for JavaScript}
+%    \begin{macro}{\defineDepQJS}
+% Define a rational as a function of other integers. This macro defines
+% \cs{fmt} and \cs{ds} for the variable, but its primary use it
+% for \cs{js}. This command is aimed at the JavaScript side of things
+%\begin{verbatim}
+%#1 = name of rational to be defined, e.g., \a
+%#2 = numerator
+%#3 = denominator
+%#4 = \js expression for #1
+%\end{verbatim}
+% Usage:
+%\begin{verbatim}
+%   \defineDepQJS{\m}{\d-\b}{\c-\a}
+%       {rFrac(rEval(\nOf\m)/rEval(\dOf\m))}
+% ...
+% \CorrAnsButton{y = \js\m\space x}*{rngCorrAnsButton}%
+%\end{verbatim}
+% The above example would calculate equation of the line passing through
+% the two points \verb!P(\a,\b)! and \verb!Q(\c,\d)!. The code is used
+% in the \cs{CorrAnsButton} to have the answer appear.
+%    \begin{macrocode}
+\newcommand\defineDepQJS[4]{%
+    \@getVarName#1
+    \expandafter\edef\csname\@varName\endcsname{(#2)/(#3)}%
+    \expandafter\edef\csname n@\@varName\endcsname{(#2)}%
+    \expandafter\edef\csname d@\@varName\endcsname{(#3)}%
+    \edef\display@TeXfmt{\csname\@varName\endcsname}%
+    \edef\inline@TeXfmt{\csname\@varName\endcsname}%
+    \def\dv@argiv{#4}\ifx\dv@argiv\@empty
+    \edef\eval@JSfmt{\csname\@varName\endcsname}\else
+    \edef\eval@JSfmt{#4}\fi
+    \expandafter\let\csname\@varName!*\endcsname\eval@JSfmt
+}
+%    \end{macrocode}
+%    \end{macro}
+%
+% \subsection{Writing RVs to Solution Files}
+%    \begin{macrocode}
+\def\rng@writeCurrentSeed#1{\immediate\write#1{\string\makeatletter
+    \string\global\string\cr@nd=\the\cr@nd\string\relax
+    \string\makeatother}}
+%    \end{macrocode}
+% Token register to hold the verbatim contents of the \texttt{writeRVsTo} environment.
+%    \begin{macrocode}
+\newtoks\rng@toks
+\def\wrv@ex@solns{exercises}%
+\def\wrv@ex@quiz{quizzes}%
+%    \end{macrocode}
+%    \begin{environment}{writeRVsTo}
+% This environment takes its environment contents and writes it to
+% two files, one file is \cs{jobname\_rvs.cut} which is input back
+% into the source file immediately. The second parameter
+% accepts the string \texttt{exercises} or \texttt{quizzes}, or a write
+% handle to write to an auxiliary file. The environment was designed for
+% use with the \texttt{exercise}, \texttt{quiz}, and \texttt{shortquiz} environments
+% of \textsf{exerquiz}.
+%    \begin{macrocode}
+\newenvironment{writeRVsTo}[2][]
+{%
+    \def\wrv@argii{#2}%
+    \ifx\wrv@argii\wrv@ex@quiz\let\wrv@out\quiz@solns
+    \else\ifx\wrv@argii\wrv@ex@solns\let\wrv@out\ex@solns\else
+    \let\wrv@out#2\fi\fi
+    \rng@writeCurrentSeed\wrv@out
+    \rng@toks={}%
+    \def\verbatim@processline{%
+        \xdef\rng@temp{\the\rng@toks\the\verbatim@line}%
+        \global\rng@toks=\expandafter{\rng@temp}}%
+    \let\do\@makeother\dospecials\catcode`\^^M\active
+    #1%
+    \verbatim@start
+}{  \immediate\write\wrv@out{\the\rng@toks}%
+    \newwrite\rng@writeRVs
+    \immediate\openout\rng@writeRVs\jobname_rvs.cut
+    \immediate\write\rng@writeRVs{\the\rng@toks}%
+    \immediate\closeout\rng@writeRVs
+    \aftergroup\rng@Input@RVs
+}
+%    \end{macrocode}
+%    \end{environment}
+% After the \texttt{writeRVsTo} environment writes the RVs to
+% \cs{jobname\_rvs.cut}. The environment executes
+% \cs{rng@Input@RVs} to input the file back into the source file.
+%    \begin{macrocode}
+\def\rng@Input@RVs{\InputIfFileExists{\jobname_rvs.cut}{}{}}
+%    \end{macrocode}
+% \subsection{Redefine lcg Package Macro}
+%    \begin{macrocode}
+\def\rng@p@stkeysr@nd{%
+   \@rderr@nd%                  last < first  -> swap
+   \cutr@nger@nd%               range too big -> cut
+} % end of \def\p@stkeysr@nd
+\def\rng@chgrand{\@ifnextchar[\rng@chgr@nd{\rng@chgr@nd[]}}
+\def\rng@chgr@nd[#1]{%
+    \@tempcnta=\z@
+    \@tempcntb=\z@
+    \setkeys{Init}{#1}%
+    \rng@p@stkeysr@nd%
+    \@utputr@nd%
+}  % end of \def\rng@chgrand
+%    \end{macrocode}
+% \subsection{DLJS Support}
+%    \begin{macrocode}
+\begin{insDLJS}[partialExpand]{partial}{Rangen}
+var partre = /rEval|rFrac/;
+%    \end{macrocode}
+% The arguments for this function take two forms
+% (1) \texttt{fieldname}, \texttt{theanswer} (the default); (2)
+% \texttt{theformat}, \texttt{fieldname}, \texttt{theanswer}. The later case
+% is created by using the \cs{RNGprintf} command that inserts allows the
+% document author to insert a \texttt{printf} formatting template. For example,
+%\begin{verbatim}
+%   \CorrAnsButton{rEval(\strAns)}*{rngCorrAnsButton\RNGprintf{\%.4f}}
+%\end{verbatim}
+%    \begin{macrocode}
+function rngCorrAnsButton()
+{
+    var theprecision,fieldname,theanswer;
+    if (arguments.length==3) {
+        var theformat=arguments[0];
+        var fieldname=arguments[1];
+        var theanswer=arguments[2];
+    } else {
+        var fieldname=arguments[0];
+        var theanswer=arguments[1];
+    }
+    theanswer = partialExpand(0,theanswer);
+    if (arguments.length==3)
+        theanswer=util.printf(theformat,eval(theanswer));
+    DisplayAnswer(fieldname,theanswer);
+}
+%    \end{macrocode}
+% The JavaScript function \texttt{partialExpand} searches through \texttt{Ans} in search of
+% \texttt{rEval} and \texttt{rFrac}. It calls itself recursively to search for the inner most
+% appearances of these two functions. It evaluates these two functions starting with the inner
+% most and working its way outward.
+%    \begin{macrocode}
+function partialExpand(level,Ans)
+{
+    Ans = correctPlusMinus(Ans)
+    level += 1;
+\db console.println("Enter level = " + level +": Ans: " + Ans);\db%
+    var n=0, m, bP, eP, subExp;
+    while ( true ) {
+\db     console.println("Searching a level " + level);\db%
+        try { m = Ans.match(partre); }
+        catch (e) { break; }
+        if ( m != null ) {
+            bP = m.index + m[0].length;
+            eP = FindBalP(Ans, bP, true);
+\db         console.println("bP = " + bP + " : eP = " + eP);\db%
+            var subExp = Ans.substring(bP+1, eP);
+\db         console.println("Found \'" + subExp%
+                + "\' at level = " + level);\db%
+%            subExp = partialExpand(level, subExp);
+            // n = beginning of "rEval",
+            // eP = beginning of balanced parens,
+            // bP = end of balanced parens
+            Ans = Ans.substring(0, m.index)
+                + eval(m[0]+"(level,subExp)") + Ans.substring(eP+1);
+\db         console.println("level = " + level%
+                             +": New Ans: " + Ans);\db %
+        } else {
+            if ( level == 1 ) {
+\db             console.println("Level 1 break");\db %
+                break;
+            }
+        }
+    }
+\db console.println("Return Ans: " + Ans);\db%
+    Ans = correctPlusMinus(Ans);
+    return Ans;
+}
+%    \end{macrocode}
+% Evaluates the value of \texttt{Ans}.
+%    \begin{macrocode}
+function rEval(level, Ans)
+{
+    level += 1;
+\db console.println("Enter rEval: level = "%
+        + level +": Ans: " + Ans);\db%
+    var n=0, m, bP, eP, subExp;
+    while ( true )
+    {
+\db     console.println("Searching a level " + level);\db%
+        try { m = Ans.match(partre); }
+        catch (e) { break; }
+        if ( m != null ) {
+            bP = m.index + m[0].length;
+            eP = FindBalP(Ans, bP, true);
+\db         console.println("bP = " + bP + " : eP = " + eP);\db%
+            var subExp = Ans.substring(bP+1, eP);
+\db         console.println("Found \'" + subExp%
+                + "\' at level = " + level);\db%
+            // n = beginning of "rEval",
+            // eP = beginning of balanced parens,
+            // bP = end of balanced parens
+            Ans = Ans.substring(0, m.index)
+                +eval(m[0]+"(level,subExp)")+Ans.substring(eP+1);
+\db         console.println("level = "%
+                + level +": New Ans: " + Ans);\db %
+        } else {
+            Ans = ParseInput(Ans);
+\db         console.println("Ready to eval at level = "%
+                + level + ": Ans = " + Ans);\db%
+            with(Math) { Ans = eval( Ans ) };
+\db         console.println("After eval at level = "%
+                + level + ": Ans = " + Ans);\db%
+            break;
+        }
+    }
+\db console.println("Return Ans: " + Ans);\db%
+    return Ans;
+}
+%    \end{macrocode}
+% Evaluates an rational number by evaluating the value of the numerator and denominator separately.
+%    \begin{macrocode}
+function rFrac(level, Ans)
+{
+    level += 1;
+\db console.println("Enter rFrac level = "%
+        + level +": Ans: " + Ans);\db%
+    var n=0, m, bP, eP, subExp;
+    while ( true ) {
+\db     console.println("Searching a level " + level);\db%
+        try { m = Ans.match(partre); }
+        catch (e) { break; }
+        if ( m != null ) {
+            bP = m.index + m[0].length;
+            eP = FindBalP(Ans, bP, true);
+\db         console.println("bP = "%
+                + bP + " : eP = " + eP);\db%
+            var subExp = Ans.substring(bP+1, eP);
+\db         console.println("Found \'" + subExp%
+                + "\' at level = " + level);\db%
+            // n = beginning of "rEval",
+            // eP = beginning of balanced parens,
+            // bP = end of balanced parens
+            Ans = Ans.substring(0, m.index)
+                + eval(m[0]+"(level,subExp)") + Ans.substring(eP+1);
+\db         console.println("level = " + level%
+                +": New Ans: " + Ans);\db %
+        } else {
+            var numDenom = Ans.split("/");
+            numDenom[0] = eval(numDenom[0]);
+            numDenom[1] = eval(numDenom[1]);
+            var g = gcd(numDenom[0], numDenom[1]);
+            numDenom[0] /= g;
+            numDenom[1] /= g;
+            if ( numDenom[1] == 1)
+                Ans = numDenom[0];
+            else
+                Ans = numDenom.join("/");
+\db         console.println("Reduce: " + numDenom.join("/"));\db%
+            break;
+        }
+    }
+\db console.println("Return Ans: " + Ans);\db%
+    return Ans;
+}
+function correctPlusMinus(Ans)
+{
+    Ans = "" + Ans;
+    Ans  = Ans.replace(/\s*([\+-])\s*\1\s*/g, " + ");
+    Ans  = Ans.replace(/\s*\+\s*-\s*/g, " - ");
+%    Ans  = Ans.replace(/\s*\+\s*\+\s*/g, " + ");
+%    Ans  = Ans.replace(/\s*-\s*-\s*/g, " + ");
+    Ans  = Ans.replace(/\s*-\s*\+\s*/g, " - ");
+    return Ans;
+}
+function gcd(a,b)
+{
+    var x = a, y = b, r;
+    while (true)
+    {
+        r = x \% y;
+        if ( r == 0 ) break;
+        x = y;
+        y = r;
+    }
+    return Math.abs(y);
+}
+function lcm (a,b) { return (a*b)/gcd(a,b); }
+\end{insDLJS}
+%</package>
+%    \end{macrocode}
+\endinput

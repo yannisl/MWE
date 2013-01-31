@@ -1,0 +1,839 @@
+% \iffalse meta-comment
+%
+% Author: Peter Wilson (CUA) (now at: peter.r.wilson@boeing.com)
+% 
+%  This system is released under the LaTeX Project Public License.
+%
+%  This system is distributed in the hope that it will be useful,
+%  but WITHOUT ANY WARRANTY; without even the implied warranty of
+%  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+% 
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage{url}
+\newcommand{\makecolonletter}{\catcode`\:11\relax}
+\renewcommand{\MakePrivateLetters}{\makeatletter\makecolonletter}
+\EnableCrossrefs
+\CodelineIndex
+\setcounter{StandardModuleDepth}{1}
+\begin{document}
+  \DocInput{step4ht.dtx}
+\end{document}
+%</driver>
+%
+% \fi
+%
+% \CheckSum{503}
+%
+% \DoNotIndex{\',\.,\@M,\@@input,\@addtoreset,\@arabic,\@badmath}
+% \DoNotIndex{\@centercr,\@cite}
+% \DoNotIndex{\@dotsep,\@empty,\@float,\@gobble,\@gobbletwo,\@ignoretrue}
+% \DoNotIndex{\@input,\@ixpt,\@m}
+% \DoNotIndex{\@minus,\@mkboth,\@ne,\@nil,\@nomath,\@plus,\@set@topoint}
+% \DoNotIndex{\@tempboxa,\@tempcnta,\@tempdima,\@tempdimb}
+% \DoNotIndex{\@tempswafalse,\@tempswatrue,\@viipt,\@viiipt,\@vipt}
+% \DoNotIndex{\@vpt,\@warning,\@xiipt,\@xipt,\@xivpt,\@xpt,\@xviipt}
+% \DoNotIndex{\@xxpt,\@xxvpt,\\,\ ,\addpenalty,\addtolength,\addvspace}
+% \DoNotIndex{\advance,\Alph,\alph}
+% \DoNotIndex{\arabic,\ast,\begin,\begingroup,\bfseries,\bgroup,\box}
+% \DoNotIndex{\bullet}
+% \DoNotIndex{\cdot,\cite,\CodelineIndex,\cr,\day,\DeclareOption}
+% \DoNotIndex{\def,\DisableCrossrefs,\divide,\DocInput,\documentclass}
+% \DoNotIndex{\DoNotIndex,\egroup,\ifdim,\else,\fi,\em,\endtrivlist}
+% \DoNotIndex{\EnableCrossrefs,\end,\end@dblfloat,\end@float,\endgroup}
+% \DoNotIndex{\endlist,\everycr,\everypar,\ExecuteOptions,\expandafter}
+% \DoNotIndex{\fbox}
+% \DoNotIndex{\filedate,\filename,\fileversion,\fontsize,\framebox,\gdef}
+% \DoNotIndex{\global,\halign,\hangindent,\hbox,\hfil,\hfill,\hrule}
+% \DoNotIndex{\hsize,\hskip,\hspace,\hss,\if@tempswa,\ifcase,\or,\fi,\fi}
+% \DoNotIndex{\ifhmode,\ifvmode,\ifnum,\iftrue,\ifx,\fi,\fi,\fi,\fi,\fi}
+% \DoNotIndex{\input}
+% \DoNotIndex{\jobname,\kern,\leavevmode,\let,\leftmark}
+% \DoNotIndex{\list,\llap,\long,\m@ne,\m@th,\mark,\markboth,\markright}
+% \DoNotIndex{\month,\newcommand,\newcounter,\newenvironment}
+% \DoNotIndex{\NeedsTeXFormat,\newdimen}
+% \DoNotIndex{\newlength,\newpage,\nobreak,\noindent,\null,\number}
+% \DoNotIndex{\numberline,\OldMakeindex,\OnlyDescription,\p@}
+% \DoNotIndex{\pagestyle,\par,\paragraph,\paragraphmark,\parfillskip}
+% \DoNotIndex{\penalty,\PrintChanges,\PrintIndex,\ProcessOptions}
+% \DoNotIndex{\protect,\ProvidesClass,\raggedbottom,\raggedright}
+% \DoNotIndex{\refstepcounter,\relax,\renewcommand,\reset@font}
+% \DoNotIndex{\rightmargin,\rightmark,\rightskip,\rlap,\rmfamily,\roman}
+% \DoNotIndex{\roman,\secdef,\selectfont,\setbox,\setcounter,\setlength}
+% \DoNotIndex{\settowidth,\sfcode,\skip,\sloppy,\slshape,\space}
+% \DoNotIndex{\symbol,\the,\trivlist,\typeout,\tw@,\undefined,\uppercase}
+% \DoNotIndex{\usecounter,\usefont,\usepackage,\vfil,\vfill,\viiipt}
+% \DoNotIndex{\viipt,\vipt,\vskip,\vspace}
+% \DoNotIndex{\wd,\xiipt,\year,\z@}
+% \DoNotIndex{\HCode}
+%
+% \changes{v0.1}{2000/01/20}{First public release}
+%
+% \def\fileversion{v0.1}
+% \def\filedate{2000/01/20}
+% \newcommand*{\Lpack}[1]{\textsf {#1}}           ^^A typeset a package
+% \newcommand*{\Lopt}[1]{\textsf {#1}}            ^^A typeset an option
+% \newcommand*{\file}[1]{\texttt {#1}}            ^^A typeset a file
+% \newcommand*{\Lcount}[1]{\textsl {\small#1}}    ^^A typeset a counter
+% \newcommand*{\pstyle}[1]{\textsl {#1}}          ^^A typeset a pagestyle
+% \newcommand*{\Lenv}[1]{\texttt {#1}}            ^^A typeset an environment
+% \newcommand*{\texht}{\Lpack{TeX4ht}}            ^^A typeset TeX4ht
+%
+% \title{The \Lpack{step4ht} \texht{} package\thanks{This
+%        file has version number \fileversion, last revised
+%        \filedate.}}
+%
+% \author{%
+% Peter Wilson\\
+% Catholic University of America \\
+% Now at \texttt{peter.r.wilson@boeing.com}
+% }
+% \date{\filedate}
+% \maketitle
+% \begin{abstract}
+%    The \Lpack{step4ht} package, in conjunction with \texht{} 
+% can be used to convert \LaTeX{}
+% STEP documents into HTML tagged documents.
+% \end{abstract}
+% \tableofcontents
+%
+% \StopEventually{}
+%
+% 
+%
+% \section{Introduction}
+%
+% The \Lpack{step4ht} package can be used in conjunction with
+% the \texht{} system to convert \LaTeX{} ISO~10303 (STEP) documents
+% into HTML tagged documents. 
+%
+%    Section~\ref{sec:usc} describes the package  and 
+% commented source code for the package is in Section~\ref{sec:code}.
+%
+% This manual is typeset according to the conventions of the
+% \LaTeX{} \textsc{docstrip} utility which enables the automatic
+% extraction of the \LaTeX{} macro source files~\cite{GOOSSENS94}.
+%
+% \subsection{Acknowledgement}
+%
+% Development of the \Lpack{step4ht} package would not have been possible
+% without the help and expertise of Eitan Gurari, and in particular his
+% willingness to put up with the many questions I asked.
+%
+%
+% \section{The \Lpack{step4ht} package} \label{sec:usc}
+%
+% The \texht{} system has been developed by Eitan Gurari (see Chapter~4
+% and Appendix~B in~\cite{GOOSSENS99}). It is a general purpose conversion
+% system to convert \LaTeX{} tagged documents into HTML (or other *ML)
+% tagged documents. \texht{} can be obtained from 
+% \url{http://www.cis.ohio-state.edu/~gurari/TeX4ht/mn.html}. 
+% The \Lpack{step4ht}
+% package is not guaranteed to work with versions of \texht{} earlier
+% than mid-January 2000. At the time of writing, the default \texht{}
+% distribution was dated mid-1999. The latest version of \texht{} is obtainable
+% from \url{http://www.cis.ohio-state.edu/~gurari/TeX4ht/bugfixes.html}.
+%
+% To use the \Lpack{step4ht} package, just process the \LaTeX{} document
+% as you would any other under \texht. That is, either call the |ht| script
+% on a document starting like:
+% \begin{verbatim}
+% \documentclass[...]{isov2}
+% \usepackage[...]{tex4ht}
+% \usepackage{isov13}
+% ...
+% \end{verbatim} 
+% or call the |htlatex| script on a document without the 
+% |\usepackage[...]{tex4ht}| line.
+%
+%
+% \section{The package code} \label{sec:code}
+%
+%    The following code is based on \Lpack{html0.4ht},
+% \Lpack{html32.4ht} and \Lpack{html4.4ht}, all written by Eitan Gurari,
+% together with code in the \Lpack{iso4ht} package.
+%
+%    Most of the necessary work already exists in \Lpack{latex.4ht}, which
+% sets up the \LaTeX{} kernel code and the \Lpack{iso4ht} package
+% which provides the setup and configuration for the
+% \Lpack{iso} class, together with \Lpack{html0.4ht}, 
+% \Lpack{html32.4ht} and \Lpack{html4.4ht} provide the HTML option-related
+% configurations for the kernel code.
+% The HTML option-related configurations are 
+% embedded in \Lpack{stepv13.4ht} instead of being supplied as 
+% seperate files.
+%
+% \changes{v0.1}{2000/01/20}{First public release}
+%
+%    Announce the name and version of the package.
+%    \begin{macrocode}
+%<*usc>
+\typeout{[stepv13.4ht 2000/01/20 version v0.1]}
+
+%    \end{macrocode}
+%
+% \subsection{Setup and hooks}
+%
+%    The first major part of the code deals with setting up for configuring
+% the \LaTeX{} commands and environments, which forms the second major
+% portion of the code.
+%
+%    Setting up may involve adding hooks into commands, either by redefining
+% them or, in simpler cases prepending and/or appending code before and/or
+% after the original code. It can also involve specifying that commands
+% are configurable.
+%
+%
+% \subsubsection{The STEP cover page}
+%
+%    The |\STEPcover| command is implemented as a |picture| environment.
+% \LaTeX{} pictures are usually presented as \file{.gif} images in \texht,
+% so some major surgery is done to avoid pictures in this case.
+% 
+%    First, we redefine the commands that correspond to the |\STEPcover|
+% picture placement commands.
+%
+% \DescribeMacro{\wg}
+%  The Working Group.
+%    \begin{macrocode}
+\renewcommand{\wg}[1]{\def\@wg{/#1}}
+%    \end{macrocode}
+%
+% \DescribeMacro{\oldwg}
+% The old Working Group.
+%    \begin{macrocode}
+\renewcommand{\oldwg}[1]{\def\@oldwg{/#1}}
+%    \end{macrocode}
+%
+% \DescribeMacro{\@docnumber}
+% \DescribeMacro{\docnumber}
+% \DescribeMacro{\donumber}
+%  The document number, where |\donumber| has hooks and typesets the number.
+%    \begin{macrocode}
+\renewcommand{\@docnumber}{/N}
+\renewcommand{\docnumber}[1]{\def\@docnumber{/N#1}}
+\def\donumber{\a:donumber ISO TC 184/SC4\@wg\@docnumber \b:donumber}
+\NewConfigure{donumber}{2}
+
+%    \end{macrocode}
+%
+% \DescribeMacro{\@docdate}
+% \DescribeMacro{\docdate}
+% \DescribeMacro{\dodocdate}
+%  The document date, where |dodocdate| has hooks and typesets the date.
+%    \begin{macrocode}
+\renewcommand{\@docdate}{Date: }
+\renewcommand{\docdate}[1]{\def\@docdate{\textbf{Date: #1}}}
+\def\dodocdate{\a:dodocdate \@docdate \b:dodocdate}
+\NewConfigure{dodocdate}{2}
+
+%    \end{macrocode}
+%
+% \DescribeMacro{\@olddocnumber}
+% \DescribeMacro{\olddocnumber}
+% \DescribeMacro{\doolddocnumber}
+% The previous document number, where |\dooldnumber| has hooks and 
+% typesets the number.
+%    \begin{macrocode}
+\renewcommand{\@olddocnumber}{/N}
+\renewcommand{\olddocnumber}[1]{\def\@olddocnumber{/N#1}}
+\def\dooldnumber{\a:dooldnumber Supersedes ISO TC 184/SC4\@oldwg\@olddocnumber \b:dooldnumber}
+\NewConfigure{dooldnumber}{2}
+
+%    \end{macrocode}
+%
+% \DescribeMacro{\dopartno}
+% Typeset the Part number (and ballot cycle).
+%    \begin{macrocode}
+\newcommand{\dopartno}{%
+  \ifnum\value{b@cyc} < 2\relax
+    {\bf ISO\thest@tus\ 10303-\thespartno}
+  \else
+    {\bf ISO\thest@tus\ 10303-\thespartno.\theb@cyc}
+  \fi}
+\pend:def\dopartno{\a:dopartno}
+\append:def\dopartno{\b:dopartno}
+\NewConfigure{dopartno}{2}
+
+%    \end{macrocode}
+%
+% \DescribeMacro{\doptitle}
+% Typeset the Part title.
+%    \begin{macrocode}
+\newcommand{\doptitle}{%
+  {\bf \st@pn@me : \thes@ries : \thed@ctitle}
+}
+\pend:def\doptitle{\a:doptitle}
+\append:def\doptitle{\b:doptitle}
+\NewConfigure{doptitle}{2}
+
+%    \end{macrocode}
+%
+% \DescribeMacro{\cpnotice}
+%  Typeset the title COPYRIGHT NOTICE.
+%    \begin{macrocode}
+\newcommand{\cpnotice}{\a:cpnotice COPYRIGHT NOTICE \b:cpnotice}
+\NewConfigure{cpnotice}{2}
+
+%    \end{macrocode}
+%
+% \DescribeMacro{\@abstract}
+% \DescribeMacro{\abstract}
+% \DescribeMacro{\doabstract}
+%  The abstract, where |\doabstract| has hooks and typesets the abstract.
+%    \begin{macrocode}
+\renewcommand{\@abstract}{\textbf{ABSTRACT}: }
+\renewcommand{\abstract}[1]{\def\@abstract{\textbf{ABSTRACT}: #1}}
+\def\doabstract{\a:doabstract \@abstract \b:doabstract}
+\NewConfigure{doabstract}{2}
+
+%    \end{macrocode}
+%
+% \DescribeMacro{\@keywords}
+% \DescribeMacro{\keywords}
+% \DescribeMacro{\dokeywords}
+%  The KEYWORDS, where |\dokeywords| has hooks and typesets the keywords.
+%    \begin{macrocode}
+\renewcommand{\@keywords}{\textbf{KEYWORDS}: }
+\renewcommand{\keywords}[1]{\def\@keywords{\textbf{KEYWORDS}: #1}}
+\def\dokeywords{\a:dokeywords \@keywords \b:dokeywords}
+\NewConfigure{dokeywords}{2}
+
+%    \end{macrocode}
+%
+% \DescribeMacro{\@comread}
+% \DescribeMacro{\comread}
+% \DescribeMacro{\docomread}
+%  The COMMENTS TO READERS, where |\docomread| has hooks and typesets the 
+% comments.
+%    \begin{macrocode}
+\renewcommand{\@comread}{\textbf{COMMENTS TO READER}: }
+\renewcommand{\comread}[1]{\def\@comread{\textbf{COMMENTS TO READER}: #1}}
+\def\docomread{\a:docomread \@comread \b:docomread}
+\NewConfigure{docomread}{2}
+
+%    \end{macrocode}
+%
+% \DescribeMacro{\owner}
+% \DescribeMacro{\address}
+% \DescribeMacro{\telephone}
+% \DescribeMacro{\fax}
+% \DescribeMacro{\email}
+% Contact information for the project leader.
+%    \begin{macrocode}
+\renewcommand{\owner}[1]{\def\@owner{#1}}
+\renewcommand{\address}[1]{\def\@address{#1}}
+\renewcommand{\telephone}[1]{\def\@telephone{#1}}
+\renewcommand{\fax}[1]{\def\@fax{#1}}
+\renewcommand{\email}[1]{\def\@email{#1}}
+
+%    \end{macrocode}
+%
+% \DescribeMacro{\altowner}
+% \DescribeMacro{\altaddress}
+% \DescribeMacro{\alttelephone}
+% \DescribeMacro{\altfax}
+% \DescribeMacro{\altemail}
+% Contact information for the document editor.
+%    \begin{macrocode}
+\renewcommand{\altowner}[1]{\def\@altowner{#1}}
+\renewcommand{\altaddress}[1]{\def\@altaddress{#1}}
+\renewcommand{\alttelephone}[1]{\def\@alttelephone{#1}}
+\renewcommand{\altfax}[1]{\def\@altfax{#1}}
+\renewcommand{\altemail}[1]{\def\@altemail{#1}}
+
+%    \end{macrocode}
+%
+%
+% \DescribeMacro{\STEPcover}
+% The |\STEPcover| command is redefined to add hooks at the start and end.
+%    \begin{macrocode}
+\renewcommand{\STEPcover}[1]{
+\a:STEPcover
+#1
+\drawcoversheet
+\b:STEPcover
+}
+\NewConfigure{STEPcover}{2}
+
+%    \end{macrocode}
+%
+% \DescribeMacro{\drawcoversheet}
+% |\drawcoversheet| is redefined to typeset the cover instead of drawing it.
+%    \begin{macrocode}
+\renewcommand{\drawcoversheet}{
+\donumber \\
+\dodocdate \\
+\dooldnumber \\
+\dopartno \\
+\doptitle \\
+
+\ifc@pyrightopt
+  \ifisst@ndard   \input{bpfsX} \fi  % IS
+  \iffdisst@ndard \input{bpfs2} \fi  % FDIS
+  \ifdisst@ndard  \input{bpfs3} \fi  % DIS
+  \ifcdst@ndard   \input{bpfs4} \fi  % CD
+  \ifwdst@ndard   \input{bpfs4} \fi  % WD
+  \ift@chrep      \input{bpfsX} \fi  % Tech Report
+\fi
+
+\doabstract \\
+\dokeywords \\
+\docomread \\
+\begin{tabular}{|l|p{0.3\textwidth}|p{0.3\textwidth}|} \hline
+    & Project Leader & Project Editor \\ \hline
+Name & \@owner & \@altowner \\
+Address & \@address & \@altaddress \\
+Telephone & \@telephone & \@alttelephone \\
+TeleFacsimile & \@fax & \@altfax \\
+Email & \@email & \@altemail  \\ \hline
+\end{tabular}
+
+%    \end{macrocode}
+% And, as before, clear out the cover commands which are no longer needed.
+%    \begin{macrocode}
+  \undef@covercmds
+}
+
+%    \end{macrocode}
+%
+%
+% \subsubsection{Miscellaneous}
+%
+% \DescribeMacro{\@presteptitle}
+% \DescribeMacro{\stepparttitle}
+%  The |\stepparttitle| is redefined to use the |\titleclause*| command
+% as defined in the \Lpack{iso4ht} package. The |\@presteptitle| command
+% is just a helper. The configuration of |\titleclause*| is defined
+% in \Lpack{iso4ht}.
+%    \begin{macrocode}
+\newcommand{\@presteptitle}{\scivm@in \stepc@mp \thisp@rtno{\thespartno}}
+\renewcommand{\stepparttitle}[1]{%
+  \gdef\thestepparttitle{{\@presteptitle \sptitle{#1}}}
+  \titleclause*{\thestepparttitle}
+}
+
+%    \end{macrocode}
+%
+%
+% \subsection{Configuration}
+%
+% All, or nearly all, configurations depend on the HTML level option chosen.
+% Typically, html0 results in empty or null values of the hooks; 
+% the |\NewConfigure| command provides empty configurations. html32 has
+% some simple hook values, while html4 are the most complex.
+%
+%
+% \subsubsection{STEP cover page}
+%
+% \begin{macro}{\STEPcover}
+% \begin{macro}{\donumber}
+% \begin{macro}{\dodocdate}
+% \begin{macro}{\dooldnumber}
+% \begin{macro}{\dopartno}
+% \begin{macro}{\doptitle}
+% \begin{macro}{\cpnotice}
+% \begin{macro}{\doabstract}
+% \begin{macro}{\dokeywords}
+% \begin{macro}{\docomread}
+%    \begin{macrocode}
+\:CheckOption{0.0}
+\if:Option
+  %%%% html0.0
+
+\else
+  \:CheckOption{3.2}
+  \if:Option
+  %%%% html3.2
+    \Configure{STEPcover}{\HCode{<hr>}}{\HCode{<hr>}}
+    \Configure{donumber}{\HCode{<h3>}}{\HCode{</h3>}}
+    \Configure{dodocdate}{\HCode{<h5>}}{\HCode{</h5>}}
+    \Configure{dooldnumber}{\HCode{<h4>}}{\HCode{</h4>}}
+    \Configure{dopartno}{\HCode{<h4>}}{}
+    \Configure{doptitle}{}{\HCode{</h4>}}
+    \Configure{cpnotice}{\HCode{<h5>}}{\HCode{</h5>}}
+    \Configure{doabstract}{\HCode{<blockquote>}}{\HCode{</blockquote>}}
+    \Configure{dokeywords}{\HCode{<blockquote>}}{\HCode{</blockquote>}}
+    \Configure{docomread}{\HCode{<blockquote>}}{\HCode{</blockquote>}}
+
+  \else
+  %%%% html4.0
+    \Configure{STEPcover}{\HCode{<hr>}}{\HCode{<hr>}}
+    \Configure{STEPcover}{\HCode{<hr>}}{\HCode{<hr>}}
+    \Configure{donumber}{\HCode{<h3>}}{\HCode{</h3>}}
+    \Configure{dodocdate}{\HCode{<h5>}}{\HCode{</h5>}}
+    \Configure{dooldnumber}{\HCode{<h4>}}{\HCode{</h4>}}
+    \Configure{dopartno}{\HCode{<h4>}}{}
+    \Configure{doptitle}{}{\HCode{</h4>}}
+    \Configure{cpnotice}{\HCode{<h5>}}{\HCode{</h5>}}
+    \Configure{doabstract}{\HCode{<blockquote>}}{\HCode{</blockquote>}}
+    \Configure{dokeywords}{\HCode{<blockquote>}}{\HCode{</blockquote>}}
+    \Configure{docomread}{\HCode{<blockquote>}}{\HCode{</blockquote>}}
+
+  \fi
+\fi
+
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \subsubsection{Miscellaneous}
+%
+% \begin{macro}{\start:env}
+% \begin{macro}{\end:env}
+%  Currently these are defined in the \file{html*.4ht} files but they might
+% dissapear in future, so make sure they are defined.
+%    \begin{macrocode}
+\:CheckOption{0.0}
+\if:Option
+  %%%% html0.0
+  \def\start:env#1{}
+  \def\end:env{}
+\else
+  \CheckOption{3.2}
+  \if:Option
+  %%%% html3.2
+    \def\start:env#1{\IgnorePar\HCode{<\tbl:XV{#1}><tr><td\Hnewline}}
+    \def\end:env{\IgnorePar \end:TTT\ShowPar}
+  \else
+  %%%% html4
+    \def\start:env#1{\IgnorePar\EndP\HCode{<div class="#1"><\tbl:XV{#1}><tr
+          class="#1"><td\Hnewline class="#1">}}
+    \def\end:env{\IgnorePar \end:TTT\HCode{</div>}\ShowPar}
+  \fi
+\fi
+
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{environment}{espec}
+% \begin{environment}{fspec}
+% \begin{environment}{rspec}
+% \begin{environment}{sspec}
+% \begin{environment}{tspec}
+% \begin{environment}{dtext}
+% \begin{environment}{attrlist}
+% \begin{environment}{fproplist}
+% \begin{environment}{iproplist}
+% \begin{environment}{enumlist}
+% \begin{environment}{arglist}
+% \begin{environment}{majorsublist}
+% These are all simple environments, except for |majorsublist| which is
+% a wrapper for |itemize|.
+%    \begin{macrocode}
+\:CheckOption{0.0}
+\if:Option
+  %%%% html0.0
+  \ConfigureEnv{espec}{}{}{}{}
+  \ConfigureEnv{fspec}{}{}{}{}
+  \ConfigureEnv{rspec}{}{}{}{}
+  \ConfigureEnv{sspec}{}{}{}{}
+  \ConfigureEnv{tspec}{}{}{}{}
+  \ConfigureEnv{dtext}{}{}{}{}
+  \ConfigureEnv{attrlist}{}{}{}{}
+  \ConfigureEnv{fproplist}{}{}{}{}
+  \ConfigureEnv{iproplist}{}{}{}{}
+  \ConfigureEnv{enumlist}{}{}{}{}
+  \ConfigureEnv{arglist}{}{}{}{}
+  \ConfigureEnv{majorsublist}{}{}{}{}
+
+\else
+  \:CheckOption{3.2}
+  \if:Option
+  %%%% html3.2
+    \ConfigureEnv{espec}{\start:env{espec}}{\end:env}{}{}
+    \ConfigureEnv{fspec}{\start:env{fspec}}{\end:env}{}{}
+    \ConfigureEnv{rspec}{\start:env{rspec}}{\end:env}{}{}
+    \ConfigureEnv{sspec}{\start:env{sspec}}{\end:env}{}{}
+    \ConfigureEnv{tspec}{\start:env{tspec}}{\end:env}{}{}
+    \ConfigureEnv{dtext}{\start:env{dtext}}{\end:env}{}{}
+    \ConfigureEnv{attrlist}{\start:env{attrlist}}{\end:env}{}{}
+    \ConfigureEnv{fproplist}{\start:env{fproplist}}{\end:env}{}{}
+    \ConfigureEnv{iproplist}{\start:env{iproplist}}{\end:env}{}{}
+    \ConfigureEnv{enumlist}{\start:env{enumlist}}{\end:env}{}{}
+    \ConfigureEnv{arglist}{\start:env{arglist}}{\end:env}{}{}
+    \ConfigureEnv{majorsublist}{\start:env{majorsublist}}{\end:env}{}{}
+
+  \else
+  %%%% html4.0
+    \ConfigureEnv{espec}{\start:env{espec}}{\end:env}{}{}
+    \ConfigureEnv{fspec}{\start:env{fspec}}{\end:env}{}{}
+    \ConfigureEnv{rspec}{\start:env{rspec}}{\end:env}{}{}
+    \ConfigureEnv{sspec}{\start:env{sspec}}{\end:env}{}{}
+    \ConfigureEnv{tspec}{\start:env{tspec}}{\end:env}{}{}
+    \ConfigureEnv{dtext}{\start:env{dtext}}{\end:env}{}{}
+    \ConfigureEnv{attrlist}{\start:env{attrlist}}{\end:env}{}{}
+    \ConfigureEnv{fproplist}{\start:env{fproplist}}{\end:env}{}{}
+    \ConfigureEnv{iproplist}{\start:env{iproplist}}{\end:env}{}{}
+    \ConfigureEnv{enumlist}{\start:env{enumlist}}{\end:env}{}{}
+    \ConfigureEnv{arglist}{\start:env{arglist}}{\end:env}{}{}
+    \ConfigureEnv{majorsublist}{\start:env{majorsublist}}{\end:env}{}{}
+
+  \fi
+\fi
+
+%    \end{macrocode}
+% \end{environment}
+% \end{environment}
+% \end{environment}
+% \end{environment}
+% \end{environment}
+% \end{environment}
+% \end{environment}
+% \end{environment}
+% \end{environment}
+% \end{environment}
+% \end{environment}
+% \end{environment}
+%
+% \begin{environment}{expdesc}
+% This is a list environment, similar to the |description| environment,
+% except that there is a colon after the label.
+% It is called from within the |...list| environments after a local heading.
+%    \begin{macrocode}
+\:CheckOption{0.0}
+\if:Option
+  %%%% html0.0
+  \ConfigureList{expdesc}{}{}{}{}
+
+\else
+  \:CheckOption{3.2}
+  \if:Option
+  %%%% html3.2
+    \ConfigureList{expdesc}%
+      {\HCode{<dl>}}
+      {\HCode{</dl>}\ShowPar}
+      {\HCode{<dt>\bgroup \bf}
+      {: \egroup\HCode{<dd\Hnewline>}}
+
+  \else
+  %%%% html4.0
+    \ConfigureList{expdesc}%
+      {\EndP\HCode{<dl class="expdesc">}\let\end:itm=\empty}
+      {\EndP\HCode{</dd></dl>}\ShowPar}
+      {\end:itm\def\end:itm{\EndP\Tg</dd>}
+        \HCode{<dt class="expdesc">}\bgroup \bf}
+      {: \egroup\EndP\HCode{</dt><dd\Hnewline class="expdesc">}}
+
+  \fi
+\fi
+
+%    \end{macrocode}
+% \end{environment}
+%
+%    \begin{macrocode}
+\endinput
+
+%    \end{macrocode}
+%
+%  The end of the package
+%    \begin{macrocode}
+%</usc>
+%    \end{macrocode}
+%
+% \subsection{Observations}
+%
+%     There are three main aspects to developing \texht{} code and 
+% configurations for a new package:
+% \begin{enumerate}
+% \item Finding out what hooks and configurations are already available.
+% \item Determining what additional hooks, and where they should be put, for
+%       the new package.
+% \item Configuring all the hooks.
+% \end{enumerate}
+%
+%       \texht{} has added many hooks to the \LaTeX{} kernel and packages
+% based on kernel code inherit those hooks. I found it advisable to run
+% a test document with the new package(s) through \texht{} to see what
+% the result looked like. Depending on the package it may be that 
+% the inherited hooks and configuration are sufficient and nothing needs
+% to be done.
+%
+%     For this particular package, only a few new hooks were required, 
+% but it was
+% necessary in some cases to drastically revamp some of the package code ---
+% most noticeably for the |\STEPcover| command. Actually, as I am also the
+% author of the \Lpack{step} package I did have the luxury of being able to
+% change some of the internal package code to make a better match between the
+% \LaTeX{} typesetting view of the world and the \texht{} world view.
+% 
+%    There are other packages that, in their turn,  use the \Lpack{step} 
+% package and it turned
+% out that they required no new hooks or changes to the existing 
+% configurations.
+%
+%    The rest of this section is concerned with item~2, namely 
+% adding hooks.
+%
+% \subsubsection{Colon is a letter}
+%
+%    Within the \texht{} `environment', that is the \file{*.4ht} 
+% files, the colon character (|:|) acts as a letter in a similar manner 
+% as the at character (|@|) does in class and package files; |@| is also
+% treated as a letter in the environment. Normally, something like
+% |\start:env{myenv}| would be treated as the command |\start| followed by
+% the text |:env{myenv}|. In the \texht{} environment it is the command
+% |\start:env| with the argument |{myenv}|. If any commands like this
+% occur in the preamble to a \LaTeX{} document, then they must be surrounded
+% by |\makecolonletter| and |\restorecolon|, which may be defined 
+% as:\footnote{Note that a package may redefine the category code for 
+% the colon, which is why the old value is saved.}
+% \begin{verbatim}
+% \chardef\oldcolon=\thecatcode`\:
+% \newcommand{\makecolonletter}{\catcode`\:11\relax}
+% \newcommand{\restorecolon}{\catcode`\:=\oldcolon\relax}
+% \end{verbatim}
+%
+%    The fact that command names can include a colon means that you have
+% to be careful in code that includes any colon characters. In \LaTeX,
+% code like like |{footnote \thefootnote:}| will print the footnote number 
+% immediately followed by a colon (e.g., |footnote 3:|). In the \texht{}
+% environment you are more likely to get an error message saying that
+% |\thefootnote:| is undefined! Instead, this needs to be coded as
+% |{footnote \thefootnote :}|, so that the |\thefootnote| command is ended 
+% by the space before the colon.
+%
+% \subsubsection{Adding code and hooks}
+%
+%    A \LaTeX{} idiom for adding code at the start and/or end of
+% an existing macro which takes no arguments called, say |\foo|, is:
+% \begin{verbatim}
+% \let\oldfoo\foo
+% \renewcommand{\foo}{new-start-code \oldfoo new-end-code}
+% \end{verbatim}
+% Similarly for commands |\baz| and |\biz| which take one and two arguments
+% respectively:
+% \begin{verbatim}
+% \let\oldbaz\baz
+% \renewcommand{\baz}[1]{new-start-code \oldbaz{#1} new-end-code}
+% \let\oldbiz\biz
+% \renewcommand{\biz}[2]{new-start-code \oldbiz{#1}{#2} new-end-code}
+% \end{verbatim}
+%
+% As these kinds of redefinitions are a common occurrence 
+% \file{tex4ht.sty} provides commands that encapsulate the above idiom.
+% These are |\pend:def\foo{new-start-code}| and
+% |\append:def\foo{new-end-code}| for when |\foo| is a macro without 
+% arguments, and there are similar commands for prepending and appending
+% to macros with up to three arguments. Repeating and extending 
+% the \LaTeX{} example,
+% in the \texht{} environment it could be coded as:
+% \begin{verbatim}
+% \pend:def\foo{new-start-code}    % \foo has no arguments
+% \append:def\foo{new-end-code}
+% \pend:defI\baz{new-start-code}   % \baz has one argument
+% \append:defI\baz{new-end-code}
+% \pend:defII\biz{new-start-code}  % \biz has two arguments
+% \append:defII\biz{new-end-code}
+% \pend:defIII\boz{new-start-code}  % \boz has three arguments
+% \append:defIII\boz{new-end-code}
+% \end{verbatim}
+%
+%     The definition of a hook in a macro called, say |\buz|, takes
+% the form |\X:buz| where X is a single letter. For example, adding a 
+% configurable hook
+% at the start and end of the macro |\baz| can be done like this: 
+% \begin{verbatim}
+% \pend:defI\baz{\a:baz}      % hook at start
+% \append:defI\baz{\b:baz}    % hook at end
+% \NewConfigure{baz}{2}       % declare \baz has two configurable hooks
+% \end{verbatim}
+% Note that by default a |\NewConfigure{baz}{2}| command expects the hook
+% corresponding to the first argument to be |\a:baz| and the hook
+% corresponding to the second argument to be |\b:baz|. Extending the
+% example, |\NewConfigure{foo}{9}| will expect the hook corresponding to
+% the ninth argument to be |\i:foo| (`i' is the ninth letter of the
+% alphabet). This default setting for |\NewConfigure| has been created via: \\
+% |\Configure{NewConfigure}{a:}{b:}{c:}{d:}{e:}{f:}{g:}{h:}{i:}| \\
+% in \file{tex4ht.sty}.
+%
+%
+% As an example for hook insertion, assume a macro defined like: \\
+% |\newcommand{\mac}[1]{START #1 END}| \\
+% in which there are four potential places for hooks (call them h1 to h4): \\
+% |{h1 START h2 #1 h3 END h4}|. Hooks h1 and h4 can be added via |\pend:defI|
+% and |\append:defI|, but these are not sufficient by themselves. Other
+% methods are required for inserting all four hooks. Two of these are:
+% \begin{itemize}
+% \item Redefine the whole macro from scratch:
+% \begin{verbatim}
+% \renewcommand{\mac}[1]{\a:mac START \c:mac #1 \d:mac END \b:mac}
+% \NewConfigure{mac}{4}
+% \end{verbatim}
+% 
+% \item Reuse parts of the original macro 
+% (similar to the \LaTeX{} ap/pre-pending idiom):
+% \begin{verbatim}
+% \let\oldmac\mac
+% \renewcommand{\mac}[1]{\a:mac\oldmac{\c:mac #1 \d:mac}\b:mac}
+% \NewConfigure{mac}{4}
+% \end{verbatim}
+% \end{itemize}
+% Either of these examples can be configured via:
+% \begin{verbatim}
+% \Configure{mac}%
+%   {first arg for a hook}    % \a:mac at the start of the command
+%   {second arg for a hook}   % \b:mac at the end of the command
+%   {third arg for a hook}    % \c:mac immediately before the argument
+%   {fourth arg for a hook}   % \d:mac immediately after the argument
+% \end{verbatim}
+% Note that the hooks do not have to be placed in the |\mac| command in
+% alphabetical order.
+%
+% 
+%
+%
+% \bibliographystyle{alpha}
+%
+% \begin{thebibliography}{GMS94}
+%
+% \bibitem[GMS94]{GOOSSENS94}
+% Michel Goossens, Frank Mittelbach, and Alexander Samarin.
+% \newblock \textit{The LaTeX Companion}.
+% \newblock Addison-Wesley Publishing Company, 1994.
+%
+% \bibitem[GR99]{GOOSSENS99}
+% Michel Goossens and Sebastian Rahtz 
+% (with Eitan Gurari, Ross Moore, and Robert Sutor).
+% \newblock \textit{The LaTeX Web Companion --- Integrating TeX, HTML, and XML}.
+% \newblock Addison-Wesley Publishing Company, 1999.
+%
+% \bibitem[Wil96]{PRW96i}
+% Peter~R. Wilson.
+% \newblock \textit{{LaTeX for standards: The LaTeX package files user manual}}.
+% \newblock NIST Report NISTIR, June 1996.
+%
+% \end{thebibliography}
+%
+%
+% \Finale
+% \PrintIndex
+%
+\endinput
+
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+
+

@@ -1,0 +1,1564 @@
+% \iffalse meta-comment, etc.
+%%
+%% Package `fvrb-ex' (`fvrb-ex', `hbaw' and `hcolor')
+%%
+%% COPYING:
+%% This package may be distributed under the terms of the LaTeX Project Public
+%% License, as described in lppl.txt in the base LaTeX distribution.
+%% Either version 1.0 or, at your option, any later version.
+%%
+%% Denis Girou (CNRS/IDRIS - France) <Denis.Girou@idris.fr> March 27, 1998
+%%
+% \fi
+%
+% \changes{v1.9}{2010/05/16}{Use LPPL as license and fix bug with loading pstricks (hv)}
+% \changes{v1.8}{2010/01/04}{Use ^^ instead of eight-bits chars. [KB/ER]}
+% \changes{v1.7}{1998/03/26}{First public release.}
+% \changes{v0.1}{1995}{First personal version.}
+%
+% \newif\ifmulticols
+% \IfFileExists{multicol.sty}{\multicolstrue}{\multicolsfalse}
+% \newif\ifpstricks
+% \IfFileExists{pstricks.sty}{\pstrickstrue}{\pstricksfalse}
+%
+% \DoNotIndex{\\,\^,\�,\�,\�,\�} ^^A Unefficient...
+% \DoNotIndex{\@defpar,\@gobble,\@ifnextchar,\@tempdimb}
+% \DoNotIndex{\active,\advance,\Answer@No,\Answer@Yes,\author}
+% \DoNotIndex{\begin,\begingroup,\box}
+% \DoNotIndex{\catcode,\center,\circle,\CodelineIndex,\color,\ColorVersion}
+% \DoNotIndex{\date,\DeclareOption,\def,\DocInput,\documentclass,\dp}
+% \DoNotIndex{\else,\EnableCrossrefs,\end,\endcenter,\endgroup,\endinput}
+% \DoNotIndex{\endpspicture,\expandafter}
+% \DoNotIndex{\fboxsep,\fcolorbox,\fi,\filedate,\fileversion,\footnotesize}
+% \DoNotIndex{\FV@XRightMargin,\fvset,\GetFileInfo,\hbadness,\hbox,\hfuzz}
+% \DoNotIndex{\iden,\IfFileExists,\ifmmode,\ifpstricks,\ifx,\input}
+% \DoNotIndex{\jobname,\large}
+% \DoNotIndex{\m@th,\maketitle,\mathbf,\mathit,\mathnormal}
+% \DoNotIndex{\mathsl,\mathtt,\message,\mu,\multiply}
+% \DoNotIndex{\NeedsTeXFormat,\newcommand,\newif,\newpsobject,\newread}
+% \DoNotIndex{\Oldmakeindex,\OnlyDescription}
+% \DoNotIndex{\par,\parindent,\pounds,\PrintChanges,\PrintIndex}
+% \DoNotIndex{\ProcessOptions,\ProvidesPackage,\psellipse,\pspicture}
+% \DoNotIndex{\PSTricksLoaded,\pstrickstrue,\put}
+% \DoNotIndex{\Question@Color,\Question@Mark}
+% \DoNotIndex{\read,\RecordChanges,\RecustomVerbatimEnvironment,\relax}
+% \DoNotIndex{\RequirePackage}
+% \DoNotIndex{\section,\setbox,\setlength,\smallskip,\space,\strip}
+% \DoNotIndex{\textbf,\textcolor,\textit,\textsc,\textsf,\textsl,\texttt}
+% \DoNotIndex{\textwidth,\title,\topsep,\ttyin}
+% \DoNotIndex{\underline,\unitlength,\usepackage}
+% \DoNotIndex{\VerbatimEnvironment,\VerbatimInput,\vspace,\z@}
+%
+% \setcounter{IndexColumns}{2}
+%
+% \newcommand{\FVrbPackage}{`\textsf{fancyvrb}'}
+% \newcommand{\FVrbExPackage}{`\textsf{fvrb-ex}'}
+% \newcommand{\HbawPackage}{`\textsf{hbaw}'}
+% \newcommand{\HcolorPackage}{`\textsf{hcolor}'}
+%
+% \title{The `\textsf{fvrb-ex}' package\\
+%        Example environments\\with the \FVrbPackage{} package}
+% \author{Denis Girou\\CNRS/IDRIS\\Orsay -- France\\
+%         {\footnotesize email: Denis.Girou@idris.fr}}
+% \date{Version 1.9\\\today}
+%
+% \maketitle
+%
+% \begin{abstract}
+%     This package, built above the \FVrbPackage{} one (from Timothy
+%   \textsc{van Zandt}), offer several kinds of the so-called \emph{example}
+%   environments to format some code both in ``verbatim'' mode and in the
+%   ``normal'' way, below or on the side. The advantage of such environments
+%   is that the code itself is included only one time in the source code,
+%   which allow to be sure of the consistence of the two versions shown.
+%
+%     Some other kinds of such environments are specially devoted to graphics,
+%   allowing to give the size of them. It is possible in this case to draw
+%   also a grid.
+% \end{abstract}
+%
+% \ifmulticols
+%   \setlength{\columnseprule}{0.6pt}
+%   \begin{multicols}{2}
+%   {\parskip 0pt                ^^A We have to reset \parskip (bug in \LaTeX)
+% \fi
+%     \tableofcontents
+% \ifmulticols
+%   }
+%   \end{multicols}
+% \fi
+%
+% \section{Introduction}
+%
+%   These macros are based on some previous work of Timothy \textsc{van
+% Zandt}, adapted and developed to suit my personal needs.
+%
+%   This package is built above the \FVrbPackage{} one (from Timothy
+% \textsc{van Zandt}), to offer some \emph{example} environments showing both
+% the code and it result. It main strength is that it allow to use all the
+% power of \FVrbPackage{}, with it great number of customization parameters.
+%
+%   These macros can also be used in conjunction with the \HbawPackage{} and
+% \HcolorPackage{} packages, to allow to generate the verbatim code with
+% some \emph{highlighting} attributes to emphasize parts of the text.
+% It can also produce different effects according to the choice of a
+% \emph{colored} or \emph{black and white} version. This last facility was
+% developed for slides, to allow to generate them both in color for
+% projection and in black and white to distribute them as paper copy.
+%
+%   Some special environments for graphic drawings allow to define directly
+% the size of them, without requiring to use also a \emph{picture}
+% environment. To be able to use them, the PSTricks package must be available,
+% even if these specialized environments can be used for graphics built with
+% another macro language than PSTricks.
+%
+% \begin{quote}
+%     \textbf{\large Warning!} You must be aware that it has been reported
+%   that this package doesn't work at all on some platforms, due to the way
+%   the 8~bits characters are managed by some \TeX{} systems.
+% \end{quote}
+%
+% \section{User interface}
+%
+% \begin{quote}
+%     \textbf{\large Warning!} We suppose here that you already know the
+%   \FVrbPackage{} package. If not, look at it own documentation!
+% \end{quote}
+%
+% \subsection{Environments}
+%
+% \noindent Five new environments are defined:
+%
+% \begin{description}
+%   \item[Example]: show the verbatim text and the formatted result below.
+%   \item[CenterExample]: same than \texttt{Example}, but the result is
+%   centered.
+%   \item[SideBySideExample]: show the formatted result on the left and the
+%   verbatim text on the right. The result is centered vertically according to 
+%   the text.
+%   \item[PCenterExample]: same than \texttt{CenterExample}, but the
+%   result is put inside a PSTricks \texttt{pspicture} environment. It is
+%   undefined if PSTricks is not available. It is specially devoted to graphic
+%   drawings, but not specially built with PSTricks itself. It require to
+%   specify the dimensions of the graphic. In fact, it is the same thing than
+%   to use the \texttt{CenterExample} environment and to put the material
+%   inside a \LaTeX{} \texttt{picture} or PSTricks \texttt{pspicture}
+%   environment, but it can be more convenient to have not to specify this
+%   one explicitely.
+%   \item[PSideBySideExample]: same than \texttt{SideBySideExample}, but the
+%   result is put inside a PSTricks \texttt{pspicture} environment. The
+%   preceding comments for \texttt{PCenterExample} are of course also valid
+%   for it.
+% \end{description}
+%
+% \noindent The syntax of the first three is:
+%
+% \begin{Verbatim}
+%   \begin{EnvironmentName}[optional_fancyvrb_arguments]
+%     ..................................................
+%   \end{EnvironmentName}
+% \end{Verbatim}
+%
+% \noindent and for the two last ones:
+%
+% \begin{Verbatim}
+%   \begin{EnvironmentName}[opt_fvrb_args][(x_min,y_min)](x_max,y_max)
+%     ................................................................
+%   \end{EnvironmentName}
+% \end{Verbatim}
+%
+%   In these last cases, default values for \verb+x_min+ and \verb+y_min+ are
+% 0.
+%
+% \subsection{Loading options}
+%
+% \begin{description}
+%   \item[baw] : allow highlighting for a \emph{b}lack \emph{a}nd \emph{w}hite
+%   version. In this case the \HbawPackage{} will be loaded and it definitions
+%   will be active to emphasize texts.
+%   \item[color] : allow highlighting for a \emph{color} version. In this case
+%   the \HcolorPackage{} will be loaded and it definitions will be active to
+%   emphasize texts.
+%   \item[bawcolor] : doesn't specify in the file if it will be a \emph{b}lack
+%   \emph{a}nd \emph{w}hite or a \emph{color} version to generate. A question 
+%   will be asked interactively at compile time. This allow to generate at
+%   choice one of the two versions without any change in the file.
+%   \item[pstricks] : require the loading of PSTricks (which of course must be 
+%   available on the system) to be able to use the special environments
+%   devoted to graphics (but not at all mandatory PSTricks graphics).
+% \end{description}
+%
+%   Of course, these three keywords are mutually exclusive. If none of the
+% \texttt{baw}, \texttt{color} or \texttt{bawcolor} keyword is specified,
+% none of the supplementary files will be loaded.
+%
+% \subsection{\FVrbPackage{} options imposed}
+%
+% \noindent The following \FVrbPackage{} parameters are imposed:
+%
+% \begin{description}
+%   \item[gobble=2]: each line inside these environments is supposed to be
+%   indented by 2 characters. It only concern the aspect of the source code,
+%   which will be more readable like that.
+%   \item[numbersep=3pt]: it will be effective only if \texttt{numbers=left}
+%   or \texttt{numbers=right} will be chosen.
+%   \item[commentchar=W]: it is the comment character for the source text,
+%   which will not be printed in the verbatim part, but executed in the
+%   formatted part. So, it allow to have the example not generated by the code
+%   shown, which can be surprising for readers and must be used only with
+%   care in special circumstances! Character chosen is 163 (�). If it cannot
+%   be used on your system or if you have it inside your verbatim text, you
+%   must change it by yourself in the package file.
+%   \item[commandchars=XYZ]: respectively the \emph{escape}, \emph{beginning 
+%   of group} and \emph{end of group} characters, to allow escape sequences
+%   (\LaTeX{} commands as font and color changes) to be applied on the
+%   verbatim text, using the \HbawPackage{} or \HcolorPackage{} packages.
+%   These characters are specially chosen to probably be used by nobody in
+%   their codes... Characters chosen are those of codes 167, 181 and 182
+%   (���). If they cannot be used on your system or if you have some of them
+%   inside your verbatim text, you must made yourself the relevant changes in
+%   the three files of the package.
+% \end{description}
+%
+% \section{Usage examples}
+%
+% \subsection{Usage of the environments}
+%
+% \RecustomVerbatimEnvironment{Verbatim}{Verbatim}
+%   {gobble=4,commentchar=`,numbers=left,numbersep=3pt,frame=single}
+%
+% \begin{Verbatim}
+%   \begin{Example}
+%     First verbatim line.
+%     Second verbatim line.
+%     Third verbatim line.
+%   \end{Example}
+% \end{Verbatim}
+%
+% \begin{Example}
+% First verbatim line.
+% Second verbatim line.
+% Third verbatim line.
+% \end{Example}
+%
+% \vspace{5mm}
+%   It is possible to customize the verbatim environments as in the standard
+% way defined by \FVrbPackage{}, locally as argument of the
+% environment\footnote{Take care that you must define these parameters
+% directly for the \texttt{Example}, \texttt{CenterExample} and
+% \texttt{SideBySideExample} environments, but that you must put them inside
+% a \cs{fvset} macro for the \texttt{PCenterExample} and
+% \texttt{PSideBySideExample} ones, as in these cases you can also specify 
+% some PSTricks parameters, using the \cs{psset} macro.},
+% or globally using the \cs{fvset} command.
+%
+% \begin{Verbatim}
+%   \begin{Example}[frame=lines,framerule=1mm,numbers=left]
+%     First verbatim line.
+%     Second verbatim line.
+%     Third verbatim line.
+%   \end{Example}
+% \end{Verbatim}
+%
+% \begin{Example}[frame=lines,framerule=1mm,numbers=left]
+% First verbatim line.
+% Second verbatim line.
+% Third verbatim line.
+% \end{Example}
+%
+% \begin{Verbatim}
+%   \begin{CenterExample}[frame=single,numbers=right]
+%     First verbatim line.
+%     Second verbatim line.
+%     Third verbatim line.
+%   \end{CenterExample}
+% \end{Verbatim}
+%
+% \begin{CenterExample}[frame=single,numbers=right]
+% First verbatim line.
+% Second verbatim line.
+% Third verbatim line.
+% \end{CenterExample}
+%
+% \newlength\MyLength
+% \MyLength=\textwidth
+% \advance\MyLength -4.7cm
+%
+% \noindent
+% \begin{minipage}{4.7cm}
+% \begin{SideBySideExample}[xrightmargin=3cm,numbers=left]
+% First
+% Second
+% \end{SideBySideExample}
+% \end{minipage}%
+% \begin{minipage}{\MyLength}
+% \begin{Verbatim}
+%   \begin{SideBySideExample}
+%         [xrightmargin=3cm,numbers=left]
+%     First
+%     Second
+%   \end{SideBySideExample}
+% \end{Verbatim}
+% \end{minipage}
+%
+% \ifpstricks                 ^^A If PSTricks is available
+% \vspace{5mm}
+%   As explained, the \texttt{PCenterExample} and \texttt{PSideBySideExample}
+% environments, specially devoted to graphics, put their contents inside a
+% PSTricks \texttt{pspicture} environment\footnote{The $*$ convention of the
+% \texttt{pspicture} environment is not accepted here.}. So, we must define
+% the size of it.
+%
+% \begin{Verbatim}
+%   \fvset{frame=lines,framerule=0.5mm,numbers=left}
+%
+%   \begin{PCenterExample}(-0.5,-0.5)(0.5,0.5)
+%     \setlength{\unitlength}{1cm}
+%     \put(0,0){\circle{1}}
+%   \end{PCenterExample}
+% \end{Verbatim}
+%
+% \begin{PCenterExample}[frame=lines,framerule=0.5mm,numbers=left]%
+%                       (-0.5,-0.5)(0.5,0.5)
+% \setlength{\unitlength}{1cm}
+% \put(0,0){\circle{1}}
+% \end{PCenterExample}
+%
+% \noindent So, it is the same thing than to do:
+%
+% \begin{Verbatim}
+%   \fvset{frame=lines,framerule=0.5mm,numbers=left}
+%
+%   \begin{CenterExample}
+%     \setlength{\unitlength}{1cm}
+%     \begin{picture}(1,1)(-0.5,-0.5)
+%       \put(0,0){\circle{1}}
+%     \end{picture}
+%   \end{CenterExample}
+% \end{Verbatim}
+%
+% \begin{CenterExample}[frame=lines,framerule=0.5mm,numbers=left]
+% \setlength{\unitlength}{1cm}
+% \begin{picture}(1,1)(-0.5,-0.5)
+%   \put(0,0){\circle{1}}
+% \end{picture}
+% \end{CenterExample}
+%
+%   Using the\cs{showgrid} macro, we can require to superpose the graphic
+% above a grid, which can help to built it as desired. The size of the
+% picture must be at least of 1 unit in this case, and the grid is rounded to
+% the next greater integer.
+%
+% \begin{Verbatim}
+%   \showgrid
+%   \begin{PCenterExample}[frame=single,numbers=left](-1,-1)(1,1)
+%     \setlength{\unitlength}{1cm}
+%     \put(0,0){\circle{1}}
+%   \end{PCenterExample}
+% \end{Verbatim}
+%
+% {\showgrid
+% \begin{PCenterExample}[frame=single,numbers=left](-1,-1)(1,1)
+% \setlength{\unitlength}{1cm}
+% \put(0,0){\circle{1}}
+% \end{PCenterExample}
+% }
+%
+% \begin{Verbatim}
+%   \fvset{frame=single,xrightmargin=5cm}
+%   \begin{PSideBySideExample}(-2,-1)(2,1)
+%     \psellipse*[linecolor=yellow](2,1)
+%   \end{PSideBySideExample}
+%
+%   \showgrid
+%   \begin{PSideBySideExample}(-2,-1)(2,1)
+%     \psellipse[linestyle=dashed](2,1)
+%   \end{PSideBySideExample}
+% \end{Verbatim}
+%
+% {\fvset{frame=single,xrightmargin=5cm}
+% \begin{PSideBySideExample}(-2,-1)(2,1)
+% \psellipse*[linecolor=yellow](2,1)
+% \end{PSideBySideExample}
+%
+% \showgrid
+% \begin{PSideBySideExample}(-2,-1)(2,1)
+% \psellipse[linestyle=dashed](2,1)
+% \end{PSideBySideExample}
+% }
+%
+% \vspace{5mm}
+%   The special � character defined as the comment for \FVrbPackage{} must be
+% used with care, as it allow to change the code run in the formatted part
+% without showing these changes in the verbatim part. So, the code shown will
+% not correspond any more in this case to the one which produce the result...
+% (we must take care also to do not indent these lines, otherwise we will
+% change the formatting...).
+%
+%   Nevertheless, in very special circumstances, it allow to do special tricks.
+%
+% \begin{Verbatim}[commentchar=Z]
+%   \begin{CenterExample}[frame=lines,framerule=0.5mm]
+%     First verbatim line.
+%   �\textit{%
+%     Second verbatim line.
+%   �}
+%   �\LARGE
+%     Third verbatim line.
+%   \end{CenterExample}
+% \end{Verbatim}
+%
+% \begin{CenterExample}[frame=lines,framerule=0.5mm]
+% First verbatim line.
+% �\textit{%
+% Second verbatim line.
+% �}
+% �\LARGE
+% Third verbatim line.
+% \end{CenterExample}
+%
+% \else                       ^^A If PSTricks is not available
+% \begin{quote}
+%     \textbf{\large Warning!} The \texttt{PCenterExample} and
+%   \texttt{PSideBySideExample} are not demonstrated here, because PSTricks
+%   was not found on your platform.
+% \end{quote}
+% \fi
+%
+% \subsection{Usage of the \HbawPackage{} and \HcolorPackage{} packages}
+%
+%   If the option \texttt{baw}, \texttt{color} or \texttt{bawcolor} is chosen, 
+% we can use special commands to emphasize text in the verbatim formatting.
+% It allow mainly to change the font or the color of special parts of the text.
+%
+% \noindent Here we suppose that the package option \texttt{baw} for the
+% \FVrbExPackage{} has been chosen:
+%
+% \begin{Verbatim}
+%   \begin{CenterExample}[frame=single,numbers=right]
+%     �HLa�First� verbatim line.
+%     �HLb�Second� verbatim line.
+%     �HLCBWz�Third� verbatim line.
+%   \end{CenterExample}
+% \end{Verbatim}
+%
+% \begin{CenterExample}[frame=single,numbers=right]
+% �HLa�First� verbatim line.
+% �HLb�Second� verbatim line.
+% �HLCBWz�Third� verbatim line.
+% \end{CenterExample}
+%
+% \ifpstricks                 ^^A If PSTricks is available
+% \begin{Verbatim}
+%   \fvset{frame=single}
+%   \begin{PSideBySideExample}[xrightmargin=5.5cm](-2,-1)(2,1)
+%     \psellipse[linestyle=�HLCBWz�dashed�](2,1)
+%   \end{PSideBySideExample}
+%
+%   \begin{PSideBySideExample}[xrightmargin=4.5cm](-2,-1)(2,1)
+%     \psellipse[linestyle=�HLb�dotted�](2,1)
+%   \end{PSideBySideExample}
+% \end{Verbatim}
+%
+% {\fvset{frame=single}
+% \begin{PSideBySideExample}[xrightmargin=5.5cm](-2,-1)(2,1)
+% \psellipse[linestyle=�HLCBWz�dashed�](2,1)
+% \end{PSideBySideExample}
+%
+% \begin{PSideBySideExample}[xrightmargin=4.5cm](-2,-1)(2,1)
+% \psellipse[linestyle=�HLb�dotted�](2,1)
+% \end{PSideBySideExample}
+% }
+% \fi
+%
+% \subsection{Thanks}
+%
+%   I thank you Sebastian \textsc{Rahtz} \verb+<s.rahtz@elsevier.co.uk>+,
+% Thomas \textsc{Siegel} \verb+<siegel@aix520.informatik.uni-leipzig.de>+ and
+% Rolf \textsc{Niepraschk}\break\relax \verb+<niepraschk@ptb.de>+ for their
+% tests and comments on preliminary versions of this package.
+%
+%
+% ^^A .................... End of the documentation part ....................
+%
+% \section{Driver file}
+%
+%   The next bit of code contains the documentation driver file for \TeX{},
+% i.e., the file that will produce the documentation you are currently
+% reading. It will be extracted from this file by the \texttt{docstrip}
+% program.
+%
+%    \begin{macrocode}
+%<*driver>
+\documentclass{ltxdoc}
+\GetFileInfo{fvrb-ex.dtx}
+\usepackage[baw,pstricks]{fvrb-ex}
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+%%\OnlyDescription                % Comment it for implementation details
+%\Oldmakeindex                   % Uncomment if your MakeIndex is pre-0.9
+\hbadness=7000                  % Over and under full box warnings
+\begin{document}
+  % To be able to use the letter "mu"
+  \catcode`\^^b5=\active
+  \def^^b5{$\mu$}
+  % To be able to use the letter "pound"
+  \catcode`\^^a3=\active
+  \def^^a3{$\pounds$}
+  \DocInput{fvrb-ex.dtx}
+\end{document}
+%</driver>
+%    \end{macrocode}
+%
+% \section{\FVrbExPackage{} code}
+%
+%<*fvrb-ex>
+%
+% \iffalse meta-comment, etc.
+%% Package `fvrb-ex'
+%%
+% \fi
+%
+% \subsection{Preambule and options management}
+%
+% What we need.
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+%    \end{macrocode}
+%
+% Who we are.
+%    \begin{macrocode}
+\def\fileversion{1.9}
+\def\filedate{2010/05/16}
+\ProvidesPackage{fvrb-ex}[\filedate]
+\message{`fvrb-ex' v\fileversion, \filedate\space (Denis Girou)}
+%    \end{macrocode}
+%
+% Require PSTricks if specified (to define the \texttt{PCenterExample} and
+% \texttt{PSideBySideExample} environments).
+%    \begin{macrocode}
+\newif\ifpstricks\pstricksfalse
+\let\LoadPStricks=\relax
+\DeclareOption{pstricks}{\def\LoadPStricks{\RequirePackage{pstricks}}\pstrickstrue}
+%    \end{macrocode}
+%
+% Declaration of the explicit black and white version.
+%    \begin{macrocode}
+\DeclareOption{baw}{\def\ColorVersion{n}}
+%    \end{macrocode}
+%
+% Declaration of the explicit color version.
+%    \begin{macrocode}
+\DeclareOption{color}{\def\ColorVersion{y}}
+%    \end{macrocode}
+%
+% Declaration option to choose black and white or color version.
+%    \begin{macrocode}
+\DeclareOption{bawcolor}{\def\ColorVersion{?}}
+%    \end{macrocode}
+%
+% Process the options.
+%    \begin{macrocode}
+\ProcessOptions\relax
+\LoadPStricks
+%    \end{macrocode}
+%
+% Require the \FVrbPackage{} package.
+%    \begin{macrocode}
+\ifpstricks\RequirePackage{pstricks}\fi
+\RequirePackage{fancyvrb}
+%    \end{macrocode}
+%
+% To ask an interactive question if necessary (code from `docstrip').
+%    \begin{macrocode}
+\newread\ttyin
+\def\iden#1{#1}
+\def\strip#1#2 \@gobble{\def #1{#2}}
+\def\@defpar{\par}
+\def\@gobble#1{}
+\def\Ask#1#2{%
+\message{#2}\read\ttyin to #1\ifx#1\@defpar\def#1{}\else
+\iden{\expandafter\strip\expandafter#1#1\@gobble\@gobble} \@gobble\fi}
+%    \end{macrocode}
+%
+% To be able to ask later to choose between color and black and white version.
+% \begin{macro}{\Answer@Yes}
+%    \begin{macrocode}
+\def\Answer@Yes{y}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\Answer@No}
+%    \begin{macrocode}
+\def\Answer@No{n}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\Question@Mark}
+%    \begin{macrocode}
+\def\Question@Mark{?}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\Question@Color}
+%    \begin{macrocode}
+\def\Question@Color{Color version? (y=yes)}
+%    \end{macrocode}
+% \end{macro}
+%
+% For the highlighting style (color or black and white version), if defined.
+%
+% \begin{macro}{\Highlight@Attributes}
+%    \begin{macrocode}
+\def\Highlight@Attributes{}   % Default=nothing
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\NoHighlight@Attributes}
+%    \begin{macrocode}
+\def\NoHighlight@Attributes{} % Default=nothing
+%    \end{macrocode}
+% \end{macro}
+%
+% Forced choice of the \emph{black and white} version.
+%    \begin{macrocode}
+\ifx\ColorVersion\Answer@Yes
+  \RequirePackage{color}       % Standard LaTeX `color' package
+  \RequirePackage{hcolor}      % Color version
+\fi
+%    \end{macrocode}
+%
+% Forced choice of the \emph{color} version.
+%    \begin{macrocode}
+\ifx\ColorVersion\Answer@No
+  \RequirePackage{color}       % Standard LaTeX `color' package
+  \RequirePackage{hbaw}        % Black and white version
+\fi
+%    \end{macrocode}
+%
+% Choice of the highlighting style (color, black and white or nothing).
+%    \begin{macrocode}
+\ifx\ColorVersion\Question@Mark
+  \Ask\ColorVersion{^^J\Question@Color}
+  \ifx\ColorVersion\Answer@Yes
+    \RequirePackage{color}      % Standard LaTeX `color' package
+    \RequirePackage{hcolor}     % Color version
+  \else
+    \RequirePackage{color}      % Standard LaTeX `color' package
+    \RequirePackage{hbaw}       % Black and white version
+  \fi
+\fi
+%    \end{macrocode}
+%
+% Verbatim example environments must be indented by two spaces, which should
+% be ignored.
+%    \begin{macrocode}
+\fvset{gobble=2}
+%    \end{macrocode}
+%
+% To decide later if the result must be surimpose on a grid (useful only if
+% PSTricks is available).
+%    \begin{macrocode}
+\newif\ifFvrbEx@Grid
+%    \end{macrocode}
+%
+% \subsection{The various example environments}
+%
+% \DescribeEnv{Example}
+% \texttt{Example} is an environment to show the verbatim code and
+% the result just below.
+%    \begin{macrocode}
+\def\Example{%
+\catcode`\^^M=\active
+\@ifnextchar[{\catcode`\^^M=5\Example@}{\catcode`\^^M=5\Begin@Example}}
+%    \end{macrocode}
+%
+% \cs{endExample} is a macro for the \texttt{Example} environment to close 
+% the verbatim part and to put the formatted result below.
+%    \begin{macrocode}
+\def\endExample{%
+\end{VerbatimOut}%
+\Below@Example{\input{\jobname.tmp}}}
+%    \end{macrocode}
+%
+% \begin{macro}{\Example@}
+% \cs{Example@} is an internal macro to set locally the \FVrbPackage{} options
+% if needed (both for the \texttt{Example}, \texttt{CenterExample} and
+% \texttt{SideBySideExample} environments).
+%    \begin{macrocode}
+\def\Example@[#1]{\fvset{#1}\Begin@Example}
+%    \end{macrocode}
+% \end{macro}
+%
+% \DescribeEnv{CenterExample}
+% \texttt{CenterExample} is an environment to show the verbatim code and
+% the result just below, inside a \texttt{center} environment.
+%    \begin{macrocode}
+\def\CenterExample{%
+\catcode`\^^M=\active
+\@ifnextchar[{\catcode`\^^M=5\Example@}{\catcode`\^^M=5\Begin@Example}}
+%    \end{macrocode}
+%
+% \begin{macro}{\endCenterExample}
+% \cs{endCenterExample} is a macro for the \texttt{CenterExample}
+% environment to close the verbatim part and to put the formatted result below,
+% centering it.
+%    \begin{macrocode}
+\def\endCenterExample{%
+\end{VerbatimOut}%
+\center
+\Below@Example{\input{\jobname.tmp}}
+\endcenter}
+%    \end{macrocode}
+% \end{macro}
+%
+% \DescribeEnv{SideBySideExample}
+% \texttt{SideBySideExample} is an environment to show the verbatim code and
+% the result on the left, using a \texttt{minipage} environment.
+%    \begin{macrocode}
+\def\SideBySideExample{%
+\catcode`\^^M=\active
+\@ifnextchar[{\catcode`\^^M=5\Example@}%
+             {\catcode`\^^M=5\Begin@Example}}
+%    \end{macrocode}
+%
+% \begin{macro}{\endSideBySideExample}
+% \cs{endSideBySideExample} is a macro for the \texttt{SideBySideExample}
+% environment to close the verbatim part and to put the formatted result on
+% the left side.
+%    \begin{macrocode}
+\def\endSideBySideExample{%
+\end{VerbatimOut}%
+\SideBySide@Example{\input{\jobname.tmp}}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{General macros}
+%
+% \begin{macro}{\Begin@Example}
+% \cs{Begin@Example} is an internal macro to start an example environment.
+%    \begin{macrocode}
+\newcommand{\Begin@Example}{%
+\parindent=0pt
+\multiply\topsep by 2
+\VerbatimEnvironment
+\begin{VerbatimOut}[codes={\catcode`\^^a3=12\catcode`\^^a7=12\catcode`\^^b5=12%
+                           \catcode`\^^b6=12}]{\jobname.tmp}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\Below@Example}
+% \cs{Below@Example} is an internal macro to insert the verbatim part and
+% to put the formatted result just below. The possible highlighting must
+% be suppressed and the comment character desactivated before to input the
+% formatted part.
+%    \begin{macrocode}
+\newcommand{\Below@Example}[1]{%
+\VerbatimInput[gobble=0,commentchar=^^a3,commandchars=^^a7^^b5^^b6,numbersep=3pt]%
+              {\jobname.tmp}
+\catcode`\^^a3=9\relax%
+\NoHighlight@Attributes % To suppress possible highlighting
+\ifFvrbEx@Grid\vspace{5pt}\fi
+#1%
+\ifFvrbEx@Grid\vspace{5pt}\fi
+\par}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\SideBySide@Example}
+% \cs{SideBySide@Example} is an internal macro to insert the verbatim part and
+% to put the formatted result on the left side, using a \texttt{minipage}
+% environment. The possible highlighting must be suppressed and the comment
+% character desactivated before to input the formatted part.
+%    \begin{macrocode}
+\newcommand{\SideBySide@Example}[1]{%
+\@tempdimb=\FV@XRightMargin
+\advance\@tempdimb -5mm
+\begin{minipage}[c]{\@tempdimb}
+  \fvset{xrightmargin=0pt}
+  \catcode`\^^a3=9\relax%
+  \NoHighlight@Attributes % To suppress possible highlighting
+  #1
+\end{minipage}%
+\@tempdimb=\textwidth
+\advance\@tempdimb -\FV@XRightMargin
+\advance\@tempdimb 5mm
+\begin{minipage}[c]{\@tempdimb}
+  \VerbatimInput[gobble=0,commentchar=^^a3,commandchars=^^a7^^b5^^b6,numbersep=3pt,
+                 xleftmargin=5mm,xrightmargin=0pt]{\jobname.tmp}
+\end{minipage}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{Example environments using the \texttt{pspicture} PSTricks one}
+%
+% Of course, PSTricks must be available to be able to use them.
+%    \begin{macrocode}
+\ifx\PSTricksLoaded\endinput
+%    \end{macrocode}
+%
+% Grid definition (using PSTricks).
+%    \begin{macrocode}
+  \newcommand{\showgrid}{\FvrbEx@Gridtrue}
+  \newpsobject{FvrbExGrid}{psgrid}{subgriddiv=0,griddots=10,gridlabels=7pt}
+%    \end{macrocode}
+%
+% \DescribeEnv{PCenterExample}
+% \texttt{PCenterExample} is an environment to show the verbatim code and
+% the result just below, inside a \texttt{center} environment.
+%    \begin{macrocode}
+  \def\PCenterExample{\@ifnextchar[{\Pst@Example}{\Pst@@Example}}
+%    \end{macrocode}
+%
+% \begin{macro}{\endPCenterExample}
+% \cs{endPCenterExample} is a macro for the \texttt{PCenterExample}
+% environment to close the verbatim part and to put the formatted result below,
+% inside a PSTricks \texttt{pspicture} environment, and centering it.
+%    \begin{macrocode}
+  \def\endPCenterExample{%
+    \end{VerbatimOut}%
+    \Below@Example{%
+      \center
+      \expandafter\pspicture\Picture@Size
+      \ifFvrbEx@Grid\FvrbExGrid\fi\relax
+      \input{\jobname.tmp}%
+      \endpspicture
+      \endcenter
+      \smallskip}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \DescribeEnv{PSideBySideExample}
+% \texttt{PSideBySideExample} is an environment to show the verbatim code and
+% to put the formatted result on the left side, inside a PSTricks
+% \texttt{pspicture} environment.
+%    \begin{macrocode}
+  \def\PSideBySideExample{\@ifnextchar[{\Pst@Example}{\Pst@@Example}}
+%    \end{macrocode}
+%
+% \begin{macro}{\endPSideBySideExample}
+% \cs{endPSideBySideExample} is a macro for the \texttt{PSideBySideExample}
+% environment to close the verbatim code and to put the formatted result on
+% the left side, inside a PSTricks \texttt{pspicture} environment.
+%    \begin{macrocode}
+  \def\endPSideBySideExample{%
+    \end{VerbatimOut}%
+    \SideBySide@Example{%
+      \ifFvrbEx@Grid\vspace{5pt}\fi
+      \expandafter\pspicture\Picture@Size
+      \ifFvrbEx@Grid\FvrbExGrid\fi\relax
+      \input{\jobname.tmp}%
+      \endpspicture
+      \ifFvrbEx@Grid\vspace{5pt}\fi
+      \smallskip}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\Pst@Example}
+% \cs{Pst@Example} is an internal macro to set locally the \FVrbPackage{}
+% options if needed (both for \texttt{PCenterExample} and
+% \texttt{PSideBySideExample} environments).
+%    \begin{macrocode}
+  \def\Pst@Example[#1]{\fvset{#1}\Pst@@Example}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\Pst@@Example}
+% \cs{Pst@@Example} is an internal macro to define the starting point of the
+% \texttt{pspicture} environment to used.
+%    \begin{macrocode}
+  \def\Pst@@Example#1(#2,#3){%
+    \catcode`\^^M=\active
+    \@ifnextchar({\catcode`\^^M=5\Pst@@@Example(#2,#3)}
+                 {\catcode`\^^M=5\Pst@@@Example(0,0)(#2,#3)}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\Pst@@@Example}
+% \cs{Pst@@@Example} is an internal macro to transmit the size of the
+% \texttt{pspicture} environment to used and to call the relevant internal
+% macro to insert the verbatim part.
+%    \begin{macrocode}
+  \def\Pst@@@Example(#1,#2)(#3,#4){%
+    \def\Picture@Size{(#1,#2)(#3,#4)}%
+    \Begin@Example}
+%    \end{macrocode}
+% \end{macro}
+%
+% End of the code for environments using PSTricks.
+%    \begin{macrocode}
+\fi                             % End \ifx\PSTricksLoaded
+%    \end{macrocode}
+%</fvrb-ex>
+%
+% \section{\HbawPackage{} code}
+%
+%<*hbaw>
+%
+% \iffalse meta-comment, etc.
+%% Package `hbaw'
+%%
+% \fi
+%
+% What we need.
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+%    \end{macrocode}
+%
+% Who we are.
+%    \begin{macrocode}
+\def\fileversion{1.4}
+\def\filedate{1998/03/19}
+\ProvidesPackage{hbaw}[\filedate]
+\message{`hbaw' v\fileversion, \filedate\space (Denis Girou)}
+%    \end{macrocode}
+%
+% \begin{macro}{\FvrbEx@ColoredBox}
+% \cs{FvrbEx@ColoredBox} is an internal macro to print some text in bold face 
+% in a defined color, inside a colored box of another color.
+%    \begin{macrocode}
+\newcommand{\FvrbEx@ColoredBox}[3]{%
+\fboxsep=1pt\fcolorbox{#2}{#2}{\textcolor{#3}{\textbf{#1}}}}
+%    \end{macrocode}
+% \end{macro}
+% 
+% \begin{macro}{\Highlight@Attributes}
+% \cs{Highlight@Attributes} is an internal macro to define a serie of
+% highlighting macros to emphasize text in a black and white mode.
+% All have a corresponding version in color mode, using the \HcolorPackage{}
+% package. We take care here of possible mathematic material.
+%    \begin{macrocode}
+\def\Highlight@Attributes{%
+%    \end{macrocode}
+% \end{macro}
+%
+% Some font changes.
+%    \begin{macrocode}
+\def\HLa##1{\ifmmode\mathbf{##1}\else\textbf{##1}\fi}
+\def\HLb##1{\ifmmode\mathsl{##1}\else\textsl{##1}\fi}
+\def\HLc##1{##1}
+\def\HLd##1{##1}
+\def\HLe##1{\ifmmode\mathbf{##1}\else\textbf{##1}\fi}
+\def\HLf##1{##1}
+\def\HLq##1{##1}
+\def\HLr##1{##1}
+\def\HLz##1{##1}
+%    \end{macrocode}
+%
+% Bold text.
+%    \begin{macrocode}
+\def\HLBFa##1{\ifmmode\mathbf{##1}\else\textbf{##1}\fi}
+\def\HLBFb##1{\ifmmode\mathbf{##1}\else\textbf{##1}\fi}
+\def\HLBFc##1{\ifmmode\mathbf{##1}\else\textbf{##1}\fi}
+\def\HLBFd##1{\ifmmode\mathbf{##1}\else\textbf{##1}\fi}
+\def\HLBFe##1{\ifmmode\mathbf{##1}\else\textbf{##1}\fi}
+\def\HLBFf##1{\ifmmode\mathbf{##1}\else\textbf{##1}\fi}
+\def\HLBFz##1{\ifmmode\mathbf{##1}\else\textbf{##1}\fi}
+%    \end{macrocode}
+%
+% Italic text (\verb+\textsl+ rather than \verb+\textit+ due to the problem
+% of the coding of the \$ character).
+%    \begin{macrocode}
+\def\HLITa##1{\ifmmode\mathnormal{##1}\else\textsl{##1}\fi}
+\def\HLITb##1{\ifmmode\mathnormal{##1}\else\textsl{##1}\fi}
+\def\HLITc##1{\ifmmode\mathnormal{##1}\else\textsl{##1}\fi}
+\def\HLITd##1{\ifmmode\mathnormal{##1}\else\textsl{##1}\fi}
+\def\HLITe##1{\ifmmode\mathnormal{##1}\else\textsl{##1}\fi}
+\def\HLITf##1{\ifmmode\mathnormal{##1}\else\textsl{##1}\fi}
+\def\HLITz##1{\ifmmode\mathnormal{##1}\else\textsl{##1}\fi}
+%    \end{macrocode}
+%
+% Small capitals text.
+%    \begin{macrocode}
+\def\HLSCa##1{\ifmmode\mathit{##1}\else\textsc{##1}\fi}
+\def\HLSCb##1{\ifmmode\mathit{##1}\else\textsc{##1}\fi}
+\def\HLSCc##1{\ifmmode\mathit{##1}\else\textsc{##1}\fi}
+\def\HLSCd##1{\ifmmode\mathit{##1}\else\textsc{##1}\fi}
+\def\HLSCe##1{\ifmmode\mathit{##1}\else\textsc{##1}\fi}
+\def\HLSCf##1{\ifmmode\mathit{##1}\else\textsc{##1}\fi}
+\def\HLSCz##1{\ifmmode\mathit{##1}\else\textsc{##1}\fi}
+%    \end{macrocode}
+%
+% Teletype writer text.
+%    \begin{macrocode}
+\def\HLTTa##1{\ifmmode\mathtt{##1}\else\texttt{##1}\fi}
+\def\HLTTb##1{\ifmmode\mathtt{##1}\else\texttt{##1}\fi}
+\def\HLTTc##1{\ifmmode\mathtt{##1}\else\texttt{##1}\fi}
+\def\HLTTd##1{\ifmmode\mathtt{##1}\else\texttt{##1}\fi}
+\def\HLTTe##1{\ifmmode\mathtt{##1}\else\texttt{##1}\fi}
+\def\HLTTf##1{\ifmmode\mathtt{##1}\else\texttt{##1}\fi}
+\def\HLTTq##1{\ifmmode\mathtt{##1}\else\texttt{##1}\fi}
+\def\HLTTr##1{\ifmmode\mathtt{##1}\else\texttt{##1}\fi}
+\def\HLTTz##1{\ifmmode\mathtt{##1}\else\texttt{##1}\fi}
+%    \end{macrocode}
+%
+% Italic and teletype writer text.
+%    \begin{macrocode}
+\def\HLITTTa##1{\ifmmode\mathtt{##1}\else\textsl{\texttt{##1}}\fi}
+\def\HLITTTb##1{\ifmmode\mathtt{##1}\else\textsl{\texttt{##1}}\fi}
+\def\HLITTTc##1{\ifmmode\mathtt{##1}\else\textsl{\texttt{##1}}\fi}
+\def\HLITTTd##1{\ifmmode\mathtt{##1}\else\textsl{\texttt{##1}}\fi}
+\def\HLITTTe##1{\ifmmode\mathtt{##1}\else\textsl{\texttt{##1}}\fi}
+\def\HLITTTf##1{\ifmmode\mathtt{##1}\else\textsl{\texttt{##1}}\fi}
+\def\HLITTTz##1{\ifmmode\mathtt{##1}\else\textsl{\texttt{##1}}\fi}
+%    \end{macrocode}
+%
+% Black text inside a colored box.
+%    \begin{macrocode}
+\def\HLCBBa##1{\FvrbEx@ColoredBox{##1}{blue}{black}}
+\def\HLCBBb##1{\FvrbEx@ColoredBox{##1}{cyan}{black}}
+\def\HLCBBc##1{\FvrbEx@ColoredBox{##1}{green}{black}}
+\def\HLCBBd##1{\FvrbEx@ColoredBox{##1}{magenta}{black}}
+\def\HLCBBe##1{\FvrbEx@ColoredBox{##1}{red}{black}}
+\def\HLCBBf##1{\FvrbEx@ColoredBox{##1}{yellow}{black}}
+\def\HLCBBz##1{\FvrbEx@ColoredBox{##1}{black}{black}}
+%    \end{macrocode}
+%
+% White text inside a colored box (we replace cyan and yellow by green because
+% these colors are not well seen in black and white mode).
+%    \begin{macrocode}
+\def\HLCBWa##1{\FvrbEx@ColoredBox{##1}{blue}{white}}
+\def\HLCBWb##1{\FvrbEx@ColoredBox{##1}{green}{white}}
+\def\HLCBWc##1{\FvrbEx@ColoredBox{##1}{green}{white}}
+\def\HLCBWd##1{\FvrbEx@ColoredBox{##1}{magenta}{white}}
+\def\HLCBWe##1{\FvrbEx@ColoredBox{##1}{red}{white}}
+\def\HLCBWf##1{\FvrbEx@ColoredBox{##1}{green}{white}}
+\def\HLCBWz##1{\FvrbEx@ColoredBox{##1}{black}{white}}
+%    \end{macrocode}
+%
+% Underlined text.
+%    \begin{macrocode}
+\def\HLSa##1{\underline{##1}}
+\def\HLSb##1{\underline{##1}}
+\def\HLSc##1{\underline{##1}}
+\def\HLSd##1{\underline{##1}}
+\def\HLSe##1{\underline{##1}}
+\def\HLSf##1{\underline{##1}}
+\def\HLSz##1{\underline{##1}}
+%    \end{macrocode}
+%
+% Underlined text (same than preceding in this black and white version).
+%    \begin{macrocode}
+\def\HLSaa##1{\underline{##1}}
+\def\HLSbb##1{\underline{##1}}
+\def\HLScc##1{\underline{##1}}
+\def\HLSdd##1{\underline{##1}}
+\def\HLSee##1{\underline{##1}}
+\def\HLSef##1{\underline{##1}}
+\def\HLSez##1{\underline{##1}}
+%    \end{macrocode}
+%
+% End of \cs{Highlight@Attributes}.
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+%
+% \begin{macro}{\NoHighlight@Attributes}
+%     \cs{NoHighlight@Attributes} is an internal macro to inhibit all
+%   the highlighting macros define by \cs{Highlight@Attributes}. It is
+%   necessary to call it before to insert the formatted part, as highlighting
+%   process must concern only the verbatim part.
+% \end{macro}
+%
+%    \begin{macrocode}
+\def\NoHighlight@Attributes{%
+%    \end{macrocode}
+%
+% First, we re-establish the active catcodes for the verbatim mode.
+%    \begin{macrocode}
+\catcode`\^^a7=0\relax%
+\catcode`\^^b5=1\relax%
+\catcode`\^^b6=2\relax%
+%    \end{macrocode}
+%
+% Desactivation of the highlighting macros.
+%    \begin{macrocode}
+\def\HLa##1{##1}%
+\def\HLb##1{##1}%
+\def\HLc##1{##1}%
+\def\HLd##1{##1}%
+\def\HLe##1{##1}%
+\def\HLf##1{##1}%
+\def\HLBFa##1{##1}%
+\def\HLBFb##1{##1}%
+\def\HLBFc##1{##1}%
+\def\HLBFd##1{##1}%
+\def\HLBFe##1{##1}%
+\def\HLBFf##1{##1}%
+\def\HLITa##1{##1}%
+\def\HLITb##1{##1}%
+\def\HLITc##1{##1}%
+\def\HLITd##1{##1}%
+\def\HLITe##1{##1}%
+\def\HLITf##1{##1}%
+\def\HLCBBa##1{##1}%
+\def\HLCBBb##1{##1}%
+\def\HLCBBc##1{##1}%
+\def\HLCBBd##1{##1}%
+\def\HLCBBe##1{##1}%
+\def\HLCBBf##1{##1}%
+\def\HLCBBz##1{##1}%
+\def\HLCBWa##1{##1}%
+\def\HLCBWb##1{##1}%
+\def\HLCBWc##1{##1}%
+\def\HLCBWd##1{##1}%
+\def\HLCBWe##1{##1}%
+\def\HLCBWf##1{##1}%
+\def\HLCBWz##1{##1}%
+%    \end{macrocode}
+%
+% End of \cs{NoHighlight@Attributes}.
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+%
+% Activation of the highlighting macros.
+%    \begin{macrocode}
+\Highlight@Attributes
+%    \end{macrocode}
+%
+%</hbaw>
+%
+% \section{\HcolorPackage{} code}
+%
+%<*hcolor>
+%
+% \iffalse meta-comment, etc.
+%% Package `hcolor'
+%%
+% \fi
+%
+% What we need.
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+%    \end{macrocode}
+%
+% Who we are.
+%    \begin{macrocode}
+\def\fileversion{1.4}
+\def\filedate{1998/03/19}
+\ProvidesPackage{hcolor}[\filedate]
+\message{`hcolor' v\fileversion, \filedate\space (Denis Girou)}
+%    \end{macrocode}
+%
+% \begin{macro}{\FvrbEx@ColoredUnderline}
+% \cs{FvrbEx@ColoredUnderline} is an internal macro to underline some text in
+% color.
+%    \begin{macrocode}
+\newcommand{\FvrbEx@ColoredUnderline}[3]{%
+$\setbox\z@\hbox{\begingroup#3\endgroup}%
+\dp\z@\z@\m@th\color{#1}\underline{\textcolor{#2}{\box\z@}}$}
+%    \end{macrocode}
+% \end{macro}
+% 
+% \begin{macro}{\FvrbEx@ColoredBox}
+% \cs{FvrbEx@ColoredBox} is an internal macro to print some text in bold face 
+% in a defined color, inside a colored box of another color.
+%    \begin{macrocode}
+\newcommand{\FvrbEx@ColoredBox}[3]{%
+\fboxsep=1pt\fcolorbox{#2}{#2}{\textcolor{#3}{\textbf{#1}}}}
+%    \end{macrocode}
+% \end{macro}
+% 
+% \begin{macro}{\Highlight@Attributes}
+% \cs{Highlight@Attributes} is an internal macro to define a serie of
+% highlighting macros to emphasize text in a black and white mode.
+% All have a corresponding version in black and white mode, using the
+% \HbawPackage{} package.  We do not take care here of possible mathematic
+% material, but it can be done...
+%    \begin{macrocode}
+\def\Highlight@Attributes{%
+%    \end{macrocode}
+% \end{macro}
+%
+% Some font changes.
+%    \begin{macrocode}
+\def\HLa##1{\textcolor{blue}{##1}}
+\def\HLb##1{\textcolor{cyan}{##1}}
+\def\HLc##1{\textcolor{green}{##1}}
+\def\HLd##1{\textcolor{magenta}{##1}}
+\def\HLe##1{\textcolor{red}{##1}}
+\def\HLf##1{\textcolor{yellow}{##1}}
+\def\HLq##1{\textcolor{PaleGreen}{##1}}
+\def\HLr##1{\textcolor{SlateBlue}{##1}}
+\def\HLz##1{\textcolor{black}{##1}}
+%    \end{macrocode}
+%
+% Colored bold text.
+%    \begin{macrocode}
+\def\HLBFa##1{\textcolor{blue}{\textbf{##1}}}
+\def\HLBFb##1{\textcolor{cyan}{\textbf{##1}}}
+\def\HLBFc##1{\textcolor{green}{\textbf{##1}}}
+\def\HLBFd##1{\textcolor{magenta}{\textbf{##1}}}
+\def\HLBFe##1{\textcolor{red}{\textbf{##1}}}
+\def\HLBFf##1{\textcolor{yellow}{\textbf{##1}}}
+\def\HLBFz##1{\textcolor{black}{\textbf{##1}}}
+%    \end{macrocode}
+%
+% Colored italic text (\verb+\textsl+ rather than \verb+\textit+ due to the
+% problem of the coding of the \$ character).
+%    \begin{macrocode}
+\def\HLITa##1{\textcolor{blue}{\textsl{##1}}}
+\def\HLITb##1{\textcolor{cyan}{\textsl{##1}}}
+\def\HLITc##1{\textcolor{green}{\textsl{##1}}}
+\def\HLITd##1{\textcolor{magenta}{\textsl{##1}}}
+\def\HLITe##1{\textcolor{red}{\textsl{##1}}}
+\def\HLITf##1{\textcolor{yellow}{\textsl{##1}}}
+\def\HLITz##1{\textcolor{black}{\textsl{##1}}}
+%    \end{macrocode}
+%
+% Colored small capitals text.
+%    \begin{macrocode}
+\def\HLSCa##1{\textcolor{blue}{\textsc{##1}}}
+\def\HLSCb##1{\textcolor{cyan}{\textsc{##1}}}
+\def\HLSCc##1{\textcolor{green}{\textsc{##1}}}
+\def\HLSCd##1{\textcolor{magenta}{\textsc{##1}}}
+\def\HLSCe##1{\textcolor{red}{\textsc{##1}}}
+\def\HLSCf##1{\textcolor{yellow}{\textsc{##1}}}
+\def\HLSCz##1{\textcolor{black}{\textsc{##1}}}
+%    \end{macrocode}
+%
+% Colored teletype writer text.
+%    \begin{macrocode}
+\def\HLTTa##1{\textcolor{blue}{\texttt{##1}}}
+\def\HLTTb##1{\textcolor{cyan}{\texttt{##1}}}
+\def\HLTTc##1{\textcolor{green}{\texttt{##1}}}
+\def\HLTTd##1{\textcolor{magenta}{\texttt{##1}}}
+\def\HLTTe##1{\textcolor{red}{\texttt{##1}}}
+\def\HLTTf##1{\textcolor{yellow}{\texttt{##1}}}
+\def\HLTTq##1{\textcolor{ForestGreen}{\texttt{##1}}}
+\def\HLTTr##1{\textcolor{PineGreen}{\texttt{##1}}}
+\def\HLTTz##1{\textcolor{black}{\texttt{##1}}}
+%    \end{macrocode}
+%
+% Colored italic and teletype writer text.
+%    \begin{macrocode}
+\def\HLITTTa##1{\textcolor{blue}{\textsl{\texttt{##1}}}}
+\def\HLITTTb##1{\textcolor{cyan}{\textsl{\texttt{##1}}}}
+\def\HLITTTc##1{\textcolor{green}{\textsl{\texttt{##1}}}}
+\def\HLITTTd##1{\textcolor{magenta}{\textsl{\texttt{##1}}}}
+\def\HLITTTe##1{\textcolor{red}{\textsl{\texttt{##1}}}}
+\def\HLITTTf##1{\textcolor{yellow}{\textsl{\texttt{##1}}}}
+\def\HLITTTz##1{\textcolor{black}{\textsl{\texttt{##1}}}}
+%    \end{macrocode}
+%
+% Black text inside a colored box.
+%    \begin{macrocode}
+\def\HLCBBa##1{\FvrbEx@ColoredBox{##1}{blue}{black}}
+\def\HLCBBb##1{\FvrbEx@ColoredBox{##1}{cyan}{black}}
+\def\HLCBBc##1{\FvrbEx@ColoredBox{##1}{green}{black}}
+\def\HLCBBd##1{\FvrbEx@ColoredBox{##1}{magenta}{black}}
+\def\HLCBBe##1{\FvrbEx@ColoredBox{##1}{red}{black}}
+\def\HLCBBf##1{\FvrbEx@ColoredBox{##1}{yellow}{black}}
+\def\HLCBBz##1{\FvrbEx@ColoredBox{##1}{black}{black}}
+%    \end{macrocode}
+%
+% White text inside a colored box.
+%    \begin{macrocode}
+\def\HLCBWa##1{\FvrbEx@ColoredBox{##1}{blue}{white}}
+\def\HLCBWb##1{\FvrbEx@ColoredBox{##1}{cyan}{white}}
+\def\HLCBWc##1{\FvrbEx@ColoredBox{##1}{green}{white}}
+\def\HLCBWd##1{\FvrbEx@ColoredBox{##1}{magenta}{white}}
+\def\HLCBWe##1{\FvrbEx@ColoredBox{##1}{red}{white}}
+\def\HLCBWf##1{\FvrbEx@ColoredBox{##1}{yellow}{white}}
+\def\HLCBWz##1{\FvrbEx@ColoredBox{##1}{black}{white}}
+%    \end{macrocode}
+%
+% Colored underlined text.
+%    \begin{macrocode}
+\def\HLSa##1{\color{blue}\underline{##1}}
+\def\HLSb##1{\color{cyan}\underline{##1}}
+\def\HLSc##1{\color{green}\underline{##1}}
+\def\HLSd##1{\color{magenta}\underline{##1}}
+\def\HLSe##1{\color{red}\underline{##1}}
+\def\HLSf##1{\color{yellow}\underline{##1}}
+\def\HLSz##1{\color{black}\underline{##1}}
+%    \end{macrocode}
+%
+% Colored underlined colored text (with the same color).
+%    \begin{macrocode}
+\def\HLSaa##1{\FvrbEx@ColoredUnderline{blue}{black}{##1}}
+\def\HLSbb##1{\FvrbEx@ColoredUnderline{cyan}{black}{##1}}
+\def\HLScc##1{\FvrbEx@ColoredUnderline{green}{black}{##1}}
+\def\HLSdd##1{\FvrbEx@ColoredUnderline{magenta}{black}{##1}}
+\def\HLSee##1{\FvrbEx@ColoredUnderline{red}{black}{##1}}
+\def\HLSef##1{\FvrbEx@ColoredUnderline{yellow}{black}{##1}}
+\def\HLSez##1{\FvrbEx@ColoredUnderline{black}{black}{##1}}
+%    \end{macrocode}
+%
+% End of \cs{Highlight@Attributes}.
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+%
+% \begin{macro}{\NoHighlight@Attributes}
+%     \cs{NoHighlight@Attributes} is an internal macro to inhibit all
+%   the highlighting macros define by \cs{Highlight@Attributes}. It is
+%   necessary  to call it before to insert the formatted part, as highlighting
+%   process must concern only the verbatim one.
+% \end{macro}
+%
+%    \begin{macrocode}
+\def\NoHighlight@Attributes{%
+%    \end{macrocode}
+%
+% First, we re-establish the active catcodes for the verbatim mode.
+%    \begin{macrocode}
+\catcode`\^^a7=0\relax%
+\catcode`\^^b5=1\relax%
+\catcode`\^^b6=2\relax%
+%    \end{macrocode}
+%
+% Desactivation of the highlighting macros.
+%    \begin{macrocode}
+\def\HLa##1{##1}%
+\def\HLb##1{##1}%
+\def\HLc##1{##1}%
+\def\HLd##1{##1}%
+\def\HLe##1{##1}%
+\def\HLf##1{##1}%
+\def\HLBFa##1{##1}%
+\def\HLBFb##1{##1}%
+\def\HLBFc##1{##1}%
+\def\HLBFd##1{##1}%
+\def\HLBFe##1{##1}%
+\def\HLBFf##1{##1}%
+\def\HLITa##1{##1}%
+\def\HLITb##1{##1}%
+\def\HLITc##1{##1}%
+\def\HLITd##1{##1}%
+\def\HLITe##1{##1}%
+\def\HLITf##1{##1}%
+\def\HLCBBa##1{##1}%
+\def\HLCBBb##1{##1}%
+\def\HLCBBc##1{##1}%
+\def\HLCBBd##1{##1}%
+\def\HLCBBe##1{##1}%
+\def\HLCBBf##1{##1}%
+\def\HLCBBz##1{##1}%
+\def\HLCBWa##1{##1}%
+\def\HLCBWb##1{##1}%
+\def\HLCBWc##1{##1}%
+\def\HLCBWd##1{##1}%
+\def\HLCBWe##1{##1}%
+\def\HLCBWf##1{##1}%
+\def\HLCBWz##1{##1}%
+%    \end{macrocode}
+%
+% End of \cs{NoHighlight@Attributes}.
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+%
+% Activation of the highlighting macros.
+%    \begin{macrocode}
+\Highlight@Attributes
+%    \end{macrocode}
+%
+%</hcolor>
+%
+% \section{Test file}
+%
+%<*t-fvrbex>
+% \iffalse meta-comment, etc.
+%% File `t-fvrbex'
+%%
+% \fi
+%
+%    \begin{macrocode}
+\documentclass{article}
+
+\usepackage[bawcolor,pstricks]{fvrb-ex}
+\pstrickstrue
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage[charter]{mathdesign}
+\usepackage{url}
+\usepackage{xcolor}
+
+\begin{document}
+
+\title{Test file for the `\textsf{fvrb-ex}' package}
+\author{Denis Girou\\CNRS/IDRIS\\Orsay -- France\\
+        {\footnotesize email: Denis.Girou@idris.fr}}
+\date{Version 1.2\\March 27, 1998}
+
+\maketitle
+
+\RecustomVerbatimEnvironment{Verbatim}{Verbatim}
+  {gobble=2,commentchar=^^a3,numbers=left,numbersep=3pt,frame=single}
+
+\section{\texttt{Example} environment}
+
+\begin{Verbatim}
+  \begin{Example}
+    First verbatim line.
+    Second verbatim line.
+    Third verbatim line.
+  \end{Example}
+\end{Verbatim}
+
+\begin{Example}
+  First verbatim line.
+  Second verbatim line.
+  Third verbatim line.
+\end{Example}
+
+\begin{Verbatim}
+  \begin{Example}[frame=lines,framerule=1mm,numbers=left]
+    First verbatim line.
+    Second verbatim line.
+    Third verbatim line.
+  \end{Example}
+\end{Verbatim}
+
+\begin{Example}[frame=lines,framerule=1mm,numbers=left]
+  First verbatim line.
+  Second verbatim line.
+  Third verbatim line.
+\end{Example}
+
+\section{\texttt{CenterExample} environment}
+
+\begin{Verbatim}
+  \begin{CenterExample}[frame=single,numbers=right]
+    First verbatim line.
+    Second verbatim line.
+    Third verbatim line.
+  \end{CenterExample}
+\end{Verbatim}
+
+\begin{CenterExample}[frame=single,numbers=right]
+  First verbatim line.
+  Second verbatim line.
+  Third verbatim line.
+\end{CenterExample}
+
+\begin{Verbatim}
+  \begin{CenterExample}[frame=lines,numbers=left]
+    ^^a7HLa^^b5First^^b6 verbatim line.
+    ^^a7HLb^^b5Second^^b6 verbatim line.
+    ^^a7HLCBWz^^b5Third^^b6 verbatim line.
+  \end{CenterExample}
+\end{Verbatim}
+
+\begin{CenterExample}[frame=lines,numbers=left]
+  ^^a7HLa^^b5First^^b6 verbatim line.
+  ^^a7HLb^^b5Second^^b6 verbatim line.
+  ^^a7HLCBWz^^b5Third^^b6 verbatim line.
+\end{CenterExample}
+
+\section{\texttt{SideBySideExample} environment}
+
+\begin{Verbatim}
+  \begin{SideBySideExample}[xrightmargin=5cm,frame=lines,
+                            numbers=left]
+    First verbatim line.
+    Second verbatim line.
+    Third verbatim line.
+  \end{SideBySideExample}
+\end{Verbatim}
+
+\begin{SideBySideExample}[xrightmargin=5cm,frame=single,numbers=left]
+  First verbatim line.
+  Second verbatim line.
+  Third verbatim line.
+\end{SideBySideExample}
+
+\ifpstricks                     % If PSTricks is available
+
+\section{\texttt{PCenterExample} environment}
+
+\begin{Verbatim}
+  \fvset{frame=lines,framerule=0.5mm,numbers=left}
+
+  \begin{PCenterExample}(-0.5,-0.5)(0.5,0.5)
+    \setlength{\unitlength}{1cm}
+    \put(0,0){\circle{1}}
+  \end{PCenterExample}
+
+  \showgrid
+  \begin{PCenterExample}(-1,-1)(1,1)
+    \setlength{\unitlength}{1cm}
+    \put(0,0){\circle{1}}
+  \end{PCenterExample}
+\end{Verbatim}
+
+{\fvset{frame=lines,framerule=0.5mm,numbers=left}
+\begin{PCenterExample}(-0.5,-0.5)(0.5,0.5)
+  \setlength{\unitlength}{1cm}
+  \put(0,0){\circle{1}}
+\end{PCenterExample}
+\showgrid
+\begin{PCenterExample}(-1,-1)(1,1)
+   \setlength{\unitlength}{1cm}
+   \put(0,0){\circle{1}}
+\end{PCenterExample}
+}
+
+\section{\texttt{PSideBySideExample} environment}
+
+\begin{Verbatim}
+  \fvset{frame=single,xrightmargin=5cm}
+  \begin{PSideBySideExample}(-2,-1)(2,1)
+    \psellipse*[linecolor=yellow](2,1)
+  \end{PSideBySideExample}
+  \showgrid
+  \begin{PSideBySideExample}(-2,-1)(2,1)
+    \psellipse[linestyle=dashed](2,1)
+  \end{PSideBySideExample}
+\end{Verbatim}
+
+{\fvset{frame=single,xrightmargin=5cm}
+\begin{PSideBySideExample}(-2,-1)(2,1)
+  \psellipse*[linecolor=yellow](2,1)
+\end{PSideBySideExample}
+
+\showgrid
+\begin{PSideBySideExample}(-2,-1)(2,1)
+  \psellipse[linestyle=dashed](2,1)
+\end{PSideBySideExample}
+}
+
+\begin{Verbatim}
+  \fvset{frame=single,xrightmargin=5cm}
+  \begin{PSideBySideExample}(-2,-1)(2,1)
+    \psellipse[linestyle=^^a7HLCBWe^^b5dashed^^b6](2,1)
+  \end{PSideBySideExample}
+  \begin{PSideBySideExample}[numbers=right](-2,-1)(2,1)
+    \psellipse[linestyle=^^a7HLe^^b5dotted^^b6](2,1)
+  \end{PSideBySideExample}
+\end{Verbatim}
+
+{\fvset{frame=single,xrightmargin=5cm}
+\begin{PSideBySideExample}(-2,-1)(2,1)
+  \psellipse[linestyle=^^a7HLCBWe^^b5dashed^^b6](2,1)
+\end{PSideBySideExample}
+\begin{PSideBySideExample}[numbers=right](-2,-1)(2,1)
+  \psellipse[linestyle=^^a7HLe^^b5dotted^^b6](2,1)
+\end{PSideBySideExample}
+
+
+\else                           % If PSTricks is not available
+\begin{quote}
+  \section{\texttt{PCenterExample} and \texttt{PSideBySideExample}
+environments}
+
+  \textbf{\large Warning!} These two environments are not demonstrated here,
+because PSTricks was not found on this platform.
+\end{quote}
+\fi
+
+\end{document}
+%    \end{macrocode}
+%
+%</t-fvrbex>
+%
+% \Finale
+% \PrintIndex
+% \PrintChanges
+%
+\endinput
+%% 
+%% End of file `fvrb-ex.dtx'

@@ -1,0 +1,785 @@
+% \iffalse meta-comment
+%
+% textsamples.dtx
+%
+% This file is part of the package textsamples for use with LaTeX2e
+%
+% Function: Access to utility macros and sample texts including lorem ipsum
+% 
+% Copyright (C) 2012,  Yannis Lazarides
+%
+% This program may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.2
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.2 or later is part of all distributions of LaTeX
+% version 1999/12/01 or later.
+%
+% Please send error reports and suggestions for improvements to 
+%    Yiannis Lazarides <y.lazarides@habtoorspecon.com>
+% This work consists of the files listed in the README file.
+%
+%<*dtx>
+\ProvidesFile{textsamples.dtx}
+ [2012/02/13 v1.0 sample texts]  
+%</dtx>
+%% Now we tell TeX that we need LaTeX2e
+%<package>\NeedsTeXFormat{LaTeX2e}
+%<package>\ProvidesPackage{textsamples}[2012/02/13 v1.0 sample texts]
+%<driver>\ProvidesFile{textsamples.drv}
+% \fi
+%
+% \CheckSum{502}
+%
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%%
+% \GetFileInfo{textsamples.dtx}
+% \iffalse
+%<*driver>
+\documentclass[a4paper,11pt]{ltxdoc}
+\usepackage[latin1]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{soul}
+\usepackage{hyperref}
+\usepackage{color}
+\definecolor{dred}{rgb}{.5,0,0}
+\hypersetup{colorlinks=true,urlcolor=blue}
+\makeatletter
+\g@addto@macro{\MacroFont}{\footnotesize}
+\usepackage[DIVcalc]{typearea}
+\usepackage{xspace}
+\makeatother
+\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\begin{document}
+   \DocInput{textsamples.dtx}
+\end{document}
+%</driver>
+% \fi
+% \newcommand\paket[1]{\textsf{#1}}
+% \newcommand\option[1]{\textsf{#1}}
+% \newcommand\name[1]{\caps{#1}}
+% \title{\paket{textsamples} -- access  sample texts for testing of document classes, including paragrasphs of  \emph{Lorem ipsum}
+% dummy text\thanks{Version: \fileversion}}
+% \author{\name{Dr Yiannis Lazarides}\thanks{y.lazarides@habtoorspecon.com}}
+% \date{\filedate}
+% \changes{v1.0}{2004/05/15}{First release}
+% \changes{v1.1}{2011/02/08}{Added support for typesetting dummy text without
+% paragraphs in between.}
+% \maketitle
+% \begin{abstract}
+%  A pot-pouri of small macros and useful utilities, to keep preambles short.
+% \end{abstract}
+% \tableofcontents
+% \section*{Usage}
+% To load the package specify 
+% \begin{verbatim}
+%     \usepackage{textsamples}
+% \end{verbatim}
+% \section{Motivation}
+% I have been using these macros in a varity of documents and internal packages for a wide ranging 
+% type of documents. Some of them have been developed as a result of question on tex.sx. A well
+% developed document preparation system has to have well defined sectioning commands and a 
+% set of ancillary macros that are semantically developed. Although this can aid is some future
+% date to make \LaTeX\ more accessible to persons with disability, my primary focus is to aid
+% the author with his writing and quest for better typography. A command defined semantically
+% such as the |\emph| command provided by \LaTeX\ is easier to use in any document class. This
+% package for example defineds |\BC| and |\AD|, where the European Union Style guide, demands that they 
+% are typeset as small case. 
+% in the preamble of your document. This package provides four
+% macros. \DescribeMacro{\lipsum}The most important one is 
+% \cmd{\lipsum}. This macro typesets the \emph{Lorem ipsum}
+% paragraphs. It has an optional argument that allows one to specify the range
+% of the  paragraphs. For example, \verb|\lipsum[4-57]| would typeset the paragraphs 4 to
+% 57 and accordingly, \verb|\lipsum[23]| would typeset the 23\textsuperscript{rd}
+% paragraph. Using \cmd{\lipsum} without its optional argument typesets
+% the paragraphs specified by \DescribeMacro{\setlipsumdefault} 
+% \cmd{\setlipsumdefault}. This is the second macro this package
+% provides. By default it is set to |1-7|, resulting in a bit more
+% than one page when used with |a4paper| and the standard or the
+% \KOMAScript\ classes with default font settings. To change the
+% default range use \verb|\setlipsumdefault{131-133}|. Of course, the numbers
+% |131| and |133| are only examples that represent the first and the last
+% paragraph selected to be typeset by default. 
+%
+% If used as explained above, the paragraphs generated by \verb|\lipsum| will be
+% separated by the macro \verb|\par|, or, more precisely, every paragraph will be
+% terminated by \verb|\par|. Sometimes, this may cause some unintended
+% effects. Therefore the package provides the option \option{nopar} that
+% causes \verb|\lipsum| to omit the terminating \verb|\par|. For this purpose,
+% the package should be included via
+% \begin{verbatim}
+%     \usepackage[nopar]{lipsum}
+% \end{verbatim}
+%  The command \DescribeMacro{\lorem} is used to load a small paragraph of Lorem Ipsum text.
+%  this is useful for testing new macros in MWE 
+%
+% \StopEventually{
+%  \PrintChanges
+%  \PrintIndex
+% }
+% \clearpage
+%
+% \section{Implementation}
+%
+% \DescribeMacro{\lorem}
+% We sometimes need shorter paragraphs than those provided by the Lpack{lipsum}.
+%    \begin{macrocode}
+%<*package>
+%    \end{macrocode}
+%    \begin{macrocode}
+\newcommand\lorem{Fusce adipiscing justo nec ante. Nullam in enim.
+ Pellentesque felis orci, sagittis ac, malesuada et, facilisis in,
+ ligula. Nunc non magna sit amet mi aliquam dictum. In mi. Curabitur
+ sollicitudin justo sed quam et quadd. \par}
+%    \end{macrocode}
+% \begin{macro}{\fox}
+% A common text used for testing fonts is:
+% \begin{quote}
+% ``The quick brown fox jumps over the lazy dog''
+% \end{quote}
+% we provide the command \cmd{\fox} for this.
+%    \begin{macrocode}
+\@ifundefined{fox}{%
+    \newcommand{\fox}{``The quick brown fox jumps over the lazy dog''}}
+    {\PackageWarning{textsamples}{Command fox has been defined}}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\dogs}
+% This command is just more meaningless text. Although it provides some comfort
+%  that an ``s'' can be important.
+%    \begin{macrocode}
+\newcommand{\dogs}{The sentence is often mistakenly rendered
+as "The quick brown fox jumped over the lazy dog," which does
+not include an ``s''. However, this can be corrected by
+typing: "The quick brown fox jumped over the lazy dogs".}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\frogking}
+%  We need a command to provide some text for testing hyphenation patterns.
+%  \cmd{\frogking} from the book, is normally used for testing of hyphenation. 
+%    \begin{macrocode}
+\def\frogking{%
+In olden times when wishing
+still helped one, there lived a
+king whose daughters were all
+beautiful, but the youngest was so
+beautiful that the sun itself,
+which has seen so much, was
+astonished whenever it shone in
+her face. Close by the king's
+castle lay a great dark forest,
+and under an old lime-tree in the
+forest was a well, and when
+the day was very warm, the
+king's child went out into the 
+forest and sat down by the side
+of the cool fountain, and when she 
+was bored she took a golden ball, 
+and threw it up on a high and caught it,
+and this ball was her favorite plaything.}%
+%    \end{macrocode}
+% \end{macro}
+
+% \begin{macro}{\onepar}
+%  This command enforces the start of a paragraph
+%    \begin{macrocode}
+\def\onepar{\leavevmode 
+In olden times when wishing
+still helped one, there lived a
+king whose daughters were all
+beautiful, but the youngest was so
+beautiful that the sun itself,
+which has seen so much, was
+astonished whenever it shone in
+her face. Close by the king's
+castle lay a great dark forest,
+and under an old lime-tree in the
+forest was a well, and when
+the day was very warm, the
+king's child went out into the 
+forest and sat down by the side
+of the cool fountain, and when she
+was bored she took a golden ball, and threw 
+it up on a high and caught it, and this
+ball was her favorite plaything.\par}%
+%    \end{macrocode}
+% \end{macro}
+% \subsection{Testing alphabets}
+% For testing font alphabets we provide three commands:
+% \begin{macro}{\ALPHABET}
+%  This command, prints the alphabet. the alphabet is spaced out.
+%  If the soul package is loaded, we space it out with the soul package.
+%    \begin{macrocode}
+\newcommand{\ALPHABET}{%
+  A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\alphabet}
+%    \begin{macrocode}
+\newcommand{\alphabet}{a b c d e f g h i j k l m n o p q r s t u v w x y z}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\punctuation}
+%   \begin{macrocode}
+\newcommand{\punctuation}{+.;!-?/|}
+%    \end{macrocode}
+% \end{macro}
+% 
+% \begin{macro}{Alphabet}
+% This macro typesets both the uppercase as well as the lowercase
+% letters of the alphabet. It typesets them centered. Centering is within a group
+% so as to avoid problems.
+%    \begin{macrocode}
+\newcommand{\Alphabet}{%
+  \leavevmode
+  \bgroup
+  \centering
+  \ALPHABET\par
+  \alphabet\par
+  \egroup
+}
+%    \end{macrocode}    
+% \end{macro}
+% We require the lipsum package to provide the text
+%    \begin{macrocode}
+\RequirePackage{lipsum}
+%    \end{macrocode}
+%
+% 
+% \begin{macro}{\loremlines}
+% We sometimes need only a few linesof text, whereas the |lipsum| package
+% provides paragraphs. \cmd{\loremlines}{ lines} provides exactly
+% the number of lines specified.
+% usage \cmd{\loremilines{10}}
+% will typeset the first 10 lines from lipsum
+%% Macro to type n lines from lipsum
+% The command |\loremlines|\marg{n}
+%    \begin{macrocode}
+\newbox\one
+\newbox\two
+\long\def\loremlines#1{\setbox\one=\vbox {\lipsum}
+\setbox\two=\vsplit\one to #1\baselineskip
+\unvbox\two}
+%    \end{macrocode}
+%\end{macro}
+% \section{Spacing commands}
+% Here we collect all macros related to spacing. 
+%
+% \begin{macro}{\Z}
+% We sacrifice the capital Z to use as a command for all spacing. where
+% required. This is used extensively in formatting examples for Tables.
+%    \begin{macrocode}
+\newcommand\Z{\phantom{0}}
+\newcommand\ZZ{\phantom{00}}
+\newcommand\ZZZ{\phantom{000}}
+\newcommand\ZZZZ{\phantom{0000}}
+%    \end{macrocode}
+% \end{macro}
+% \section{Common abbreviations}
+% The abbreviations package has a long list of abbreviations. However, we only need a few here,
+% especially the common latin abbreviations. We need to handle spacing after the stops
+% as well as ensure they do not 
+% \begin{macro}{\hairsp}
+% The command \cmd{\hairsp} is equivalent to 1pt. It cannot be used at the beginning
+% of a paragraph. The \cmd{\hquad} is set at 0.5 em.
+%    \begin{macrocode}
+\newcommand{\hairsp}{\hspace{1pt}}% hair space
+\newcommand{\hquad}{\hskip0.5em\relax}% half quad space   
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\eg}
+%    \begin{macrocode}
+\RequirePackage{xspace}
+\newcommand{\ie}{\textit{i.\hairsp{}e.}\xspace}
+\newcommand{\eg}{\textit{e.\hairsp{}g.}\xspace}
+\newcommand{\BC}[1]{\textsc{#1 bc}} %European Union Style Guide
+\newcommand{\AD}[1]{\textsc{ad #1}} %European Union Style Guide
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\otr}
+% Shorthand for Output Routine. This is used extensively in the chapter for the
+% output routine.
+% \begin{macro}{\OTR} Typesets OTR
+%    \begin{macrocode}
+% Shorthands for typing
+% OTR abbreviations
+\def\otr{\textsc{OTR}\xspace}
+\let\OTR\otr
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \section{Shorthand Macros}
+% A pot-pouri of shorthand macros. Most of them turned into macros to
+% ensure typographical consistency.
+%
+% \begin{macro}{\fref}
+% Shorthand for referencing figures and other common elements. This ensures that
+% all referencing will be consistent in capitalization. In a future version I will provide
+% a setting command.
+%    \begin{macrocode}
+\newcommand{\fref}[1]{Figure~\ref{#1}}
+\newcommand{\tref}[1]{Table~\ref{#1}}
+\newcommand{\eref}[1]{Equation~\ref{#1}}
+\newcommand{\cref}[1]{Chapter~\ref{#1}}
+\newcommand{\sref}[1]{Section~\ref{#1}}
+\newcommand{\aref}[1]{Appendix~\ref{#1}}
+%    \end{macrocode}
+% \end{macro}
+% We also provide shorthand commands for table filling
+% \begin{macro}{\na}
+% Typesets a em dash to represent \textit{not applicable}. This is in an effort to provide as many semantic
+% commands as possible.
+%    \begin{macrocode}
+\newcommand{\na}{\quad--}% used in tables for N/A cells
+%    \end{macrocode}
+% \end{macro}
+% \section{Commands for typesetting code}
+% The most common requirement is to typeset the arguments
+% of a macro and a backslash.
+% 
+% \begin{macro}{\env}
+%    \begin{macrocode}
+\newcommand*{\env}[1]{\texttt{#1}}
+\newcommand*{\opt}[1]{\texttt{#1}}
+\newcommand*{\meta}[1]{$\langle\textsl{#1}\rangle$}
+\newcommand*{\marg}[1]{\texttt{\{}\meta{#1}\texttt{\}}}
+\newcommand*{\oarg}[1]{\texttt{[}\meta{#1}\texttt{]}}
+%    \end{macrocode}
+%\end{macro}
+%
+%
+
+
+% \section{Activities, key dates and editing commands}
+% While writing, one needs to plan activities, mark todo items, create such lists and the like
+% 
+% 
+% \begin{macro}{\keydate}
+% The macro |\keydate|\marg{activity}\marg{date} writes all key dates in a file
+% defined in |\keydate@file|\marg{filename}
+% this can then be printed where is required.
+%   |\out{Close Ceilings Rotana Floor 10}{Line 2}|
+%   |\out{Rotana,  power-on}{12$^{th}$ Sept 2010}|
+%   |\out{Rotana Qatar Cool switch-on}{12th September}|
+%%% 
+% |\chapter{Summary of  Key Dates}|
+% |\immediate\closeout\tempfile|
+% |\input{keydates}|
+% 
+\newwrite\tempfile
+\immediate\openout\tempfile=keydates.tex
+%    \begin{macrocode}
+\newcommand{\keydate}[2]{#1  #2 \\}
+\newcommand{\out}[2]{%
+  {\index{key dates!#1}% add to index
+\immediate\write\tempfile{\noexpand\keydate{ #1}{#2}}}}
+\newcommand{\TODO}{\textcolor{red}{\bf TODO!}\xspace}
+%    \end{macrocode}
+% \end{macro}
+
+% \section{Graphics macros}
+% Most of these macros were developed for easier handling of 
+% graphical input, they range from simple utilities to macros that could be
+% packages of their own.
+% \begin{macro}{\putgraphic}
+%  The macro takes ones argument. used for image DB display
+%    \begin{macrocode}
+\long\def\putgraphic#1{%
+\fbox{%
+\begin{minipage}[b]{1.8cm}%
+
+ \centering
+ \vspace{3.8pt}\fbox{%
+ \includegraphics[width=0.98\textwidth,height=2.3cm,keepaspectratio]{./images-01/#1}}%
+  \vspace{0.2cm} #1%\captionof{figure}\relax
+  \vspace{0.2cm}%
+\end{minipage}}\hfil
+}
+%    \end{macrocode}
+% \end{macro}
+% \section{Charting macros}
+% I must admit that I can never remember an adequate amount of TikZ keywords to
+% partly because of their presentational aspect. The macros that follow are incomplete but provide
+% some common Charts. I prefer to keep the data in separate files and  construct them with the
+% minimal amount of code. For example this  provides a small bar plot that is common in reports that
+% I produce.
+% \begin{verbatim}
+%%\begin{Chart}[purple]
+%% \addTitle[Car Park Ventilation\newline Podia]{Jet Fans}
+%% \def\dataTable{carparkventilation.dat}
+%% \renderChart
+%%\end{Chart}
+% \end{verbatim}
+% The data entry has the form:
+% \begin{verbatim}
+%\begin{filecontents}{carparkco.dat}
+\begin{filecontents}{chapters.dat}
+Label    value         num   other
+{Chapter 1}         78           7   13
+Chapter2         90           6   12
+Chapter3         80           5    16
+Chapter4         90           4    18
+Chapter5         70           3    90
+Chapter6         80           2    21
+Chapter7         70           1    10
+Chapter8         50          {}    {}
+\end{filecontents}
+%\end{filecontents}
+% \end{verbatim}
+% As you notice, we use the file contents package to write the data and hence we load it
+% here for convenience. Another point to remember is to use brackets to enclose any labels
+% or values that containing spaces. Similarly if there is no value to enter use a pair of braces.
+%    \begin{macrocode}
+ \usepackage{filecontents}
+%    \end{macrocode}
+% \begin{environment}{Chart}
+% The environment |Chart| is used to plot progress charts. It is to be extended in a future
+% version.
+%    \begin{macrocode}
+\newenvironment{Chart}[1][black!70!green]{%
+%%  defaults
+    \gdef\level##1{Level ##1}
+    \def\setchartwidth##1{%
+      \def\chartwidth{##1}}%
+    \setchartwidth{3.9cm}%
+    \def\chartcolor{#1}
+    \newcommand\addTitle[2][test]{
+%% For the chart title we set it in a minipage for
+%% better control
+    \def\charttitle{\minipage{4cm}%
+       \footnotesize %
+       \centering\textbf{##2}\\##1%
+       \endminipage}}%
+   \def\xlabel{Completion (\%)}%
+%% renders the chart 
+    \def\renderChart{%
+%%
+    \footnotesize%
+%%
+%%
+    \IfFileExists{#1.dat}{Test}{}
+   \begin{tikzpicture}
+   \begin{axis}[
+    xbar, width=\chartwidth,title=\charttitle,
+    y=0.5cm, enlarge y limits={true, abs value=0.75},
+    xmin=0, xmax=100,enlarge x limits={upper, value=0.25},
+    xlabel=\xlabel,
+    %ylabel=Label,
+    xmajorgrids=true,
+    ytick=data,
+    yticklabels from table={\dataTable}{Label},
+    nodes near coords, nodes near coords align=horizontal
+     ]
+    \addplot[draw=none, fill=\chartcolor] table [x=value, y=num]
+    {\dataTable};
+    \end{axis}%
+    \end{tikzpicture}}}
+{}
+%    \end{macrocode}
+% \end{environment}
+%
+% \section{Calculations}
+% This section provides some macros for testing long integer typesetting,
+% we use numprint for testing with the thousand separator as empty. This code was
+% originally posted by me on text.sx. Usage |\Mersenne|\marg{number}
+% \begin{macro}{\Mersenne}
+% We use Mersene numbers to calculate a few numbers, this can be slow.
+%    \begin{macrocode}
+\usepackage{numprint}
+\IfFileExists{bigintcalc}{\RequirePackage{bigintcalc}}{}
+ \npthousandsep{ }
+\def\Mersenne#1{%
+  \begingroup
+  \par\noindent\parindent=0pt
+  $M_{#1}=$\par
+  \def\exponent##1{\bigintcalcPow{2}{##1}}%
+  \numprint{\bigintcalcSub{\exponent{#1}}{1}}
+  \endgroup
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% 
+%\section{Art Images}
+% These macros have been developed specifically for art and photography books. You might as well
+% look at the botticelli class if you want to use similar macros for a full class.
+%There are many ways to print a small graphic or some text at a specific point on a page. The point can
+%change position on odd or even pages. The packages |watermark| and |background| offer some sophisticated
+%macros in this respect. Here we leverage the \LaTeX2e
+% \begin{macro}{\samplepage}
+%% Watermark package with small footprint
+%% for more sophisticated macros use TikZ
+%% Define a macro to print SAMPLE PAGE IN THE MARGIN
+% The |changepackage| will be used to check for odd and even pages.
+%    \begin{macrocode}
+\IfFileExists{changepage.sty}{\RequirePackage{changepage}}{}
+\IfFileExists{rotating.sty}{\RequirePackage{changepage}}{}
+
+%    \end{macrocode}
+%
+% \begin{macro}{\even@samplepage}
+
+% \begin{macro}{\odd@samplepage}
+%    \begin{macrocode}
+\def\even@samplepage{%
+ \begin{picture}(0,0)
+   \put(\Xeven,\Yeven){\turnbox{90}{\Huge \textcolor{\watermark@textcolor}{\watermark@text}}}
+\end{picture}
+}
+%% Define a macro to print SAMPLE PAGE IN THE MARGIN
+\def\odd@samplepage{%
+ \begin{picture}(0,0)
+   \put(\Xodd,\Yodd){\turnbox{90}{\Huge \textcolor{\watermark@textcolor}{\watermark@text}}}
+ \end{picture}
+}
+%    \end{macrocode}
+% \begin{macro}{watermarktext}
+%  Define the watermark words
+%    \begin{macrocode}
+\def\watermarktext#1{\gdef\watermark@text{\fontfamily{phv}\selectfont#1}}
+\def\watermarktextcolor#1{\gdef\watermark@textcolor{#1}}
+\watermarktext{PRE-PRINT}
+\watermarktextcolor{purple}
+%    \end{macrocode}
+% \end{macro}
+%    \begin{macrocode}
+%% redefine LaTeX's plain as myplain for headings
+\def\ps@samplepage{\let\@mkboth\@gobbletwo
+ \let\@oddhead\odd@samplepage\def\@oddfoot{\reset@font\hfil\thepage}
+ \let\@evenhead\even@samplepage\def\@evenfoot{\reset@font\thepage\hfil}}
+%%
+%
+%% We define two macros to position the watermark on the page
+\def\Xodd{500}
+\def\Xeven{-70}\def\Yeven{-810}
+\def\Yeven{-\expandafter\strip@pt\textheight}
+\let\Yodd\Yeven
+
+\newlength\bleed@clearance
+\setlength\bleed@clearance{3mm}
+%% image corrections
+%\the\dimexpr
+%1in+\marginparwidth+\textwidth+\marginparsep+\evensidemargin-0.8in\relax
+\newlength\oddcorrection
+%\setlength\oddcorrection{\dimexpr(-1in-\oddsidemargin)+\bleed@clearance\relax}
+\setlength\oddcorrection{\dimexpr(-1in+\oddsidemargin-\marginparsep+7pt)+\bleed@clearance\relax}
+
+\newlength\evencorrection
+\setlength\evencorrection{\dimexpr(-\marginparwidth-\marginparsep-\oddsidemargin-1pt)\relax}
+%% caption related
+\newlength\captiontextwidth
+\setlength\captiontextwidth{\dimexpr 0.7\paperwidth\relax}
+%% caption corrections
+%\newlength\oddclearance
+%\setlength\oddclearance{\dimexpr 7cm\relax}
+%\newlength\evenclearance
+%\setlength\evenclearance\bleed@clearance
+%
+%  we set two macros to cater for recto and verso
+%  pages
+%  \imagehskip is the shift of the image
+%  we use changepage tofind out
+%  if we recto or verso
+%  \if@twoside is a switch for LaTeX standard classes
+%  if not available we define
+%  horizontal mode, get paranoid with spaces
+\def\imagehskip{%
+ \checkoddpage%
+ \if@twoside% 
+ \ifoddpage%
+  \noindent\hspace*{\oddcorrection}%
+\else%
+  \hspace*{\evencorrection}%
+\fi%
+\else
+   \noindent\hspace*{\oddcorrection}%
+\fi
+}%
+% similarly define the captionskip amount. This also will
+% depend on the paper setout as well as the page being
+% recto or verso.
+\def\captionhskip{%
+\checkoddpage
+\if@twoside%
+ \ifoddpage%
+%% Need to define a small margin at the end, if bleed is zero is a problem 50pt
+  \hspace*{\dimexpr \oddcorrection-\bleed@clearance+0.3\paperwidth-50pt\relax}%
+   \else%
+   \hspace*{\dimexpr-1in-\oddsidemargin-\marginparsep\relax}%
+ \fi%
+ \else%
+  \hspace*{\dimexpr 0.25\paperwidth+\oddcorrection-\bleed@clearance\relax}%
+ \fi%
+}%
+%
+%
+%\pagebreak
+%
+%% we check for odd and even numbers with the changepage package.
+%% we first check if the page is odd.
+%
+%% Include the graphic
+%% The image needs to be the sixe of the paper - clearance
+\def\addimage#1{%
+\checkoddpage%
+%% The image width is determined by the paper width - bleed clearance
+\imagehskip\includegraphics[width=\dimexpr\paperwidth-\bleed@clearance\relax]{./graphics/#1}%
+\par%
+\vspace{0.5\baselineskip}%
+}% do a vsplit here 
+%
+\newcommand\addcaption[2][Madonna.]{%
+   \captionhskip
+   \vbox\bgroup
+    \hsize\captiontextwidth
+    \parindent0pt\textbf{#1}\quad#2\par
+    \egroup
+    %\vfill\vfill
+}%
+%% The multicol caption, displays its caption as multicolumns
+%%  it uses the package multicol with a default setting of 3 columns
+%% 
+\newcommand\addmulticolcaption[2][3]{%
+\begin{multicols}{#1}
+#2
+\end{multicols}
+\par
+ } %
+%
+\pagestyle{samplepage}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \section{Custom files}
+% It is quite likely that not everything will be covered by what is offered above. A custom file
+% can be loaded if it exists. I normally use such files for throw-away definitions; that is macros
+% that cannot be widely used. For example at work I have a file with name macros for my co-workers
+% and people reporting to me. These names are used in activity reports and letters.
+%    \begin{macrocode}
+\IfFileExists{./Sections/definitions.tex}{\input{./Sections/definitions}}{}
+%    \end{macrocode}
+%    \begin{macrocode}
+%</package>
+%    \end{macrocode}
+%
+% \begin{thebibliography}{GMS94}
+%
+% \bibitem[GMS94]{GOOSSENS94}
+% Michel Goossens, Frank Mittelbach, and Alexander Samarin.
+% \newblock {\em The LaTeX Companion}.
+% \newblock Addison-Wesley Publishing Company, 1994.
+%
+% \bibitem[vO96]{OOSTRUM96}
+% Piet van Oostrum
+% \newblock {\em Page layout in \LaTeX}, June 1996.
+% \newblock (Available from CTAN as file \texttt{fancyhdr.tex}).
+%
+% \bibitem[SW94]{EBOOK}
+% Douglas Schenck and Peter Wilson.
+% \newblock {\em Information Modeling the EXPRESS Way}.
+% \newblock Oxford University Press, 1994 (ISBN 0-19-508714-3).
+%
+% \bibitem[Thi99]{TTC199}
+% Christina Thiele.
+% \newblock \emph{The Treasure Chest: Package tours from CTAN},
+% \newblock TUGboat, vol.~20, no.~1, pp~53--58, March 1999.
+%
+% \end{thebibliography}
+%
+%
+% \Finale
+% \PrintIndex
+\endinput
+
+
+\def\alicei{%	
+  The King and Queen of Hearts were seated on their throne
+  when they arrived, with a great crowd assembled about them
+  --- all sorts of little birds and beasts, as well as the
+  whole pack of cards: the Knave was standing before them,
+  in chains, with a soldier on each side to guard him; and
+  near the King was the White Rabbit, with a trumpet in one
+  hand, and a scroll of parchment in the other.  In the very
+  middle of the court was a table, with a large dish of
+  tarts upon it: they looked so good, that it made Alice
+  quite hungry to look at them --- ``I wish they'd get the
+  trial done,'' she thought, ``and hand round the
+  refreshments!''.  But there seemed to be no chance of this,
+  so she began looking at everything about her to pass away
+  the time.}%
+
+\def\aliceii{%
+  Alice had never been in a court of justice before, but she
+  had read about them in books, and she was quite pleased to
+  find that she knew the name of nearly everything there.
+  ``That's the judge,'' she said to herself, ``because of his
+  great wig.''.
+  
+  The judge, by the way, was the King, and as he wore his
+  crown over the wig, (look at the frontispiece if you want
+  to see how he did it,) he did not look at all comfortable,
+  and it was certainly not becoming.
+}
+
+ \def\aliceiii{``And that's the jury-box,'' thought Alice, ``and those
+  twelve creatures,'' (she was obliged to say ``creatures,''
+  you see, because some of them were animals, and some were
+  birds) ``I suppose they are the jurors.''.  She said this
+  last word two or three times over to herself being rather
+  proud of it: for she thought, and rightly too, that very
+  few little girls of her age knew the meaning of it at all.
+  However, ``jurymen'' would have done just as well.}
+
+ \def\aliceiv{The twelve jurors were all writing very busily on slates.
+  ``What are they doing?'' Alice whispered to the Gryphon.
+  ``They can't have anything to put down yet, before the
+  trial's begun.''.}
+  
+  \def\alicev{``They're putting down their names,'' the Gryphon
+  whispered in reply, ``for fear they should forget them
+  before the end of the trial.''.}
+  
+  \def\alicevi{``Stupid things!'' Alice began in a loud indignant voice,
+  but she stopped herself hastily, for the White Rabbit
+  cried out, ``Silence in the court!''; and the King put on
+  his spectacles and looked anxiously round, to make out who
+  was talking.\par}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

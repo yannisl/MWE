@@ -1,0 +1,1579 @@
+% \iffalse meta-comment
+%
+% Author: Peter Wilson (CUA) (now at: peter.r.wilson@boeing.com)
+% 
+%  This system is released under the LaTeX Project Public License.
+%
+%  This system is distributed in the hope that it will be useful,
+%  but WITHOUT ANY WARRANTY; without even the implied warranty of
+%  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+% 
+%<*driver>
+\documentclass{ltxdoc}
+\usepackage{url}
+\newcommand{\makecolonletter}{\catcode`\:11\relax}
+\renewcommand{\MakePrivateLetters}{\makeatletter\makecolonletter}
+\EnableCrossrefs
+\CodelineIndex
+\setcounter{StandardModuleDepth}{1}
+\begin{document}
+  \DocInput{iso4ht.dtx}
+\end{document}
+%</driver>
+%
+% \fi
+%
+% \CheckSum{1914}
+%
+% \DoNotIndex{\',\.,\@M,\@@input,\@addtoreset,\@arabic,\@badmath}
+% \DoNotIndex{\@centercr,\@cite}
+% \DoNotIndex{\@dotsep,\@empty,\@float,\@gobble,\@gobbletwo,\@ignoretrue}
+% \DoNotIndex{\@input,\@ixpt,\@m}
+% \DoNotIndex{\@minus,\@mkboth,\@ne,\@nil,\@nomath,\@plus,\@set@topoint}
+% \DoNotIndex{\@tempboxa,\@tempcnta,\@tempdima,\@tempdimb}
+% \DoNotIndex{\@tempswafalse,\@tempswatrue,\@viipt,\@viiipt,\@vipt}
+% \DoNotIndex{\@vpt,\@warning,\@xiipt,\@xipt,\@xivpt,\@xpt,\@xviipt}
+% \DoNotIndex{\@xxpt,\@xxvpt,\\,\ ,\addpenalty,\addtolength,\addvspace}
+% \DoNotIndex{\advance,\Alph,\alph}
+% \DoNotIndex{\arabic,\ast,\begin,\begingroup,\bfseries,\bgroup,\box}
+% \DoNotIndex{\bullet}
+% \DoNotIndex{\cdot,\cite,\CodelineIndex,\cr,\day,\DeclareOption}
+% \DoNotIndex{\def,\DisableCrossrefs,\divide,\DocInput,\documentclass}
+% \DoNotIndex{\DoNotIndex,\egroup,\ifdim,\else,\fi,\em,\endtrivlist}
+% \DoNotIndex{\EnableCrossrefs,\end,\end@dblfloat,\end@float,\endgroup}
+% \DoNotIndex{\endlist,\everycr,\everypar,\ExecuteOptions,\expandafter}
+% \DoNotIndex{\fbox}
+% \DoNotIndex{\filedate,\filename,\fileversion,\fontsize,\framebox,\gdef}
+% \DoNotIndex{\global,\halign,\hangindent,\hbox,\hfil,\hfill,\hrule}
+% \DoNotIndex{\hsize,\hskip,\hspace,\hss,\if@tempswa,\ifcase,\or,\fi,\fi}
+% \DoNotIndex{\ifhmode,\ifvmode,\ifnum,\iftrue,\ifx,\fi,\fi,\fi,\fi,\fi}
+% \DoNotIndex{\input}
+% \DoNotIndex{\jobname,\kern,\leavevmode,\let,\leftmark}
+% \DoNotIndex{\list,\llap,\long,\m@ne,\m@th,\mark,\markboth,\markright}
+% \DoNotIndex{\month,\newcommand,\newcounter,\newenvironment}
+% \DoNotIndex{\NeedsTeXFormat,\newdimen}
+% \DoNotIndex{\newlength,\newpage,\nobreak,\noindent,\null,\number}
+% \DoNotIndex{\numberline,\OldMakeindex,\OnlyDescription,\p@}
+% \DoNotIndex{\pagestyle,\par,\paragraph,\paragraphmark,\parfillskip}
+% \DoNotIndex{\penalty,\PrintChanges,\PrintIndex,\ProcessOptions}
+% \DoNotIndex{\protect,\ProvidesClass,\raggedbottom,\raggedright}
+% \DoNotIndex{\refstepcounter,\relax,\renewcommand,\reset@font}
+% \DoNotIndex{\rightmargin,\rightmark,\rightskip,\rlap,\rmfamily,\roman}
+% \DoNotIndex{\roman,\secdef,\selectfont,\setbox,\setcounter,\setlength}
+% \DoNotIndex{\settowidth,\sfcode,\skip,\sloppy,\slshape,\space}
+% \DoNotIndex{\symbol,\the,\trivlist,\typeout,\tw@,\undefined,\uppercase}
+% \DoNotIndex{\usecounter,\usefont,\usepackage,\vfil,\vfill,\viiipt}
+% \DoNotIndex{\viipt,\vipt,\vskip,\vspace}
+% \DoNotIndex{\wd,\xiipt,\year,\z@}
+% \DoNotIndex{\HCode}
+%
+% \changes{v0.1}{2000/01/20}{First public release}
+%
+% \def\fileversion{v0.1}
+% \def\filedate{2000/01/20}
+% \newcommand*{\Lpack}[1]{\textsf {#1}}           ^^A typeset a package
+% \newcommand*{\Lopt}[1]{\textsf {#1}}            ^^A typeset an option
+% \newcommand*{\file}[1]{\texttt {#1}}            ^^A typeset a file
+% \newcommand*{\Lcount}[1]{\textsl {\small#1}}    ^^A typeset a counter
+% \newcommand*{\pstyle}[1]{\textsl {#1}}          ^^A typeset a pagestyle
+% \newcommand*{\Lenv}[1]{\texttt {#1}}            ^^A typeset an environment
+% \newcommand*{\texht}{\Lpack{TeX4ht}}            ^^A typeset TeX4ht
+%
+% \title{The \Lpack{iso4ht} \texht{} package\thanks{This
+%        file has version number \fileversion, last revised
+%        \filedate.}}
+%
+% \author{%
+% Peter Wilson\\
+% Catholic University of America \\
+% Now at \texttt{peter.r.wilson@boeing.com}
+% }
+% \date{\filedate}
+% \maketitle
+% \begin{abstract}
+%    The \Lpack{iso4ht} package, in conjunction with \texht{} 
+% can be used to convert \LaTeX{}
+% \Lpack{iso} class documents into HTML tagged documents.
+% \end{abstract}
+% \tableofcontents
+%
+% \StopEventually{}
+%
+% 
+%
+% \section{Introduction}
+%
+% The \Lpack{iso4ht} package can be used in conjunction with
+% the \texht{} system to convert \LaTeX{} \Lpack{iso} class documents
+% into HTML tagged documents. The \Lpack{iso} class is for typesetting
+% ISO standard documents~\cite{PRW96i}.
+%
+%    Section~\ref{sec:usc} describes the package  and 
+% commented source code for the package is in Section~\ref{sec:code}.
+%
+% This manual is typeset according to the conventions of the
+% \LaTeX{} \textsc{docstrip} utility which enables the automatic
+% extraction of the \LaTeX{} macro source files~\cite{GOOSSENS94}.
+%
+% \subsection{Acknowledgement}
+%
+% Development of the \Lpack{iso4ht} package would not have been possible
+% without the help and expertise of Eitan Gurari, and in particular his
+% willingness to put up with the many questions I asked.
+%
+%
+% \section{The \Lpack{iso4ht} package} \label{sec:usc}
+%
+% The \texht{} system has been developed by Eitan Gurari (see Chapter~4
+% and Appendix~B in~\cite{GOOSSENS99}. It is a general purpose conversion
+% system to convert \LaTeX{} tagged documents into HTML (or other *ML)
+% tagged documents. \texht{} can be obtained from 
+% \url{http://www.cis.ohio-state.edu/~gurari/TeX4ht/mn.html}. 
+% The \Lpack{iso4ht}
+% package is not guaranteed to work with versions of \texht{} earlier
+% than mid-January 2000. At the time of writing, the default \texht{}
+% distribution was dated mid-1999. The latest version of \texht{} is obtainable
+% from \url{http://www.cis.ohio-state.edu/~gurari/TeX4ht/bugfixes.html}.
+%
+% To use the \Lpack{iso4ht} package, just process the \LaTeX{} document
+% as you would any other under \texht. That is, either call the |ht| script
+% a document starting like:
+% \begin{verbatim}
+% \documentclass[...]{isov2}
+% \usepackage[...]{tex4ht}
+% ...
+% \end{verbatim} 
+% or call the |htlatex| script on a document without the 
+% |\usepackage[...]{tex4ht}| line.
+%
+%
+% \section{The package code} \label{sec:code}
+%
+%    The following code is based on \Lpack{article.4ht}, \Lpack{html0.4ht},
+% \Lpack{html32.4ht} and \Lpack{html4.4ht}, all written by Eitan Gurari.
+%
+%    Most of the necessary work already exists in \Lpack{latex.4ht}, which
+% sets up the \LaTeX{} kernel code. \Lpack{article.4ht} provides the
+% setup for the \Lpack{article} class, and \Lpack{html0.4ht}, 
+% \Lpack{html32.4ht} and \Lpack{html4.4ht} provide the HTML option-related
+% configurations.
+%
+%    The \Lpack{iso} class was originally based on the \Lpack{article} class,
+% so \Lpack{isov2.4ht} is in turn based on \Lpack{article.4ht} (although little
+% code is actually reused). The HTML option-related configurations are 
+% embedded in \Lpack{isov2.4ht} instead of being supplied as seperate files.
+%
+% \changes{v0.1}{2000/01/20}{First public release}
+%
+%    Announce the name and version of the package.
+%    \begin{macrocode}
+%<*usc>
+\typeout{[isov2.4ht 2000/01/20 version v0.1]}
+
+%    \end{macrocode}
+%
+% \subsection{Setup and hooks}
+%
+%    The first major part of the code deals with setting up for configuring
+% the \LaTeX{} commands and environments, which forms the second major
+% portion of the code.
+%
+%    Setting up may involve adding hooks into commands, either by redefining
+% them or, in simpler cases prepending and/or appending code before and/or
+% after the original code. It can also involve specifying that commands
+% are configurable.
+%
+% \subsubsection{Table of contents}
+%
+%    What follows is a revised version of the \Lpack{article.4ht} setup
+% for the |\tableofcontents|, |listoffigures| and |\listoftables| commands.
+% Parctically all of the revision has to do with replacing \Lpack{article}
+% sectioning commands (i.e., |\section|, |\subsection|, etc.) 
+% with the \Lpack{iso}
+% sectioning commands (i.e., |\clause|, |\sclause|, etc.
+%).
+% \DescribeMacro{\listof}
+%    \begin{macrocode}
+\NewConfigure{listof}{6}
+
+%    \end{macrocode}
+%
+% \DescribeMacro{\tableofcontents}
+%    The revised version of \Lpack{article.4ht} |\tableofcontents|
+% configuration setup. 
+%
+% Do the |tocdepth| setup.
+%    \begin{macrocode}
+\def\:tableofcontents{\futurelet\:temp\:TOC}
+\edef\:TOC{%
+   \noexpand\ifx [\noexpand\:temp
+      \noexpand\expandafter\noexpand\:TableOfContents
+   \noexpand\else
+      \noexpand\Auto:ent{%
+   \ifnum 1>\c@tocdepth\else clause,fibicl@use,likefibicl@use,normannex,infannex,repannex,\fi
+\ifnum 2>\c@tocdepth \else sclause,\fi
+\ifnum 3>\c@tocdepth \else ssclause,\fi
+\ifnum 4>\c@tocdepth \else sssclause,\fi
+\ifnum 5>\c@tocdepth \else ssssclause,\fi
+\ifnum 6>\c@tocdepth \else sssssclause,\fi
+UnDFexyz}%
+   \noexpand\fi}
+
+\def\Auto:ent#1{%
+   \edef\auto:toc{\noexpand\:TableOfContents[\ifx \auto:toc\:UnDef
+      #1\else \auto:toc \fi]}  \auto:toc
+   \global\let\auto:toc\:UnDef }
+
+%    \end{macrocode}
+%
+% Specify the various kinds of entries in the ToC.
+%    \begin{macrocode}
+\def\tocnormannex#1#2#3{\par\annexname\ \toc:num{annex}{#1 (\normativename)}{#2}\par}%
+\def\toclikenormannex#1#2#3{\par\:SPAN{likenormannexToc}{#2}\par}%
+\def\tocinfannex#1#2#3{\par\annexname\ \toc:num{infannex}{#1 (\informativename)}{#2}\par}%
+\def\toclikeinfannex#1#2#3{\par\:SPAN{likeinfannexToc}{#2}\par}%
+\def\tocrepannex#1#2#3{\par\annexname\ \toc:num{annex}{#1}{#2}\par}%
+\def\toclikerepannex#1#2#3{\par\:SPAN{likerepannexToc}{#2}\par}%
+\def\tocfibicl@use#1#2#3{\par\:SPAN{fibicl@useToc}{#2}\par}%
+\def\toclikefibicl@use#1#2#3{\par\:SPAN{likefibicl@useToc}{#2}\par}%
+\def\tocclause#1#2#3{\par\toc:num{clause}{#1}{#2}\par}%
+\def\toclikeclause#1#2#3{\par\:SPAN{likeclauseToc}{#2}\par}%
+\def\tocsclause#1#2#3{\par\ \toc:num{sclause}{#1}{#2}\par}
+\def\toclikesclause#1#2#3{\par\ \:SPAN{likesclauseToc}{#2}\par}
+\def\tocssclause#1#2#3{\par
+      \ \ \toc:num{ssclause}{#1}{#2}\par}
+\def\toclikessclause#1#2#3{\par
+      \ \ \:SPAN{likessclauseToc}{#2}\par}
+\def\tocsssclause#1#2#3{\par\ \ \toc:num{sssclause}{#1}{#2}\par}
+\def\toclikesssclause#1#2#3{\par\ \ \:SPAN{likesssclauseToc}{#2}\par}
+\def\tocssssclause#1#2#3{\par
+      \ \ \ \ \toc:num{ssssclause}{#1}{#2}\par}
+\def\toclikessssclause#1#2#3{\par
+      \ \ \ \ \:SPAN{likessssclauseToc}{#2}\par}
+\def\tocsssssclause#1#2#3{\par
+      \ \ \ \ \ \toc:num{sssssclause}{#1}{#2}\par}
+\def\toclikesssssclause#1#2#3{\par
+      \ \ \ \ \ \:SPAN{likesssssclauseToc}{#2}\par}
+%    \end{macrocode}
+% There is also a special entry to cater for the |\title| command
+% (see page~\pageref{titlehooks}).
+%    \begin{macrocode}
+\def\toctitleclause#1#2#3{\par\toc:num{titleclause}{#1}{#2}\par}%
+\def\tocliketitleclause#1#2#3{\par\:SPAN{liketitleclauseToc}{#2}\par}%
+
+%    \end{macrocode}
+% The next bit is a straight copy of original \texht{} code.
+%    \begin{macrocode}
+\def\toc:num#1#2#3{\def\:temp{#1#2}\:SPAN{#1Toc}{\ifx \:temp\empty \else
+   #2 \fi #3}}
+\def\:tocs{\noexpand\:tableofcontents}
+\pend:defIII\addcontentsline{%
+   \def\:temp{##1}\def\:tempa{toc}\ifx \:temp\:tempa
+   \gHAdvance\TitleCount  1 \fi }
+\def\@dottedtocline#1#2#3#4#5{\hbox{\def\numberline##1{\e:listof
+                ##1\f:listof}\c:listof#4\d:listof}\ignorespaces}
+
+%    \end{macrocode}
+%
+% Setup the |\@starttoc| command.
+%    \begin{macrocode}
+\def\@starttoc#1{%
+  \begingroup
+    \makeatletter   \Configure{cite}{}{}%
+    \def\:temp{#1}\def\:tempa{toc}%
+    \a:listof\par
+    \@input{\jobname.\ifx \:temp\:tempa otc\else #1\fi}%
+    \b:listof
+    \if@filesw
+      \expandafter\expandafter\csname
+          newwrite\endcsname\csname tf@#1\endcsname
+      \immediate\openout \csname tf@#1\endcsname \jobname.#1\relax
+    \fi
+    \global\@nobreakfalse
+  \endgroup}
+
+%    \end{macrocode}
+%
+% The next chunk of code only applies for HTML.
+%    \begin{macrocode}
+\ifHtml
+   \NewConfigure{tableofcontents*}[1]{\edef\auto:toc{#1}%
+   \ifx \au:StartSec\:UnDef
+      \let\au:StartSec\:StartSec
+      \def\:StartSec{\:tableofcontents
+         \global\let\auto:toc\:UnDef \:StartSec}
+      \pend:def\:tableofcontents{\gdef\:StartSec{\au:StartSec}}
+   \fi
+}
+
+%    \end{macrocode}
+%
+% Define the various levels at which the document may be cut into seperate
+% files (|\CutAt|) and at which points a ToC may be produced (|\TocAt|). \\
+% \textbf{NOTE:} This may require modification to deal with the |\title|.
+%
+% Cut at the clause (and annex) level.
+%    \begin{macrocode}
+   \def\:tempa{
+   \CutAt{clause,likeclause,%
+          normannex,infannex,repannex,fibicl@use,likefibicl@use}
+   \CutAt{likeclause,clause,%
+          normannex,infannex,repannex,fibicl@use,likefibicl@use}
+   \Configure{tableofcontents*}{clause,likeclause,%
+          normannex,infannex,repannex,fibicl@use,likefibicl@use}
+}
+
+%    \end{macrocode}
+%
+% Cut at the clause and subclause levels.
+%    \begin{macrocode}
+\def\:tempb{
+   \TocAt*{clause,/likeclause,sclause,likesclause,%
+           normannex,infannex,repannex,fibicl@use,likefibicl@use}
+   \TocAt*{likeclause,/clause,sclause,likesclause,%
+           normannex,infannex,repannex,fibicl@use,likefibicl@use}
+   \CutAt{clause,likeclause,%
+           normannex,infannex,repannex,fibicl@use,likefibicl@use}
+   \CutAt{likeclause,clause,%
+           normannex,infannex,repannex,fibicl@use,likefibicl@use}
+   \Configure{tableofcontents*}{clause,likeclause,sclause,likesclause,%
+           ssclause,likessclause,%
+           normannex,infannex,repannex,fibicl@use,likefibicl@use}
+}
+
+%    \end{macrocode}
+%
+% Cut at the clause, subclause, and subsubclause levels.
+%    \begin{macrocode}
+\def\:tempc{
+   \TocAt*{clause,/likeclause,sclause,likesclause,ssclause,likessclause,%
+           normannex,infannex,repannex,fibicl@use,likefibicl@use}
+   \TocAt*{likeclause,/clause,sclause,likesclause,ssclause,likessclause,%
+           normannex,infannex,repannex,fibicl@use,likefibicl@use}
+   \CutAt{clause,likeclause,sclause,likesclause,%
+           normannex,infannex,repannex,fibicl@use,likefibicl@use}
+   \CutAt{likeclause,clause,sclause,likesclause,%
+           normannex,infannex,repannex,fibicl@use,likefibicl@use}
+   \Configure{tableofcontents*}{clause,likeclause,sclause,likesclause,%
+           ssclause,likessclause,sssclause,likesssclause,%
+           normannex,infannex,repannex,fibicl@use,likefibicl@use}
+}
+
+%    \end{macrocode}
+%
+% Cut at the clause, subclause, subsubclause, and subsubsubclause levels.
+%    \begin{macrocode}
+\def\:tempd{
+   \TocAt*{clause,/likeclause,sclause,likesclause,ssclause,likessclause,%
+           sssclause,likesssclause,%
+           normannex,infannex,repannex,fibicl@use,likefibicl@use}
+   \TocAt*{likeclause,/clause,sclause,likesclause,ssclause,likessclause,%
+           sssclause,likesssclause,%
+           normannex,infannex,repannex,fibicl@use,likefibicl@use}
+   \CutAt{clause,likeclause,sclause,likesclause,ssclause,likessclause,%
+           normannex,infannex,repannex,fibicl@use,likefibicl@use}
+   \CutAt{likeclause,clause,sclause,likesclause,ssclause,likessclause,%
+           normannex,infannex,repannex,fibicl@use,likefibicl@use}
+   \Configure{tableofcontents*}{clause,likeclause,sclause,likesclause,%
+           ssclause,likessclause,sssclause,likesssclause,%
+           ssssclause,likessssclause,%
+           normannex,infannex,repannex,fibicl@use,likefibicl@use}
+}
+
+%    \end{macrocode}
+%
+% Now pick the cut levels appropriate for the cutting option.
+% Option 4 generates the most cuts (down to subsubsubclauses) and option 1
+% one the least (clauses and annexes only).
+%    \begin{macrocode}
+\:CheckOption{4}  
+  \if:Option
+     \:tempa \:tempb \:tempc \:tempd 
+  \else\:CheckOption{3}       
+    \if:Option
+       \:tempa \:tempb  \:tempc 
+    \else\:CheckOption{2}     
+      \if:Option
+        \:tempa \:tempb  
+      \else\:CheckOption{1} 
+        \if:Option  
+          \:tempa
+        \fi 
+      \fi 
+    \fi 
+  \fi
+
+\fi  % end ifHtml
+
+%    \end{macrocode}
+% That ends the HTML specific code.
+%
+% \DescribeMacro{\listoffigures}
+% \DescribeMacro{\listoftables}
+% The following code is copied from \Lpack{article.4ht}.
+%    \begin{macrocode}
+  \pend:def\listoffigures{\begingroup \a:listoffigures
+   \def\@starttoc{\:tableofcontents[lof]\:gobble}}
+\append:def\listoffigures{\b:listoffigures \endgroup}
+\pend:def\listoftables{\begingroup \a:listoftables
+   \def\@starttoc{\:tableofcontents[lot]\:gobble}}
+\append:def\listoftables{\b:listoftables \endgroup}
+
+\NewConfigure{listoffigures}{2}
+\NewConfigure{listoftables}{2}
+
+\def\toclot#1#2#3{\par\ \toc:num{table}{#1}{#2}\par}
+\def\toclof#1#2#3{\par\ \toc:num{figure}{#1}{#2}\par}
+
+%    \end{macrocode}
+%
+%
+% \subsubsection{Sectioning commands}
+%
+% This part of the code provides the setup for the sectioning commands.
+%
+%    For an ISO document, the Title comes after the ToC, Foreword and 
+% Introduction.\label{titlehooks}
+% The \Lpack{iso} |\title| command should really end
+% any previous sectioning commands, and the easiest way to manage this 
+% seems to be by redefining the |\title| command in terms of a sectioning
+% command. In order to do this, some new commands are required and some
+% \Lpack{iso} commands redefined.
+%
+%    Eventually, it is the sectioning command that gets configured instead
+% of the |\title| command.
+%    Another reason for doing things this way is that elsewhere, for
+% a package under the \Lpack{iso} class, I will
+% be configuring a different |\title| command and I will be able to use
+% this as a basis for that configuration.
+%
+% \DescribeMacro{\introelement}
+% \DescribeMacro{\compelement}
+%    These require redefining as, for reasons I don't understand, the system
+% falls over when it tries to process the \Lpack{iso} |\isoemptystring| 
+% command. This is replaced by a more direct test.
+%    \begin{macrocode}
+\renewcommand{\introelement}[1]{\ifx\empty#1\else {#1 ---\newline}\fi}
+\renewcommand{\compelement}[1]{\ifx\empty#1\else { ---\newline #1}\fi}
+
+%    \end{macrocode}
+%
+% \DescribeMacro{\titleclause}
+% A `clause' for typesetting (in \texht{} only) the title. This should make
+% no entry in the ToC. There is no typeset number, so life is a bit simpler
+% than when normally defining sectioning commands.
+%    \begin{macrocode}
+\newcommand{\titleclause}{%
+  \@startsection{titleclause}{100}%  large level to avoid adding to ToC 
+  {\z@}%
+  {\beforecskip}%
+  {\aftercskip}%
+  {\raggedright\Tfont\bfseries}}
+
+%    \end{macrocode}
+%
+% \DescribeMacro{\title}
+% Now redefine the original |\title| command in terms of |\titleclause*|.
+%    \begin{macrocode}
+\renewcommand{\title}[3]{%
+  \setcounter{clause}{0}
+  \gdef\thetitle{\introelement{#1} %
+                 \mainelement{#2} %
+                 \compelement{#3}}
+  \titleclause*{\thetitle}}
+
+%    \end{macrocode}
+%
+% Do the |\title| `clause' hooks.
+%    \begin{macrocode}
+\let\no@titleclause\titleclause
+\Def:Section\titleclause{}{#1}
+\let\no:titleclause\titleclause
+\def\titleclause{\rdef:sec{titleclause}}
+\Def:Section\liketitleclause{}{#1}
+\let\:liketitleclause\liketitleclause
+\let\liketitleclause\:UnDef
+
+%    \end{macrocode}
+%
+%
+% Add the hooks for the normal sectioning commands. This is a revision of code
+% in \Lpack{article.4ht}.
+%    \begin{macrocode}
+\let\no@clause\clause
+\Def:Section\clause{\ifnum \c:secnumdepth>\c@secnumdepth   \else
+   \theclause \fi}{#1}
+\let\no:clause\clause
+\def\clause{\rdef:sec{clause}}
+\Def:Section\likeclause{}{#1}
+\let\:likeclause\likeclause
+\let\likeclause\:UnDef
+
+\let\no@sclause\sclause
+\Def:Section\sclause{\ifnum \c:secnumdepth>\c@secnumdepth   \else
+   \thesclause \fi}{#1}
+\let\no:sclause\sclause
+\def\sclause{\rdef:sec{sclause}}
+\Def:Section\likesclause{}{#1}
+\let\:likesclause\likesclause
+\let\likesclause\:UnDef
+
+\let\no@ssclause\ssclause
+\Def:Section\ssclause{\ifnum \c:secnumdepth>\c@secnumdepth   \else
+   \thessclause \fi}{#1}
+\let\no:ssclause\ssclause
+\def\ssclause{\rdef:sec{ssclause}}
+\Def:Section\likessclause{}{#1}
+\let\:likessclause\likessclause
+\let\likessclause\:UnDef
+
+\let\no@sssclause\sssclause
+\Def:Section\sssclause{\ifnum \c:secnumdepth>\c@secnumdepth   \else
+   \thesssclause \fi}{#1}
+\let\no:sssclause\sssclause
+\def\sssclause{\rdef:sec{sssclause}}
+\Def:Section\likesssclause{}{#1}
+\let\:likesssclause\likesssclause
+\let\likesssclause\:UnDef
+
+\let\no@ssssclause\ssssclause
+\Def:Section\ssssclause{\ifnum \c:secnumdepth>\c@secnumdepth   \else
+   \thessssclause \fi}{#1}
+\let\no:ssssclause\ssssclause
+\def\ssssclause{\rdef:sec{ssssclause}}
+\Def:Section\likessssclause{}{#1}
+\let\:likessssclause\likessssclause
+\let\likessssclause\:UnDef
+
+\let\no@sssssclause\sssssclause
+\Def:Section\sssssclause{\ifnum \c:secnumdepth>\c@secnumdepth   \else
+   \thesssssclause \fi}{#1}
+\let\no:sssssclause\sssssclause
+\def\sssssclause{\rdef:sec{sssssclause}}
+\Def:Section\likesssssclause{}{#1}
+\let\:likesssssclause\likesssssclause
+\let\likesssssclause\:UnDef
+
+\let\no@fibicl@use\fibicl@use
+\Def:Section\fibicl@use{}{#1}
+\let\no:fibicl@use\fibicl@use
+\def\fibicl@use{\rdef:sec{fibicl@use}}
+\Def:Section\likefibicl@use{}{#1}
+\let\:likefibicl@use\likefibicl@use
+\let\likefibicl@use\:UnDef
+
+\def\@normannex#1{%
+  \tocskip{\tocentryskip}
+  \SkipRefstepAnchor
+  \addcontentsline{toc}{annex}{\annexname\space\theannex\space(\normativename)\space#1}%
+  \csname @endnormannex\endcsname}
+
+\let\:tempb\normannex
+\Def:Section\normannex{\theannex}{#1}
+\let\:normannex\normannex
+\let\normannex\:tempb
+\let\no@normannex\@normannex
+\def\@normannex#1{%
+  {\let\addcontentsline\:gobbleIII\no@normannex{#1}}%
+   \HtmlEnv   \Toc:Title{#1}\:normannex{#1}}
+
+\def\@infannex#1{%
+  \tocskip{\tocentryskip}
+  \SkipRefstepAnchor
+  \addcontentsline{toc}{annex}{\annexname\space\theannex\space(\informativename)\space#1}%
+  \csname @endinfannex\endcsname}
+
+\let\:tempb\infannex
+\Def:Section\infannex{\theannex}{#1}
+\let\:infannex\infannex
+\let\infannex\:tempb
+\let\no@infannex\@infannex
+\def\@infannex#1{%
+  {\let\addcontentsline\:gobbleIII\no@infannex{#1}}%
+   \HtmlEnv   \Toc:Title{#1}\:infannex{#1}}
+
+\def\@repannex#1{%
+  \tocskip{\tocentryskip}
+  \SkipRefstepAnchor
+  \addcontentsline{toc}{annex}{\annexname\space\theannex\space#1}%
+  \csname @endrepannex\endcsname}
+
+\let\:tempb\repannex
+\Def:Section\repannex{\theannex}{#1}
+\let\:repannex\repannex
+\let\repannex\:tempb
+\let\no@repannex\@repannex
+\def\@repannex#1{%
+  {\let\addcontentsline\:gobbleIII\no@repannex{#1}}%
+   \HtmlEnv   \Toc:Title{#1}\:repannex{#1}}
+
+%    \end{macrocode}
+%
+% Specify which sectioning commands end which kinds of section.
+%    \begin{macrocode}
+\Configure{endtitleclause}
+     {clause,likeclause,fibicl@use,likefibicl@use,normannex,infannex,repannex}
+\Configure{endliketitleclause}
+     {clause,likeclause,fibicl@use,likefibicl@use,normannex,infannex,repannex}
+
+\Configure{endclause}
+     {likeclause,fibicl@use,likefibicl@use,normannex,infannex,repannex}
+\Configure{endlikeclause}
+     {clause,fibicl@use,likefibicl@use,normannex,infannex,repannex}
+
+\Configure{endsclause}
+   {likesclause,%
+    clause,likeclause,fibicl@use,likefibicl@use,normannex,infannex,repannex}
+\Configure{endlikesclause}
+   {sclause,%
+    clause,likeclause,fibicl@use,likefibicl@use,normannex,infannex,repannex}
+
+\Configure{endssclause}
+   {likessclause,sclause,likesclause,%
+    clause,likeclause,fibicl@use,likefibicl@use,normannex,infannex,repannex}
+\Configure{endlikessclause}
+   {ssclause,sclause,likesclause,%
+    clause,likeclause,fibicl@use,likefibicl@use,normannex,infannex,repannex}
+
+\Configure{endsssclause}
+   {likesssclause,ssclause,likessclause,sclause,likesclause,%
+    clause,likeclause,fibicl@use,likefibicl@use,normannex,infannex,repannex}
+\Configure{endlikesssclause}
+   {sssclause,ssclause,likessclause,sclause,likesclause,%
+    clause,likeclause,fibicl@use,likefibicl@use,normannex,infannex,repannex}
+
+\Configure{endssssclause}
+   {likessssclause,likesssclause,ssclause,likessclause,sclause,likesclause,%
+    clause,likeclause,fibicl@use,likefibicl@use,normannex,infannex,repannex}
+\Configure{endlikessssclause}
+   {ssssclause,likesssclause,ssclause,likessclause,sclause,likesclause,%
+    clause,likeclause,fibicl@use,likefibicl@use,normannex,infannex,repannex}
+
+\Configure{endfibicl@use}{fibicl@use,endlikefibicl@use,clause,likeclause}
+\Configure{endlikefibicl@use}{fibicl@use,endlikefibicl@use,clause,likeclause}
+
+\Configure{endnormannex}{normannex,infannex,repannex,fibicl@use,likefibicl@use}
+\Configure{endinfannex}{normannex,infannex,repannex,fibicl@use,likefibicl@use}
+\Configure{endrepannex}{normannex,infannex,repannex,fibicl@use,likefibicl@use}
+
+%    \end{macrocode}
+%
+% \subsubsection{Miscellaneous}
+%
+% \DescribeMacro{\caption}
+% \DescribeMacro{\@makecaption}
+%   We have to add configuration hooks and code for captions.
+%    \begin{macrocode}
+\NewConfigure{caption}[4]{\c:def\cptA:{#1}\c:def\cptB:{#2}%
+   \c:def\cptC:{#3}\c:def\cptD:{#4}}
+\long\def\@makecaption#1#2{%   
+   {\cptA: \cap:ref{#1}%
+\cptB:}{\cptC:{#2}\cptD:}}
+\pend:def\caption{\SkipRefstepAnchor}
+
+%    \end{macrocode}
+%
+% \DescribeMacro{\theindex}
+% |\theindex| is redefined to cater for the difference between printed 
+% documents with page numbers and HTML documents. This is a copy of the code
+% in \Lpack{article.4ht}.
+%    \begin{macrocode}
+\long\def\c:theindex:#1#2#3#4#5#6#7#8#9{%
+   \def\theindex{%
+      \def\idx:item{\SaveEverypar\everypar{}#1}%
+      \def\endtheindex{\idx:item#2\RecallEverypar}%
+      \def\item{\idx:item\let\index\@gobble #3\def\idx:item{#4}}%
+      \def\subitem{\idx:item\let\index\@gobble #5\def\idx:item{#6}}%
+      \def\subsubitem{\idx:item\let\index\@gobble #7\def\idx:item{#8}}}%
+      \def\indexspace{\idx:item#9\let\idx:item\empty}}
+
+%    \end{macrocode}
+%
+%
+% \DescribeEnv{quote}
+% \DescribeEnv{quotation}
+% A copy of the code from \Lpack{article.4ht}.
+%    \begin{macrocode}
+\append:def\quote{\par\@totalleftmargin\z@}
+\append:def\quotation{\a:quotation\par\@totalleftmargin\z@}
+\NewConfigure{quotation}{1}
+
+%    \end{macrocode}
+%
+%
+% \DescribeMacro{\thefootnote}
+% The default \texht{} treatment of footnotes is to put each one into a
+% seperate file. In the \Lpack{iso} case I want to have the footnote text
+% in the same file as the body of the document. Eitan Gurari suggested
+% the method implemented here to override the default 
+% (see also page~\pageref{footpage}).
+%    \begin{macrocode}
+\renewcommand{\thefootnote}{\arabic{footnote}\csname PRNT\endcsname}
+
+%    \end{macrocode}
+%
+%
+% \subsection{Configuration}
+%
+% All, or nearly all, configurations depend on the HTML level option chosen.
+% Typically, html0 results in empty or null values of the hooks. html32 has
+% some simple hook vaules, while html4 are the most complex.
+%
+% \subsubsection{Table of contents}
+%
+% The ToC configuration is basically a copy of the relevant code from
+% \Lpack{html0.4ht}, \Lpack{html32.4ht} and \Lpack{html4.4ht}, from the
+% \texttt{article} section of each of those.
+%
+% \begin{macro}{\listof}
+% \begin{macro}{\lof}
+% \begin{macro}{\lot}
+% I'm not sure what |\listof| does, but it is related to the ToC, LoF and LoT.
+%    \begin{macrocode}
+\:CheckOption{0.0}
+\if:Option
+  %%%% Do html0
+  \ConfigureToc{lof}{\empty}{ }{}{}
+  \ConfigureToc{lot}{\empty}{ }{}{}
+\else
+  \:CheckOption{3.2}
+  \if:Option
+  %%%% Do html32
+    {\Configure{Needs}{Font\string_Size: #1}\ifcase  \@ptsize
+     \or \Needs{11}\or \Needs{12}\else \fi}
+    \Configure{listof}{}{}{}{\HCode{<br\xml:empty>}}{}{}
+    \ConfigureToc{lof}{\empty}{\ }{}{\HCode{<br\xml:empty>}}
+    \ConfigureToc{lot}{\empty}{\ }{}{\HCode{<br\xml:empty>}}
+  \else
+  %%%% Do html4
+      {\Configure{Needs}{Font\string_Size: #1}\ifcase  \@ptsize
+       \or \Needs{11}\or \Needs{12}\else \fi}
+      \Configure{listof}{}{}{}{\HCode{<br\xml:empty>}}{}{}
+      \ConfigureToc{lof}
+        {\HCode{<span class="lofToc">}}{\ }{}{\HCode{</span><br\xml:empty>}}
+      \ConfigureToc{lot}
+        {\HCode{<span class="lotToc">}}{\ }{}{\HCode{</span><br\xml:empty>}}
+  \fi
+\fi
+
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \subsubsection{Sectioning commands}
+%
+% Configure the sectioning commands, HTML option dependent.
+%
+% \begin{macro}{\titleclause}
+% \begin{macro}{\titleclause*}
+% \begin{macro}{\clause}
+% \begin{macro}{\clause*}
+% \begin{macro}{\sclause}
+% \begin{macro}{\sclause*}
+% \begin{macro}{\ssclause}
+% \begin{macro}{\ssclause*}
+% \begin{macro}{\sssclause}
+% \begin{macro}{\sssclause*}
+% \begin{macro}{\ssssclause}
+% \begin{macro}{\ssssclause*}
+% \begin{macro}{\sssssclause}
+% \begin{macro}{\sssssclause*}
+% \begin{macro}{\fibicl@use}
+% \begin{macro}{\fibicl@use*}
+% \begin{macro}{\normannex}
+% \begin{macro}{\infannex}
+% \begin{macro}{\repannex}
+% This code is based on the \Lpack{article} sectioning configuration. In most
+% cases only the sectioning names have been changed. The annexes have a
+% style of their own, though.
+%    \begin{macrocode}
+\:CheckOption{0.0}
+\if:Option
+%    \end{macrocode}
+%
+% HTML option 0.0
+%    \begin{macrocode}
+  %%%% Do html0
+  \Configure{titleclause}{}{}{}{}
+  \Configure{liketitleclause}{}{}{}{}
+  \Configure{clause}{}{}{\theclause\space}{}
+  \Configure{likeclause}{}{}{}{}
+  \Configure{sclause}{}{}{\thesclause\space}{}
+  \Configure{likesclause}{}{}{}{}
+  \Configure{ssclause}{}{}{\thessclause\space}{}
+  \Configure{likessclause}{}{}{}{}
+  \Configure{sssclause}{}{}{\thesssclause\space}{}
+  \Configure{likesssclause}{}{}{}{}
+  \Configure{ssssclause}{}{}{\thessssclause\space}{}
+  \Configure{likessssclause}{}{}{}{}
+  \Configure{sssssclause}{}{}{\thesssssclause\space}{}
+  \Configure{likesssssclause}{}{}{}{}
+  \Configure{fibicl@use}{}{}{}{}
+  \Configure{likefibicl@use}{}{}{}{}
+  \Configure{normannex}{}{}
+    {\annexname~\theannex~(\normativename)\space}{}
+  \Configure{infannex}{}{}
+    {\annexname~\theannex~(\informativename)\space}{}
+  \Configure{repannex}{}{}
+    {\annexname~\theannex\space}{}
+
+\else
+  \:CheckOption{3.2}
+  \if:Option
+%    \end{macrocode}
+%
+% HTML option 3.2
+%    \begin{macrocode}
+  %%%% Do html3
+    \Configure{titleclause}{}{}
+       {\IgnorePar\HCode{<h1 class="titleHead">}}
+       {\HCode{</h1>}\NoIndent \par}
+    \Configure{titleclauseTITLE+}{#1}
+    \Configure{liketitleclause}{}{}
+       {\IgnorePar\HCode{<h1 class="titleHead">}}
+       {\HCode{</h1>}\NoIndent \par}
+
+    \Configure{clause}{}{}
+       {\IgnorePar\HCode{<h3 class="clauseHead">}
+        \ifnum \c:secnumdepth>\c@secnumdepth
+        \else \theclause \space \fi}
+       {\HCode{</h3>}\NoIndent \par}
+    \Configure{clauseTITLE+}{\theclause\space#1}
+    \Configure{likeclause}{}{}
+       {\IgnorePar\HCode{<h3 class="likeclauseHead">}}
+       {\HCode{</h3>}\NoIndent \par}
+
+    \Configure{sclause}{}{}
+       {\bgroup \IgnorePar\HCode{<h4 class="sclauseHead">}
+        \ifnum \c:secnumdepth>\c@secnumdepth
+        \else \thesclause \space \fi}
+       {\HCode{</h4>}\NoIndent\egroup}
+    \Configure{sclauseTITLE+}{\thesclause \space#1}
+    \Configure{likesclause}{}{}
+       {\bgroup \IgnorePar\HCode{<h4 class="likesclauseHead">}}
+       {\HCode{</h4>}\NoIndent\egroup}
+  
+    \Configure{ssclause}{}{}
+       {\bgroup \IgnorePar\HCode{<h5 class="ssclauseHead">}
+        \ifnum \c:secnumdepth>\c@secnumdepth
+        \else \thessclause \space \fi}
+       {\HCode{</h5>}\NoIndent\egroup}
+    \Configure{likessclause}{}{}
+       {\bgroup \IgnorePar\HCode{<h5 class="likessclauseHead">}}
+       {\HCode{</h5>}\NoIndent\egroup}
+    \Configure{ssclauseTITLE+}{\thessclause \space#1}
+
+    \Configure{sssclause}{}{}
+      {\ShowPar\NoIndent\HCode{<span class="sssclauseHead">}\begingroup\bf
+        \thesssclause\space}
+      {\endgroup\HCode{</span>}\IgnorePar}
+    \Configure{likesssclause}{}{}
+      {\ShowPar\NoIndent\HCode{<span class="likesssclauseHead">}}
+      {\HCode{</span>}\IgnorePar}
+    \Configure{sssclauseTITLE+}{\thesssclause \space#1}
+
+    \Configure{ssssclause}{}{}
+      {\ShowPar\HCode{<span class="ssssclauseHead">}\begingroup\bf
+        \thessssclause\space}
+      {\endgroup\HCode{</span>}\IgnorePar}
+    \Configure{likessssclause}{}{}
+      {\ShowPar\HCode{<span class="likssssclauseHead">}\begingroup\bf}
+      {\endgroup\HCode{</span>}\IgnorePar}
+    \Configure{ssssclauseTITLE+}{\thessssclause \space#1}
+
+    \Configure{sssssclause}{}{}
+      {\ShowPar\HCode{<span class="sssssclauseHead">}\begingroup\bf
+        \thesssssclause\space}
+      {\endgroup\HCode{</span>}\IgnorePar}
+    \Configure{likesssssclause}{}{}
+      {\ShowPar\HCode{<span class="liksssssclauseHead">}\begingroup\bf}
+      {\endgroup\HCode{</span>}\IgnorePar}
+    \Configure{sssssclauseTITLE+}{\thesssssclause \space#1}
+
+    \Configure{fibicl@use}{}{}
+       {\IgnorePar\HCode{<h3 class="fibicl@useHead">}}
+       {\HCode{</h3>}\NoIndent \par}
+    \Configure{fibicl@useTITLE+}{#1}
+    \Configure{likefibicl@use}{}{}
+       {\IgnorePar\HCode{<h3 class="likefibicl@useHead">}}
+       {\HCode{</h3>}\NoIndent \par}
+
+    \Configure{normannex}{}{}
+      {\IgnorePar\HCode{<h3 class="normannexHead">}
+       \annexname\ \theannex\ (\normativename)\HCode{<BR\xml:empty>}}
+      {\HCode{</h3>}\NoIndent \par}
+    \Configure{normannexTITLE+}{\annexname\space \theannex\space (\normativename)\space #1}
+
+    \Configure{infannex}{}{}
+      {\IgnorePar\HCode{<h3 class="infannexHead">}
+       \annexname\ \theannex\ (\informativename)\HCode{<BR\xml:empty>}}
+      {\HCode{</h3>}\NoIndent \par}
+    \Configure{infannexTITLE+}{\annexname\space \theannex\space (\informativename)\space #1}
+
+    \Configure{repannex}{}{}
+      {\IgnorePar\HCode{<h3 class="repannexHead">}
+       \annexname\ \theannex\ \HCode{<BR\xml:empty>}}
+      {\HCode{</h3>}\NoIndent \par}
+    \Configure{repannexTITLE+}{\annexname\space \theannex\space #1}
+
+  \else
+%    \end{macrocode}
+%
+% HTML default option (4.0)
+%    \begin{macrocode}
+  %%%% Do html4
+    \Configure{titleclause}{}{}
+       {\IgnorePar \EndP\IgnorePar\HCode{<h1 class="titleHead">}}
+       {\HCode{</h1>}\NoIndent \par}
+    \Configure{titleclauseTITLE+}{#1}
+    \Configure{liketitleclause}{}{}
+       {\IgnorePar \EndP\IgnorePar\HCode{<h1 class="titleHead">}}
+       {\HCode{</h1>}\NoIndent \par}
+
+    \Configure{clause}{}{}
+       {\IgnorePar \EndP\IgnorePar\HCode{<h3 class="clauseHead">}
+        \ifnum \c:secnumdepth>\c@secnumdepth
+        \else \theclause \space \fi}
+       {\HCode{</h3>}\NoIndent \par}
+    \Configure{clauseTITLE+}{\theclause\space#1}
+    \Configure{likeclause}{}{}
+       {\IgnorePar \EndP\IgnorePar\HCode{<h3 class="likeclauseHead">}}
+       {\HCode{</h3>}\NoIndent \par}
+
+    \Configure{sclause}{}{}
+       {\EndP\bgroup \IgnorePar\HCode{<h4 class="sclauseHead">}
+        \ifnum \c:secnumdepth>\c@secnumdepth
+        \else \thesclause \space \fi}
+       {\HCode{</h4>}\NoIndent\egroup}
+    \Configure{sclauseTITLE+}{\thesclause \space#1}
+    \Configure{likesclause}{}{}
+       {\EndP\bgroup \IgnorePar\HCode{<h4 class="likesclauseHead">}}
+       {\HCode{</h4>}\NoIndent\egroup}
+
+    \Configure{ssclause}{}{}
+       {\EndP\bgroup \IgnorePar\HCode{<h5 class="ssclauseHead">}
+        \ifnum \c:secnumdepth>\c@secnumdepth
+        \else \thessclause \space \fi}
+       {\HCode{</h5>}\NoIndent\egroup}
+    \Configure{likessclause}{}{}
+       {\EndP\bgroup \IgnorePar\HCode{<h5 class="likessclauseHead">}}
+       {\HCode{</h5>}\NoIndent\egroup}
+    \Configure{ssclauseTITLE+}{\thessclause \space#1}
+
+    \Configure{sssclause}{}{}
+      {\ShowPar\NoIndent\HCode{<span class="sssclauseHead">}\begingroup\bf
+        \thesssclause\space}
+      {\endgroup\HCode{</span>}\IgnorePar}
+    \Configure{likesssclause}{}{}
+      {\ShowPar\NoIndent\HCode{<span class="likesssclauseHead">}}
+      {\HCode{</span>}\IgnorePar}
+    \Css{.sssclauseHead, .likesssclauseHead
+       { margin-top:2em; font-weight: bold;}}
+
+    \Configure{ssssclause}{}{}
+      {\ShowPar\HCode{<span class="ssssclauseHead">}\begingroup\bf
+        \thessssclause\space}
+      {\endgroup\HCode{</span>}\IgnorePar}
+    \Configure{likessssclause}{}{}
+      {\ShowPar\HCode{<span class="likssssclauseHead">}\begingroup\bf}
+      {\endgroup\HCode{</span>}\IgnorePar}
+    \Css{.ssssclauseHead, .likessssclauseHead
+       { font-weight: bold;}}
+
+    \Configure{sssssclause}{}{}
+      {\ShowPar\HCode{<span class="sssssclauseHead">}\begingroup\bf
+        \thesssssclause\space}
+      {\endgroup\HCode{</span>}\IgnorePar}
+    \Configure{likesssssclause}{}{}
+      {\ShowPar\HCode{<span class="liksssssclauseHead">}\begingroup\bf}
+      {\endgroup\HCode{</span>}\IgnorePar}
+    \Css{.sssssclauseHead, .likesssssclauseHead
+       { font-weight: bold;}}
+
+    \Configure{fibicl@use}{}{}
+       {\IgnorePar\EndP \IgnorePar\HCode{<h3 class="fibicl@useHead">}}
+       {\HCode{</h3>}\NoIndent \par}
+    \Configure{fibicl@useTITLE+}{#1}
+    \Configure{likefibicl@use}{}{}
+       {\IgnorePar\EndP \IgnorePar\HCode{<h3 class="likefibicl@useHead">}}
+       {\HCode{</h3>}\NoIndent \par}
+
+    \Configure{normannex}{}{}
+      {\IgnorePar \EndP\IgnorePar\HCode{<h3 class="normannexHead">}
+       \annexname\ \theannex\ (\normativename)\HCode{<BR\xml:empty>}}
+      {\HCode{</h3>}\NoIndent \par}
+    \Configure{normannexTITLE+}{\annexname\space \theannex\space (\normativename)\space #1}
+    \Css{h3.normannexHead{text-align: center}}
+
+    \Configure{infannex}{}{}
+      {\IgnorePar\EndP \IgnorePar\HCode{<h3 class="infannexHead">}
+       \annexname\ \theannex\ (\informativename)\HCode{<BR\xml:empty>}}
+      {\HCode{</h3>}\NoIndent \par}
+    \Configure{infannexTITLE+}{\annexname\space \theannex\space (\informativename)\space #1}
+    \Css{h3.infannexHead{text-align: center}}
+
+    \Configure{repannex}{}{}
+      {\IgnorePar\EndP \IgnorePar\HCode{<h3 class="repannexHead">}
+       \annexname\ \theannex\ \HCode{<BR\xml:empty>}}
+      {\HCode{</h3>}\NoIndent \par}
+    \Configure{repannexTITLE+}{\annexname\space \theannex\space #1}
+    \Css{h3.repannexHead{text-align: center}}
+
+  \fi
+\fi
+
+%    \end{macrocode}
+%
+% Reconfigure sectioning if not HTML.
+%    \begin{macrocode}
+\ifHtml \else
+  \ifx\bf\:UnDef
+     \def\bf{\normalfont\bfseries}
+  \fi
+  \Configure{titleclause}{\begingroup\bf}{\endgroup}
+  \Configure{liketitleclause}{\begingroup\bf}{\endgroup}
+  \Configure{clause}{}{}{\begingroup\bf\theclause\space}{\endgroup}
+  \Configure{likeclause}{}{}{\begingroup\bf}{\endgroup}
+  \Configure{sclause}{}{}{\begingroup\bf\thesclause\space}{\endgroup}
+  \Configure{likesclause}{}{}{\begingroup\bf}{\endgroup}
+  \Configure{ssclause}{}{}{\begingroup\bf\thessclause\space}{\endgroup}
+  \Configure{likessclause}{}{}{\begingroup\bf}{\endgroup}
+   \Configure{sssclause}{}{}
+      {\begingroup\bf\thesssclause\space}{\endgroup}
+   \Configure{likesssclause}{}{}{\begingroup\bf}{\endgroup}
+   \Configure{ssssclause}{}{}
+      {\begingroup\it\thessssclause\space}{\endgroup}
+   \Configure{likessssclause}{}{}
+      {\begingroup\it}{\endgroup}
+   \Configure{sssssclause}{}{}
+      {\begingroup\it\thesssssclause\space}{\endgroup}
+   \Configure{likesssssclause}{}{}
+      {\begingroup\it}{\endgroup}
+  \Configure{fibicl@use}{}{}{\begingroup\bf}{\endgroup}
+  \Configure{likefibicl@use}{}{}{\begingroup\bf}{\endgroup}
+  \Configure{normannex}{}{}
+    {\begingroup\bf \annexname~\theannex~(\normativename)\space}{\endgroup}
+  \Configure{infannex}{}{}
+    {\begingroup\bf \annexname~\theannex~(\informativename)\space}{\endgroup}
+  \Configure{repannex}{}{}
+    {\begingroup\bf v\annexname~\theannex\space}{\endgroup}
+\fi
+
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \subsubsection{Miscellaneous}
+%
+% \begin{macro}{\caption}
+% Configure the |\caption| command. 
+%    \begin{macrocode}
+\:CheckOption{0.0}
+\if:Option
+%    \end{macrocode}
+% The html0 option is in effect.
+%    \begin{macrocode}
+  %%%% Do html0
+  \Configure{caption}{}{}{}{}
+\else
+  \:CheckOption{3.2}
+  \if:Option
+%    \end{macrocode}
+% The html32 option is in effect.
+%    \begin{macrocode}
+  %%%% Do html32
+    \Configure{caption}{\HCode{\if:nopar  \else <br\xml:empty>\fi
+      <div align="center"><table\Hnewline>
+      <tr valign="bottom"><td nowrap><strong>}}
+      {} {\HCode{</strong></td><td \Hnewline}}
+      {\HCode{</td></tr></table></div>}}
+  \else
+%    \end{macrocode}
+% The html4 option 
+% (the default, unless specifically overridden by html0 or html32) 
+% is in effect.
+%    \begin{macrocode}
+  %%%% Do html4
+    \Configure{caption}{\HCode{\if:nopar  \else <br\xml:empty>\fi}
+      \:xhtml{\IgnorePar\EndP}\HCode{<div align="center"
+       class="caption"><table class="caption"\Hnewline><tr
+       valign="baseline"  class="caption"><td class="id">}}
+      {: } {\HCode{</td><td \Hnewline class="content">}}
+      {\HCode{</td></tr></table></div>}}
+    \Css{.caption td.id{font-weight: bold; white-space: nowrap; }}
+  \fi
+\fi
+
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{environment}{theindex}
+%  Copy of original \texht{} code. There are 9 hooks for possible 
+% configuration.
+%    \begin{macrocode}
+\:CheckOption{0.0}
+\if:Option
+  %%%% Do html0
+  \Configure{theindex}{}{}{}{}{}{}{}{}{}
+\else
+  \:CheckOption{3.2}
+  \if:Option
+  %%%% Do html32
+    \Configure{theindex}
+      {\HCode{<div>}} 
+      {\HCode{</div>}}
+      {}
+      {\HCode{<br\xml:empty>}\hfil\break}
+      {\ \ \ \ }
+      {\HCode{<br\xml:empty>}\hfil\break}
+      {\ \ \ \ \ \ \ \ }
+      {\HCode{<br\xml:empty>}\hfil\break}
+      {\hbox{\HCode{<p>}}}
+  \else
+  %%%% Do html4
+    \Configure{theindex}
+      {\HCode{<div class="theindex">}\let\end:theidx\empty} 
+      {\end:theidx\HCode{</div>}}
+      {}
+      {\HCode{<br\xml:empty>}\hfil\break}
+      {\ \ \ \ }
+      {\HCode{<br\xml:empty>}\hfil\break}
+      {\ \ \ \ \ \ \ \ }
+      {\HCode{<br\xml:empty>}\hfil\break}
+      {\hbox{\end:theidx\HCode{<p class="theindex">}}%
+       \def\end:theidx{\HCode{</p>}}}
+  \fi
+\fi
+
+%    \end{macrocode}
+% \end{environment}
+%
+% \begin{environment}{quotation}
+% \begin{environment}{quote}
+% \begin{environment}{anote}
+% \begin{environment}{note}
+% \begin{environment}{anexample}
+% \begin{environment}{example}
+% These are all quotation-like environments. |quotation| and |quote|
+% are original \texht, while the others are specifically for \Lpack{iso}.
+%    \begin{macrocode}
+\:CheckOption{0.0}
+\if:Option
+  %%%% Do html0
+  \ConfigureEnv{quotation}{}{}{}{}
+  \ConfigureEnv{quote}{}{}{}{}
+  \ConfigureEnv{anote}{}{}{}{}
+  \ConfigureEnv{note}{}{}{}{}
+  \ConfigureEnv{anexample}{}{}{}{}
+  \ConfigureEnv{example}{}{}{}{}
+\else
+  \:CheckOption{3.2}
+  \if:Option
+  %%%% Do html32
+    \ConfigureEnv{quotation}{}{}{\start:env{quotation}}{\end:env}
+    \ConfigureEnv{quote}{}{}{\start:env{quote}}{\end:env}
+    \ConfigureEnv{anote}{\HCode{<blockquote>}}{\HCode{</blockquote>}}%
+                        {\start:env{anote}}{\end:env}
+    \ConfigureEnv{note}{\HCode{<blockquote>}}{\HCode{</blockquote>}}%
+                       {\start:env{note}}{\end:env}
+    \ConfigureEnv{anexample}{\HCode{<blockquote>}}{\HCode{</blockquote>}}%
+                            {\start:env{anexample}}{\end:env}
+    \ConfigureEnv{example}{\HCode{<blockquote>}}{\HCode{</blockquote>}}%
+                          {\start:env{example}}{\end:env}
+  \else
+  %%%% Do html4
+      \ConfigureEnv{quotation}{}{}{\start:env{quotation}}{\end:env}
+      \ConfigureEnv{quote}{}{}{\start:env{quote}}{\end:env}
+        \Css{.quote  {margin-bottom:0.25em;
+                      margin-top:0.25em;
+                      margin-left:1em;}}
+      \ConfigureEnv{anote}{\HCode{<blockquote>}}{\HCode{</blockquote>}}%
+                          {\start:env{anote}}{\end:env}
+      \ConfigureEnv{note}{\HCode{<blockquote>}}{\HCode{</blockquote>}}%
+                         {\start:env{note}}{\end:env}
+      \ConfigureEnv{anexample}{\HCode{<blockquote>}}{\HCode{</blockquote>}}%
+                              {\start:env{anexample}}{\end:env}
+      \ConfigureEnv{example}{\HCode{<blockquote>}}{\HCode{</blockquote>}}%
+                            {\start:env{example}}{\end:env}
+  \fi
+\fi
+
+%    \end{macrocode}
+% \end{environment}
+% \end{environment}
+% \end{environment}
+% \end{environment}
+% \end{environment}
+% \end{environment}
+%
+%
+%
+% \begin{environment}{description}
+% \begin{environment}{nreferences}
+% \begin{environment}{references}
+% \begin{environment}{symbols}
+% These all all description-like environments. |description| is the
+% original \texht{} configuration, while the others are new for \Lpack{iso}.
+%    \begin{macrocode}
+\:CheckOption{0.0}
+\if:Option
+  %%%% Do html0
+  \ConfigureList{description}{}{}{}{}{}{}
+  \ConfigureList{nreferences}{}{}{}{}{}{}
+  \ConfigureList{references}{}{}{}{}{}{}
+  \ConfigureList{symbols}{}{}{}{}{}{}
+\else
+  \:CheckOption{3.2}
+  \if:Option
+  %%%% Do html32
+    \ConfigureList{description}%
+      {\HCode{<dl>}}
+      {\HCode{</dl>}\ShowPar}
+      {\HCode{<dt>}\bgroup \bf}
+      {\egroup\HCode{<dd\Hnewline>}}
+    \ConfigureList{nreferences}%
+      {\HCode{<dl>}}
+      {\HCode{</dl>}\ShowPar}
+      {\HCode{<dt>}\bgroup \bf}
+      {\egroup\HCode{<dd\Hnewline>}}
+    \ConfigureList{references}%
+      {\HCode{<dl>}}
+      {\HCode{</dl>}\ShowPar}
+      {\HCode{<dt>}\bgroup \bf}
+      {\egroup\HCode{<dd\Hnewline>}}
+    \ConfigureList{symbols}%
+      {\HCode{<dl>}}
+      {\HCode{</dl>}\ShowPar}
+      {\HCode{<dt>}\bgroup \bf}
+      {\egroup\HCode{<dd\Hnewline>}}
+  \else
+  %%%% Do html4
+      \ConfigureList{description}%
+        {\EndP\HCode{<dl class="description">}\let\end:itm=\empty}
+        {\EndP\HCode{</dd></dl>}\ShowPar}
+        {\end:itm\def\end:itm{\EndP\Tg</dd>}
+          \HCode{<dt class="description">}\bgroup \bf}
+        {\egroup\EndP\HCode{</dt><dd\Hnewline class="description">}}
+      \ConfigureList{nreferences}%
+        {\EndP\HCode{<dl class="nreferences">}\let\end:itm=\empty}
+        {\EndP\HCode{</dd></dl>}\ShowPar}
+        {\end:itm\def\end:itm{\EndP\Tg</dd>}
+          \HCode{<dt class="nreferences">}\bgroup \bf}
+        {\egroup\EndP\HCode{</dt><dd\Hnewline class="nreferences">}}
+      \ConfigureList{references}%
+        {\EndP\HCode{<dl class="references">}\let\end:itm=\empty}
+        {\EndP\HCode{</dd></dl>}\ShowPar}
+        {\end:itm\def\end:itm{\EndP\Tg</dd>}
+          \HCode{<dt class="references">}\bgroup \bf}
+        {\egroup\EndP\HCode{</dt><dd\Hnewline class="references">}}
+      \ConfigureList{symbols}%
+        {\EndP\HCode{<dl class="symbols">}\let\end:itm=\empty}
+        {\EndP\HCode{</dd></dl>}\ShowPar}
+        {\end:itm\def\end:itm{\EndP\Tg</dd>}
+          \HCode{<dt class="symbols">}\bgroup \bf}
+        {\egroup\EndP\HCode{</dt><dd\Hnewline class="symbols">}}
+  \fi
+\fi
+
+%    \end{macrocode}
+% \end{environment}
+% \end{environment}
+% \end{environment}
+% \end{environment}
+%
+%
+% \begin{macro}{\footnotetext}
+% \begin{macro}{\footnote}
+% These are configured to print the footnote text in the main body of the
+% document and for the number to link to the text. This is based on
+% suggestions by Eitan Gurari.\label{footpage}
+%    \begin{macrocode}
+\:CheckOption{0.0}
+\if:Option
+  \Configure{footnotetext}{}{}{}  % from latex section
+\else
+  \:CheckOption{3.2}
+  \if:Option
+ %%    \Configure{footnotetext}      % from latex section I THINK THIS IS WRONG
+ %%      {\HCode{<hr>}} {\HCode{<hr>}}
+ %%      {\HCode{<sup>}} {\HCode{</sup>}}
+    \Configure{footnotetext}
+      {\HCode{<sup>}\FNmark\HCode{</sup>}}
+      {(footnote\ifx \FNmark\empty \else\space\fi \FNmark : }
+      {)}
+    \Configure{footnote}
+      {\def\PRNT{)}\HCode{<sup>}%
+        \Link{\arabic{footnote}}{}\FNmark\EndLink
+        \HCode{</sup>}}
+      {\relax\space
+        \Link{}{\arabic{footnote}}\EndLink
+        (footnote \FNmark : }
+      {)}
+ 
+  \else
+ %%    \Configure{footnotetext}      % from latex section
+ %%      {\HCode{<br \xml:empty><span class="footnotetext"><sup>}\FNmark
+ %%       \HCode{</sup}}
+ %%      {}
+ %%      {\HCode{</span>}}
+ %%    \Css{span.footnotetext{  font-size:75\%; font-style:italic; } }
+ %%
+ %%    \Configure{footnote}          % from latex section
+ %%      {\HPageButton[fn\FNnum]{\HCode{<sup>}\FNmark\HCode{</sup>}}}
+ %%      {\BeginHPage[fn\FNnum]{ }}
+ %%      {\EndHPage{}}
+%    \end{macrocode}
+% This is Eitan's suggested code.
+%    \begin{macrocode}      
+    \Configure{footnotetext}
+      {\Tg<sup>\FNmark\Tg</sup>}
+      {(footnote\ifx \FNmark\empty \else\space\fi \FNmark : }
+      {)}
+
+    \Configure{footnote}
+      {\def\PRNT{)}\Tg<sup>%
+        \Link{\arabic{footnote}}{}\FNmark\EndLink
+        \Tg</sup>}
+      {\relax\space
+        \Link{}{\arabic{footnote}}\EndLink
+        (footnote \FNmark : }
+      {)}
+  \fi
+\fi
+
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% The following is a slight revision of the end of \Lpack{article.4ht}.
+%    \begin{macrocode}
+\def\tableofcontents{%
+   \ifx\contentsname\empty \else
+     \clause*{\contentsname}% 
+   \fi
+   \:tableofcontents}
+\let\dx:begin\begin
+\def\begin#1{\def\:temp{#1}\def\:tempa{theindex}\ifx \:temp\:tempa
+   \fibicl@use*{\indexname}\fi\dx:begin{#1}}
+
+%    \end{macrocode}
+%
+%  The end of the package
+%    \begin{macrocode}
+%</usc>
+%    \end{macrocode}
+%
+%
+% \subsection{Observations}
+%
+%     There are three main aspects to developing \texht{} code and 
+% configurations for a new class or package:
+% \begin{enumerate}
+% \item Finding out what hooks and configurations are already available.
+% \item Determining what additional hooks, and where they should be put, for
+%       the new package.
+% \item Configuring all the hooks.
+% \end{enumerate}
+%
+%       \texht{} has added many hooks to the \LaTeX{} kernel and classes
+% and packages
+% based on kernel code inherit those hooks. I found it advisable to run
+% a test document with new macros through \texht{} to see what
+% the result looked like. Depending on the particular macros it may be that 
+% the inherited hooks and configuration are sufficient and nothing needs
+% to be done.
+%
+%     For this particular class a lot of new hooks were required, but mainly
+% related to the new macros for sectioning. Configurations were obviously
+% required for these, together with a few for new kinds of environments
+% and lists.
+% 
+%    There are other packages that, in their turn, are designed to work
+% with the \Lpack{iso} 
+% class and it turned
+% out that they required few new hooks or changes to the existing 
+% configurations.
+%
+%    The rest of this section is concerned with item~2, namely 
+% adding hooks.
+%
+% \subsubsection{Colon is a letter}
+%
+%    Within the \texht{} `environment', that is the \file{*.4ht} 
+% files, the colon character (|:|) acts as a letter in a similar manner 
+% as the at character (|@|) does in class and package files; |@| is also
+% treated as a letter in the environment. Normally, something like
+% |\start:env{myenv}| would be treated as the command |\start| followed by
+% the text |:env{myenv}|. In the \texht{} environment it is the command
+% |\start:env| with the argument |{myenv}|. If any commands like this
+% occur in the preamble to a \LaTeX{} document, then they must be surrounded
+% by |\makecolonletter| and |\restorecolon|, which may be defined 
+% as:\footnote{Note that a package may redefine the category code for 
+% the colon, which is why the old value is saved.}
+% \begin{verbatim}
+% \chardef\oldcolon=\thecatcode`\:
+% \newcommand{\makecolonletter}{\catcode`\:11\relax}
+% \newcommand{\restorecolon}{\catcode`\:=\oldcolon\relax}
+% \end{verbatim}
+%
+%    The fact that command names can include a colon means that you have
+% to be careful in code that includes any colon characters. In \LaTeX,
+% code like like |{footnote \thefootnote:}| will print the footnote number 
+% immediately followed by a colon (e.g., |footnote 3:|). In the \texht{}
+% environment you are more likely to get an error message saying that
+% |\thefootnote:| is undefined! Instead, this needs to be coded as
+% |{footnote \thefootnote :}|, so that the |\thefootnote| command is ended 
+% by the space before the colon.
+%
+% \subsubsection{Adding code and hooks}
+%
+%    A \LaTeX{} idiom for adding code at the start and/or end of
+% an existing macro which takes no arguments called, say |\foo|, is:
+% \begin{verbatim}
+% \let\oldfoo\foo
+% \renewcommand{\foo}{new-start-code \oldfoo new-end-code}
+% \end{verbatim}
+% Similarly for commands |\baz| and |\biz| which take one and two arguments
+% respectively:
+% \begin{verbatim}
+% \let\oldbaz\baz
+% \renewcommand{\baz}[1]{new-start-code \oldbaz{#1} new-end-code}
+% \let\oldbiz\biz
+% \renewcommand{\biz}[2]{new-start-code \oldbiz{#1}{#2} new-end-code}
+% \end{verbatim}
+%
+% As these kinds of redefinitions are a common occurrence 
+% \file{tex4ht.sty} provides commands that encapsulate the above idiom.
+% These are |\pend:def\foo{new-start-code}| and
+% |\append:def\foo{new-end-code}| for when |\foo| is a macro without 
+% arguments, and there are similar commands for prepending and appending
+% to macros with up to three arguments. Repeating and extending 
+% the \LaTeX{} example,
+% in the \texht{} environment it could be coded as:
+% \begin{verbatim}
+% \pend:def\foo{new-start-code}    % \foo has no arguments
+% \append:def\foo{new-end-code}
+% \pend:defI\baz{new-start-code}   % \baz has one argument
+% \append:defI\baz{new-end-code}
+% \pend:defII\biz{new-start-code}  % \biz has two arguments
+% \append:defII\biz{new-end-code}
+% \pend:defIII\boz{new-start-code}  % \boz has three arguments
+% \append:defIII\boz{new-end-code}
+% \end{verbatim}
+%
+%     The definition of a hook in a macro called, say |\buz|, takes
+% the form |\X:buz| where X is a single letter. For example, adding a 
+% configurable hook
+% at the start and end of the macro |\baz| can be done like this: 
+% \begin{verbatim}
+% \pend:defI\baz{\a:baz}      % hook at start
+% \append:defI\baz{\b:baz}    % hook at end
+% \NewConfigure{baz}{2}       % declare \baz has two configurable hooks
+% \end{verbatim}
+% Note that by default a |\NewConfigure{baz}{2}| command expects the hook
+% corresponding to the first argument to be |\a:baz| and the hook
+% corresponding to the second argument to be |\b:baz|. Extending the
+% example, |\NewConfigure{foo}{9}| will expect the hook corresponding to
+% the ninth argument to be |\i:foo| (`i' is the ninth letter of the
+% alphabet). This default setting for |\NewConfigure| has been created via: \\
+% |\Configure{NewConfigure}{a:}{b:}{c:}{d:}{e:}{f:}{g:}{h:}{i:}| \\
+% in \file{tex4ht.sty}.
+%
+%
+% As an example for hook insertion, assume a macro defined like: \\
+% |\newcommand{\mac}[1]{START #1 END}| \\
+% in which there are four potential places for hooks (call them h1 to h4): \\
+% |{h1 START h2 #1 h3 END h4}|. Hooks h1 and h4 can be added via |\pend:defI|
+% and |\append:defI|, but these are not sufficient by themselves. Other
+% methods are required for inserting all four hooks. Two of these are:
+% \begin{itemize}
+% \item Redefine the whole macro from scratch:
+% \begin{verbatim}
+% \renewcommand{\mac}[1]{\a:mac START \c:mac #1 \d:mac END \b:mac}
+% \NewConfigure{mac}{4}
+% \end{verbatim}
+% 
+% \item Reuse parts of the original macro 
+% (similar to the \LaTeX{} ap/pre-pending idiom):
+% \begin{verbatim}
+% \let\oldmac\mac
+% \renewcommand{\mac}[1]{\a:mac\oldmac{\c:mac #1 \d:mac}\b:mac}
+% \NewConfigure{mac}{4}
+% \end{verbatim}
+% \end{itemize}
+% Either of these examples can be configured via:
+% \begin{verbatim}
+% \Configure{mac}%
+%   {first arg for a hook}    % \a:mac at the start of the command
+%   {second arg for a hook}   % \b:mac at the end of the command
+%   {third arg for a hook}    % \c:mac immediately before the argument
+%   {fourth arg for a hook}   % \d:mac immediately after the argument
+% \end{verbatim}
+% Note that the hooks do not have to be placed in the |\mac| command in
+% alphabetical order.
+%
+%
+%
+% \bibliographystyle{alpha}
+%
+% \begin{thebibliography}{GMS94}
+%
+% \bibitem[GMS94]{GOOSSENS94}
+% Michel Goossens, Frank Mittelbach, and Alexander Samarin.
+% \newblock \textit{The LaTeX Companion}.
+% \newblock Addison-Wesley Publishing Company, 1994.
+%
+% \bibitem[GR99]{GOOSSENS99}
+% Michel Goossens and Sebastian Rahtz 
+% (with Eitan Gurari, Ross Moore, and Robert Sutor).
+% \newblock \textit{The LaTeX Web Companion --- Integrating TeX, HTML, and XML}.
+% \newblock Addison-Wesley Publishing Company, 1999.
+%
+% \bibitem[Wil96]{PRW96i}
+% Peter~R. Wilson.
+% \newblock \textit{{LaTeX for standards: The LaTeX package files user manual}}.
+% \newblock NIST Report NISTIR, June 1996.
+%
+% \end{thebibliography}
+%
+%
+% \Finale
+% \PrintIndex
+%
+\endinput
+
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+
+
