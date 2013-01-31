@@ -1,0 +1,7 @@
+\def\definitiondelimiter{:}
+\newenvironment{definitions}[1]
+{\begin{list}{}%
+    {\renewcommand\makelabel[1]{\textsf{##1}\definitiondelimiter\hfil}%
+    \settowidth\labelwidth{\makelabel{#1}}%
+    \setlength\leftmargin{\labelwidth+\labelsep}}}%
+{\end{list}}

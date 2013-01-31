@@ -1,0 +1,6 @@
+% horizontal rules - use rather addvspace
+\newcommand\tblong{\vspace{\baselineskip} \hrule \addvspace{\baselineskip}}
+\let\bottomline\tblong
+\let\topline\tblong
+\newcommand\tbshort{\hspace{1.5in} \hrulefill \hspace*{1.7in}}
+\newcommand\pagelines{\newpage\hrule\vspace{0.2em}\hrule\vspace{\baselineskip}}

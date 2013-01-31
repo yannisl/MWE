@@ -1,0 +1,16 @@
+\newcommand\coverpage[3]{%
+  \parindent0pt
+  \vspace*{3\baselineskip}
+  \hskip-1cm\includegraphics[width=1.2\textwidth]{#1}\par
+ % \putimage[width=17cm,offsetx=0cm, offsety=3\baselineskip, border=0pt,padding=0pt]{cockfight}\par
+  \vspace*{3\baselineskip}
+   \hbox to \hsize{\Huge \hfill\hfill{\MakeUppercase{\bf \textsf{\LaTeXe\ Images}}}}
+   \vspace*{0.3cm}
+   \hbox to \hsize{\Huge \hfill\hfill{\MakeUppercase{\bf \textsf{The Aspiring Hacker's Guide}}}}
+  \vspace*{3\baselineskip}
+   \hbox to \hsize{\huge \hfill\hfill\textsf{\hbox{#2}}}
+   \vfill\vfill
+ % publisher
+   \hbox to \hsize{\huge \hfill\hfill\textsf{\hbox{#3}}}
+  \clearpage
+}

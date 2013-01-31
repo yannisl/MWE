@@ -1,0 +1,358 @@
+%% Local Packages
+%% All local packages load dependencies
+%%
+%%
+
+%\RequirePackage{colordef}
+\RequirePackage[dvipsnames,x11names,svgnames,table]{xcolor}
+
+
+
+
+\RequirePackage{makeidx}
+\makeindex
+
+
+\RequirePackage{calc}
+%\RequirePackage{multido}
+\RequirePackage{lscape}
+\RequirePackage{graphicx}
+\RequirePackage{eso-pic}
+\definecolor{DOrange}{rgb}{1,.4,.2}
+\RequirePackage{amsmath, amssymb} 
+\RequirePackage{tabularx,ragged2e}
+\RequirePackage{booktabs}
+\RequirePackage[bottom,stable,ragged]{footmisc}
+\RequirePackage{chngcntr}
+\RequirePackage{nameref}
+\RequirePackage{varioref} 
+%\RequirePackage{subfig} 
+\RequirePackage{setspace}
+\RequirePackage{paralist}
+%
+
+
+
+
+
+
+
+
+%% tables
+\RequirePackage{booktabs}
+\RequirePackage{longtable}
+\RequirePackage{tabularx}
+\RequirePackage{dcolumn}
+%% Set some local commands and colors
+\RequirePackage{colortbl}
+   \definecolor{green}{rgb}{0.1,0.1,0.1}
+   \newcommand{\done}{\cellcolor[gray]{0.9}done}  %{0.9}
+
+
+%% Pargarphs and text styles
+\RequirePackage{shapepar}
+\RequirePackage{fancyvrb}
+\RequirePackage{verbatim}
+\RequirePackage{array}
+%% We use fancyvrb to make typing easier
+\usepackage{fancyvrb}
+
+
+%% Maths formatting
+\usepackage{amsfonts}
+\usepackage{amsmath}[2000/07/18] %% Displayed equations
+\usepackage{amssymb}[2002/01/22] %% and additional symbols
+\usepackage{nicefrac}
+%\usepackage{xfrac}
+
+
+
+\usepackage{alltt}[1997/06/16]   %% boilerplate, credits, license
+\usepackage{epigraph}
+% use courier acrobat fonts rather than the type writer font
+%\usepackage{courier}
+\usepackage{shapepar}
+\usepackage{lettrine}
+\usepackage{graphicx}
+
+%% Use some archaic fonts for fun
+\usepackage{cypriot}
+\usepackage{hieroglf}
+
+%% for letterspacing
+\usepackage{soul}
+
+%% Bibliography
+%\usepackage{natbib}
+
+\usepackage{nomencl}  %% For nomenclature
+
+
+%% Programming packages
+%% 
+%
+\RequirePackage{ifthen}
+%\RequirePackage{calc}
+%\RequirePackage{etoolbox}
+\RequirePackage{cool} % loads coolstr and\textbf{ coolist} also
+%% We use coolstr to manipulate some strings in demos
+%%
+\usepackage{coolstr}
+\usepackage{datatool} 	% data tools db etc
+
+\usepackage{tokenizer}	% tokenizes
+\usepackage{PSTricks}
+%\usepackage{multido}
+\usepackage{arrayjobx}	% supercedes arrayjob
+\RequirePackage{fp}
+\RequirePackage{xstring}
+\RequirePackage{xfor}
+
+%% Floats
+\RequirePackage{float}
+
+
+
+%% Font packages
+%% Fonts
+
+\usepackage{rotunda}
+\usepackage{huncial}
+\usepackage{uncial}
+\usepackage{runic}
+\usepackage{pifont}
+%% Ancient languages
+\usepackage{phoenician}
+
+%% Syllabaries
+\newcommand{\UC}{A B C D E F G H I J K L M N O P Q R S T U V W X Y Z}
+\newcommand{\LC}{a b c d e f g h i j k l m n o p q r s t u v w x y z}
+\newcommand{\SY}{+ ? / |}
+\newcommand{\ST}{\Hms\ \Hibp\ \Hibw\ \Hibs\ \Hibl\ \Hsv\ 
+                 \Hman\ \Htongue\ \Hscribe\ \Hplural\ \Hdual}
+\newcommand{\SN}{\Hone\ \Hten\ \Hhundred\ \Hthousand\ \HXthousand
+                 \HCthousand\ \Hmillion}
+\newcommand{\Caesar}{\pmvglyph{\Hk:\Hy:\HS:\Hl:\HS}}
+
+
+
+
+
+\usepackage[OT1, PL]{ogonek}  %for okonek diacritics - Lithuanian and Polish mostly
+
+\usepackage{wasysym}
+%% currency symbols
+%%
+
+\usepackage{eurosym}
+\usepackage{marvosym}
+%\usepackage{libris} %use swash caption
+%\usepackage{verse}
+\usepackage{alltt}   %poetry example
+\usepackage[skaknew]{chessboard,skak}
+\usepackage{latexsym}
+\usepackage[LSBC1,LSBC2,LSBC4,TS1,T1]{fontenc}
+%\usepackage{textcomp, mathcomp}
+\font\logo=logo10
+\font\sknf=SkakNew-Figurine
+\font\sknfbx=SkakNew-FigurineBold
+\font\skndia=SkakNew-DiagramT
+\def\Metafont{\mbox{\logo METAFONT}}
+
+
+
+\usepackage{scalefnt}  % allows scaling of fonts for examples
+%\usepackage{lmodern}  %latin modern fonts
+
+%\usepackage{xdoc2}  %pick-up some macros
+
+%% ---------------  FONT PACKAGES -----------------------------
+
+
+
+%% hanging left and right boxes
+\newcommand{\hangleft}[1]{\makebox[0pt][r]{#1}}
+
+
+\newcommand{\sourceatright}[2]{{%
+  \unskip\nobreak\hfil\penalty100
+  \hskip#1\hbox{}\nobreak\hfil{#2}
+  \parfillskip 15pt \par}}
+
+\usepackage{epigraph}
+
+%% Set up the epigraph to be a bit wider
+\setlength{\epigraphwidth}{8cm} 
+\setlength{\epigraphrule}{0pt}
+\newcommand{\theepigraph}[2]{\epigraphhead[30]{\epigraph{#1}{\textit{#2}}}}
+
+%% Figures 
+\RequirePackage{subfig}
+\RequirePackage{wrapfig}
+\RequirePackage{sparklines}
+
+\def\textfraction{.1}
+%% Used for testing figures
+\newcommand{\figbox}[1]{%
+ \includegraphics[width=4cm]{./graphics/pic37}
+}
+
+%% TikZ and frienslibraries
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.3}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{decorations.markings}
+\usepackage{pgfplotstable}
+
+%% Some commonly used commands
+%% These are based on tabz
+%%
+
+
+\newcolumntype{f}{>{$}l<{$}}
+\newcolumntype{n}{l}
+\newcolumntype{N}{>{\scriptsize}l}
+\newcolumntype{v}[1]{>{\raggedright\hspace{0pt}}p{#1}}
+\newcolumntype{V}[1]{>{\scriptsize\raggedright\hspace{0pt}}p{#1}}
+%
+
+
+
+
+
+\makeatletter
+% array.sty, dcolumn.sty
+\newcolumntype{B}[1]{>{\boldmath\DC@{.}{,}{#1}}l<{\DC@end}}
+\newcolumntype{d}[1]{>{\DC@{.}{,}{#1}}l<{\DC@end}}
+\newcolumntype{i}[1]{>{\DC@{.}{,}{#1}\mathnormal\bgroup}l<{\egroup\DC@end}}
+\newcolumntype{s}[1]{>{\DC@{.}{,}{#1}\mathsf\bgroup}l<{\egroup\DC@end}}
+%
+
+% array.sty, rotating.sty
+\newcolumntype{R}[1]{%
+  >{\begin{turn}{70}\begin{minipage}{#1}\scriptsize\raggedright\hspace{0pt}}l%
+  <{\end{minipage}\end{turn}}%
+}
+\makeatother
+
+
+%% Setting up the bibliography styles
+%
+\bibliographystyle{plainnat} % note the change here plainnat
+\bibpunct{(}{)}{;}{a}{,}{,}
+
+
+
+
+
+
+
+
+%% Background modes
+\RequirePackage[some]{background}
+
+% Use SetBgContents to set it to a particular word
+%\SetBgContents{Draft}
+%\BgThispage
+% Front matter
+
+%\frontmatter
+
+% r.1 blank page
+%\blankpage
+
+
+\usepackage{specon-definitions}
+%\usepackage{showexpl} 
+
+
+
+
+
+\contentsmargin{0pt}
+\titlecontents{section}[1.8pc]
+  {\addvspace{3pt}\bfseries}
+  {\contentslabel[\thecontentslabel.]{1.8pc}}
+  {}
+  {\quad\thecontentspage}
+
+\titlecontents*{subsection}[1.8pc]
+  {\small}
+  {\thecontentslabel. }
+  {}
+  {, \thecontentspage}
+  [.---][.]
+
+
+
+\RequirePackage{filecontents}
+%\singlespace 
+\RequirePackage{showexpl}
+\makeatletter
+\renewcommand*\SX@Info{}%
+\makeatother
+\definecolor{hellgelb}{rgb}{1,1,0.85}
+\definecolor{colKeys}{rgb}{0,0,1}
+\definecolor{colIdentifier}{rgb}{0,0,0}
+\definecolor{colComments}{rgb}{1,0,0}
+\definecolor{colString}{rgb}{0,0.5,0}
+\providecommand\ON{%
+  \gdef\lst@alloverstyle##1{%
+    \fboxrule=0pt
+    \fboxsep=0pt
+    \fcolorbox{Black!15}{Black!15}{\bfseries\strut##1}%
+}}
+
+\makeatletter
+\providecommand\OFF{%
+  \xdef\lst@alloverstyle##1{##1}%
+}
+\makeatother
+\lstset{%
+    language=PSTricks,%
+    float=hbp,%
+    basicstyle=\ttfamily\small, %
+    identifierstyle=\color{colIdentifier}, %
+    keywordstyle=\color{colKeys}, %
+    stringstyle=\color{colString}, %
+    commentstyle=\color{colComments}, %
+    columns=flexible, %
+    tabsize=4, %
+    frame=single, %
+    extendedchars=true, %
+    showspaces=false, %
+    showstringspaces=false, %
+    numbers=left, 
+    numbersep=0.8em,
+    numberstyle=\tiny, %
+    breaklines=true, %
+    breakautoindent=true, 
+    captionpos=b,
+    xleftmargin=1em
+}
+\lstset{explpreset={pos=t,wide=false,rframe={},preset=\centering}}
+\lstdefinestyle{syntax}{backgroundcolor=\color{blue!20},numbers=none,xleftmargin=0pt,xrightmargin=0pt,
+    frame=single}
+\lstdefinestyle{code}{backgroundcolor=\color{red!20},numbers=left,xleftmargin=0pt,xrightmargin=0pt,
+    frame=single}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

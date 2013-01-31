@@ -1,0 +1,44 @@
+
+\makeatletter
+%Date: Thu, 1 Feb 90 15:23:02 EST
+%From: Bernie Cosell <cosell@WILMA.BBN.COM>
+%Subject: Relative font sizing in LaTeX
+%Keywords: LaTeX, font sizing
+%
+% Modified 1-May-1990 Don Hosek to allow it to work properly when input
+% by another .sty file.
+%
+%One continual annoyance to me is that LaTeX does absolute font sizing,
+%and so if you have some \newcommand that uses the sizing commands to
+%achieve some graphic effect, you'll discover that your chapter heads
+%and footnotes and such are pretty screwed up [in a recent case, I
+%wanted a fake small-caps-san-serif font, and so I used {\small\sf
+%NOWISTHETIME}, which did just what I wanted in the running text, but
+%was an unmitigated disaster in the chapter heads].  I think that the
+%following is a significant improvement: \smaller and \larger changes
+%the point size *relatively* by one slot, and so I made my definition:
+%{\smaller\sf NOWISTHETIME}, and it all magically works.  The
+%definitions are:
+
+\def\smaller{\ifx\@currsize\Huge\huge \else
+              \ifx\@currsize\huge\LARGE \else
+               \ifx\@currsize\LARGE\Large \else
+                \ifx\@currsize\Large\large \else
+                 \ifx\@currsize\large\normalsize \else
+                  \ifx\@currsize\normalsize\small \else
+                   \ifx\@currsize\small\footnotesize \else
+                    \ifx\@currsize\footnotesize\scriptsize \else
+                       \protect\tiny
+                    \fi\fi\fi\fi\fi\fi\fi\fi}
+
+\def\larger{\ifx\@currsize\tiny\scriptsize \else
+              \ifx\@currsize\scriptsize\footnotesize \else
+               \ifx\@currsize\footnotesize\small \else
+                \ifx\@currsize\small\normalsize \else
+                 \ifx\@currsize\normalsize\large \else
+                  \ifx\@currsize\large\Large \else
+                   \ifx\@currsize\Large\LARGE \else
+                    \ifx\@currsize\LARGE\huge \else
+                       \Huge
+                    \fi\fi\fi\fi\fi\fi\fi\fi}
+\makeatother

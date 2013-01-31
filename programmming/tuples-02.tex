@@ -1,0 +1,271 @@
+\documentclass{tufte-book}
+\usepackage{xcolor,graphicx,rotating}
+\usepackage{setlistings,textsamples}
+\def\printf#1{\texttt{#1}}
+\begin{document}
+\chapter{Sequences: Strings, Tuples and
+Lists}
+In mathematics, a sequence is an ordered list of objects (or events). Like a set, it contains members (also called elements or terms), and the number of terms (possibly infinite) is called the length of the sequence. Unlike a set, order matters, and exactly the same elements can appear multiple times at different positions in the sequence. A sequence is a discrete function.
+\begin{marginfigure}
+\includegraphics[width=\textwidth]{./graphics/linked-list}
+\caption{A singly-linked list structure, implementing a list with 3 integer elements.}
+\end{marginfigure}
+
+For example, (C, R, Y) is a sequence of letters that differs from (Y, C, R), as the ordering matters. Sequences can be finite, as in this example, or infinite, such as the sequence of all even positive integers (2, 4, 6,...). Finite sequences are sometimes known as strings or words and infinite sequences as streams. The empty sequence ( ) is included in most notions of sequence, but may be excluded depending on the context.
+
+In computer science, similarly to mathematics a sequence is a container of objects which are kept in a \textit{specific} order. 
+
+We can identify the individual objects
+in a sequence by their position or index. In some languages such as Python, positions are numbered from zero; the element at index zero is the first element.
+
+We call these containers because they are a single object which contains (or collects) any number of other
+objects. The ``any number'' clause means that they can contain zero other objects, meaning that an empty
+container is just as valid as a container with one or thousands of objects.
+
+\textbf{Important}: Other Languages
+
+In some programming languages, they use words like ``vector'' or ``array'' to refer to sequential containers.
+For example, in C or Java, the primitive array has a statically allocated number of positions. In Java, a
+reference outside that specific number of positions raises an exception. In C, however, a reference outside
+the defined positions of an array is an error that may never be detected. Really.
+
+
+There are four commonly-used subspecies of sequence containers
+
+\begin{enumerate}
+\item[String], called str. A container of single-byte ASCII characters.
+
+\item[Unicode String], unicode. A container of multi-byte Unicode (or Universal Character Set) characters.
+
+\item[tuple] A container of anything with a fixed number of elements.
+
+\item[list] A contains of anything with a dynamic number of elements.
+\end{enumerate}
+
+\section{Tuples}
+
+Many computer languages define tuples. A tuple is is a container for a fixed sequence of data objects. The name comes from the Latin suffix for
+multiples: double, triple, quadruple, quintuple.
+
+sian
+coordinates (x, y ). An ordered pair can be generalized as a 2-tuple.
+An essential ingredient here is that a tuple has a fixed and known number of elements. A 3-dimensional point
+is a 3-tuple. An CMYK color code is a 4-tuple. The size of the tuple can’t change without fundamentally
+redefining the problem we’re solving.
+
+A tuple is an \textit{immutable} sequence. Since it is a sequence, all of the common operations
+to sequences apply. Since it is immutable, it cannot be changed. Two common questions that arise are how
+to expand a tuple and how to remove objects from a tuple.
+
+We start by defining a command that can create tuples. The command will create a macro that holds the tuple and will expand to its definition.
+
+\emphasis{deftuple,xy,personal,singleton}
+\begin{teX}
+\def\deftuple #1=(#2);{%
+  \expandafter\def\csname #1\endcsname{(#2)}
+}
+
+\deftuple xy=(1,2,3,4,5);(*@\sidenote{The syntax oulined in this section follows closely to that of Python. The semicolon, is not essential and one could delimit the macro using a space.}@*)
+\end{teX}
+\def\deftuple #1=(#2);{%
+  \expandafter\def\csname #1\endcsname{(#2)}
+}
+
+
+
+A tuple literal is created by surrounding objects with `()' and separating the items with commas (`,'). An empty tuple is simple `()'.
+
+\begin{teX}
+\deftuple xy=(1,2,3,4,5);
+\xy
+\end{teX}
+\deftuple xy=(1,2,3,4,5);
+produces:
+
+\noindent\printf{\textcolor{purple}{>{}>{}>} \xy}
+
+
+\begin{teX}
+\deftuple personal=(Wei, 53678956, 23);
+\deftuple singleton=("hello");
+\personal
+\singleton
+\end{teX}
+\deftuple personal=(Wei, 53678956, 23);
+\deftuple singleton=("hello");
+\printf{> \personal}
+\noindent\printf{> \singleton}
+
+
+
+|\xy| is a  2-tuple with integers.
+|\personal| is a 3-tuple with a string and two integers and 
+|\singleton| is a 1-tuple with a string. 
+
+The trailing `,' assures that his is a tuple, not an expression.
+The elements of a tuple do not have to be the same type. A tuple can be a mixture of any Python data
+types, including other tuples.
+
+
+\section{Tuple Operations}
+
+There are three standard sequence operations (`+', `*', `[]') that can be performed with tuples as well as other sequences.
+The `+` operator creates a new tuple as the concatenation of the arguments. Here's an example\sidenote{All operations on tuples would be executed via the \texttt{\textbackslash Tuple} command.}, where firstly we define a command |\string\Tuple| that we are going to use to operate on tuples.
+
+\emphasis{+,people,[,]}
+\begin{teXXX}
+(15,23,45)+(Amery, John, Other)
+2*(1,2,3)
+people[2]
+\end{teXXX}
+
+\begin{teX}
+\def\Tuple#1;{%
+  \def\checkfirst##1##2;{
+     \if##1(  adding tuple 
+     \def\addtuple (####1)+(####2);{(####1,####2)}
+     \addtuple#1;
+     \else repeat tuple
+     \ifnum##1>0 the number is ##1\fi
+   \fi
+  }
+  \checkfirst#1;
+}
+\Tuple (15,23,45)+(Amery, John, Other);
+\end{teX}
+\def\Tuple#1;{%
+  \def\checkfirst##1##2;{%
+     \if##1(  adding tuple 
+     \def\addtuple (####1)+(####2);{(####1,####2)
+       \gdef\newtuple{####1,####2}    
+     }
+     \addtuple#1;
+      \else repeat tuple
+     \ifnum##1>0 the number is ##1\fi
+   \fi
+  }
+  \checkfirst#1;
+}
+
+\Tuple (15,23,45)+(Amery, John, Other);
+
+
+\newtuple
+
+
+Since tuples can have a number of operators applied to them the |\string\Tuple| command has to be able to parse the input and detect the operation. We need to distinguish the following cases:
+
+\begin{enumerate}
+\item if an add operation should take place
+\item if a * operation is to take place
+\item if a [] operation is to take place.
+\end{enumerate}
+
+
+Obviously we need to generalize our routine, starting from the definition of a tuple. We shouldn't have used the word Tuple but rather given it a name.
+
+
+
+we parse the input and detect the first letter, based on this we can then call the appropriate function.
+
+
+The ‘[]’ operator selects an item or a slice from the tuple.
+There are two forms: the single-item form and the slice form.
+
+\begin{enumerate}
+\item The single item format is tuple[index]. Items are numbered from 0 to `len(tuple)'. Items are also
+numbered in reverse from `len(tuple)' to -1.
+
+\item The slice format is tuple[start:end]. Items from start to end -1 are chosen to create a new tuple
+as a slice of the original tuple; there will be end - start items in the resulting tuple.
+\end{enumerate}
+
+
+If start is omitted it is the beginning of the tuple (position 0).
+If end is omitted it is the end of the tuple (position -1).
+Yes, you can omit both (‘someTuple[:]’) to make a copy of a tuple. This is a shallow copy: the
+original objects are now members of two distinct tuples.
+
+\section{Tuple functions}
+
+tuple,len,max,min,sum,any,all,enumerate(), sorted, reversed, divmod, for let
+
+
+\section{Summary}
+
+One need not forget that \tex is a typographical engine and not a programming engine. Our excursion into macros that can define datastructures shows the possibilities of developing more complex data structures. TeX's style of defining commands is more akin to assembly language, if one needs to carry operations.
+
+\begin{teXXX}
+\def\deftuple#1{}
+\def\showtuple#1{}
+\def\gettupleelement#1#2{}
+\def\addtuple#1#2{}
+\end{teXXX}
+
+
+\begin{teXXX}
+\def\deftuple#1#2{%
+  \expandafter\def\csname#1\endcsname{#2}
+}
+\deftuple{test}{1,2,3,4}
+\test
+\end{teXXX}
+
+From a TeX point if view there is no real advantage of going into the trouble of defining tuples as you can define macro structures on the fly. The only advantage is that you can define the operations and have them handy for later on.
+
+\def\myfirstauthor#1#2#3{\createcontact#1#2#3}
+
+firstauthor = (Alice,Munich,Germany)
+secondauthor = (Bob,London,United Kingdom)
+red = (255,0,0)
+
+\makeatletter
+
+\def\tuple#1=(#2 #3 #4){%
+    \expandafter\def\csname#1@1\endcsname{#2}
+    \expandafter\def\csname#1@2\endcsname{#3}
+    \expandafter\def\csname#1@3\endcsname{#4}
+}
+
+\def\xtuple#1#2{%
+    \csname#1@#2\endcsname
+}
+
+\tuple firstauthor=(Alice Munich Germany)
+\tuple secondauthor=(Bob London United Kingdom)
+
+\xtuple{firstauthor}{1}
+
+\xtuple{secondauthor}{3}
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

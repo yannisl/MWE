@@ -1,0 +1,38 @@
+%%
+%   Provides a small package with a number of
+%   commands fpr mathematical typesetting
+%   Q. E. D. etc.
+\newcommand\QEDit{\hspace{6pt}\textit{Q.~E.~D.}\quad}
+\newcommand\QEFit{\hspace{6pt}\textit{Q.~E.~F.}\quad}
+\newcommand\QEIit{\hspace{6pt}\textit{Q.~E.~I.}\quad}
+\newcommand\QEDup{\hspace{6pt}Q.~E.~D.\quad}
+\newcommand\QEFup{\hspace{6pt}Q.~E.~F.\quad}
+\newcommand\QEIup{\hspace{6pt}Q.~E.~I.\quad}
+\newcommand\QEOup{\hspace{6pt}Q.~E.~O.\quad}
+
+%% Theorem styles
+
+%% Theorems formatting 
+\newtheoremstyle{itheorem}{}{}{\itshape}{}{\bfseries}{.}{ }{#1\if!#3!\else\ \fi\thmnote{#3}}
+\newtheoremstyle{icorollary}{}{}{}{}{\itshape}{.---}{0pt}{#1}
+\newtheoremstyle{numcorollary}{}{}{}{}{\itshape}{.}{ }{#1\if!#3!\else\ \fi\thmnote{#3}}
+\newtheoremstyle{idefinition}{}{}{}{}{\bfseries}{.---}{0pt}{}
+\newtheoremstyle{ilemma}{}{}{\itshape}{}{\bfseries}{.---}{0pt}{#1\if!#3!\else\ \fi\thmnote{#3}}
+\newtheoremstyle{iother}{}{}{\itshape}{}{\bfseries}{.---}{0pt}{\thmnote{#3}}
+\theoremstyle{ilemma}
+\newtheorem*{lemma}{Lemma}
+\theoremstyle{itheorem}
+\newtheorem{theorem}{Theorem}
+\theoremstyle{iother}
+\newtheorem{other}{}
+\theoremstyle{icorollary}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{numcorollary}
+\newtheorem{ncorollary}{Corollary}
+\theoremstyle{idefinition}
+\newtheorem*{definition}{Definition}
+\newtheorem*{definitions}{Definitions}
+\newtheorem*{defnorder}{Definition of Order}
+
+%% Proof environment
+\renewcommand{\proofname}{\upshape\bfseries Proof}

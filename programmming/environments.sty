@@ -1,0 +1,170 @@
+\def\definitiondelimiter{:}
+\newenvironment{definitions}[1]
+{\begin{list}{}%
+    {\renewcommand\makelabel[1]{\textsf{##1}\definitiondelimiter\hfil}%
+    \settowidth\labelwidth{\makelabel{#1}}%
+    \setlength\leftmargin{\labelwidth+\labelsep}}}%
+{\end{list}}
+
+% Aligned labels in a description environment
+\newenvironment{Description}[1]{%
+\begin{list}{nothing}{\setlength{\leftmargin}{#1}
+\setlength{\labelwidth}{\leftmargin}\setlength{\labelsep}{1mm}}}
+{\end{list}}
+
+
+\makeatletter
+% Example environments
+% (do not use in them the /?; characters, that we will be used as escape characters!)
+
+% For highlighting some verbatim sequences (array names, macro names and comments)
+\def\HLReverse#1{{%
+\setlength{\fboxsep}{1pt}%
+\colorbox{black}{\textcolor{white}{\textbf{#1}}}}}
+\def\HLMacro#1{\BS{}def\HLMacro@i#1\@nil}
+\def\HLMacro@i#1def#2\@nil{{%
+\setlength{\fboxsep}{1pt}%
+\colorbox{black}{\textcolor{white}{\textbf{#2}}}}}
+\def\HLComment#1{\textit{#1}}
+
+\def\Example{\FV@Environment{}{Example}}
+\def\endExample{%
+\end{VerbatimOut}
+\Below@Example{\input{\jobname.tmp}}
+\endgroup}
+
+\def\CenterExample{\FV@Environment{}{Example}}
+\def\endCenterExample{%
+\end{VerbatimOut}%
+\begin{center}
+\Below@Example{\input{\jobname.tmp}}
+\end{center}
+\endgroup}
+
+\def\SideBySideExample{\FV@Environment{}{Example}}
+\def\endSideBySideExample{%
+\end{VerbatimOut}%
+\SideBySide@Example{\input{\jobname.tmp}}
+\endgroup}
+
+\def\FVB@Example{%
+\begingroup
+\FV@UseKeyValues
+\parindent=0pt
+\multiply\topsep by 2
+\VerbatimEnvironment
+\begin{VerbatimOut}[codes={\catcode`\Z=12}]{\jobname.tmp}}
+
+\def\Below@Example#1{%
+\VerbatimInput[gobble=0,commentchar=Z,commandchars=/?;,numbersep=3pt,
+               frame=single,numbers=left]%
+              {\jobname.tmp}
+\catcode`\Z=9\relax%
+% We suppress the effect of the highlighting macros
+\catcode`/=0\relax%
+\catcode`?=1\relax%
+\catcode`;=2\relax%
+\def\HLReverse##1{##1}%
+\def\HLMacro##1{##1}%
+\def\HLComment##1{##1}%
+#1\par}
+
+\def\SideBySide@Example#1{%
+\@tempdimb=\FV@XRightMargin
+\advance\@tempdimb -5mm
+\begin{minipage}[c]{\@tempdimb}
+  \fvset{xrightmargin=0pt}
+  \catcode`\Z=9\relax%
+  % We suppress the effect of the highlighting macros
+  \catcode`/=0\relax%
+  \catcode`?=1\relax%
+  \catcode`;=2\relax%
+  \def\HLReverse##1{##1}%
+  \def\HLMacro##1{##1}%
+  \def\HLComment##1{##1}%
+  #1
+\end{minipage}%
+\@tempdimb=\textwidth
+\advance\@tempdimb -\FV@XRightMargin
+\advance\@tempdimb 5mm
+\begin{minipage}[c]{\@tempdimb}
+  \VerbatimInput[gobble=0,commentchar=Z,commandchars=/?;,
+                 numbersep=3pt,frame=single,numbers=left,
+                 xleftmargin=5mm,xrightmargin=0pt]{\jobname.tmp}
+\end{minipage}}
+
+\makeatother
+
+% Source codes must be indented by 2 spaces
+%\fvset{gobble=2,frame=single,numbers=left,numbersep=1mm}
+
+
+\makeatletter
+
+ \begingroup
+ \catcode`\Q=3
+ \long\gdef\@ifmtarg#1{\@xifmtarg#1QQ\@secondoftwo\@firstoftwo\@nil}
+ \long\gdef\@xifmtarg#1#2Q#3#4#5\@nil{#4}
+ \long\gdef\@ifnotmtarg#1{\@xifmtarg#1QQ\@firstofone\@gobble\@nil}
+ \endgroup
+
+\newenvironment{adjustmargins}[2]{%
+  \begin{list}{}{%
+    \topsep\z@%
+    \listparindent\parindent%
+    \parsep\parskip%
+\@ifmtarg{#1}{\setlength{\leftmargin}{\z@}}%
+ {\setlength{\leftmargin}{#1}}%
+ \@ifmtarg{#2}{\setlength{\rightmargin}{\z@}}%
+ {\setlength{\rightmargin}{#2}}%
+}
+\item[]}{\end{list}}
+
+ \newenvironment{adjustmargins*}[2]{%
+ \begin{list}{}{%
+ \topsep\z@%
+ \listparindent\parindent%
+ \parsep\parskip%
+ \checkoddpage
+ \ifoddpage % odd numbered page
+ \@ifmtarg{#1}{\setlength{\leftmargin}{\z@}}%
+ {\setlength{\leftmargin}{#1}}%
+ \@ifmtarg{#2}{\setlength{\rightmargin}{\z@}}%
+ {\setlength{\rightmargin}{#2}}%
+ \else % even numbered page
+ \@ifmtarg{#2}{\setlength{\leftmargin}{\z@}}%
+ {\setlength{\leftmargin}{#2}}%
+ \@ifmtarg{#1}{\setlength{\rightmargin}{\z@}}%
+ {\setlength{\rightmargin}{#1}}%
+\fi
+}
+\item[]}{\end{list}}
+
+\makeatother
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

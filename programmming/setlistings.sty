@@ -1,0 +1,225 @@
+% Provides various settings for typesetting
+% code listings using the listings package
+% 2011 
+% Dr Yiannis Lazarides
+%
+
+\ProvidesFile{setlistings}
+
+%%% Listings based environments
+%%\usepackage{showexpl}
+%\RequirePackage[usenames,dvipsnames,svgnames]{xcolor} %TUFTE 
+%\RequirePackage[dvipsnames,x11names,svgnames]{xcolor}% used by tufte-book
+\RequirePackage{listings}
+%
+%% Listings default settings
+
+
+\lstdefinelanguage{Verse}%
+{morekeywords={poemtitle, poemtoc, versewidth, vin, poemlines,poemtitlefont, 
+ProvidesClass,IfFileExists,RequirePackage,ifthenelse,chapter,includegraphics, newarray,readarray,of
+}}
+
+\lstloadlanguages{[LaTeX]TeX, [primitive]TeX, Verse}
+
+
+\lstset{%
+	%frame=tblr,
+     framesep=5pt,
+	basicstyle=\normalsize\ttfamily,
+	showstringspaces=false,
+	keywordstyle=\ttfamily\color{blue},
+	%identifierstyle=\ttfamily,
+	stringstyle=\color{maroon},
+	commentstyle=\color{black},
+	rulecolor=\color{gray!10},
+	xleftmargin=5pt,
+	xrightmargin=5pt,
+	aboveskip=\bigskipamount,
+	belowskip=\bigskipamount,
+            %backgroundcolor=\color{LightGray!.50}
+}
+
+%% We need an environment for pretty printing of Tex/LateX
+%% code
+
+\lstnewenvironment{teX}[1][]
+  {\lstset{language=[LaTeX]TeX}\lstset{escapeinside={(*@}{@*)},
+   numbers=left,numberstyle=\normalsize,stepnumber=1,numbersep=5pt,
+   breaklines=true,
+   %firstnumber=last,
+       %frame=tblr,
+       framesep=5pt,
+       basicstyle=\normalsize\ttfamily,
+       showstringspaces=false,
+       keywordstyle=\ttfamily\color{blue},
+      %identifierstyle=\ttfamily,
+       stringstyle=\color{maroon},
+	commentstyle=\color{black},
+	rulecolor=\color{gray!10},
+	xleftmargin=0pt,
+	xrightmargin=0pt,
+	aboveskip=\medskipamount,
+	belowskip=\medskipamount,
+           backgroundcolor=\color{gray!10}, #1
+}}
+{}
+
+\lstnewenvironment{teXX}[1][]
+  {\lstset{language=[LaTeX]TeX}\lstset{%
+      breaklines=true,
+      framesep=5pt,
+      basicstyle=\normalsize\ttfamily,
+      showstringspaces=false,
+      keywordstyle=\ttfamily\color{blue},
+      stringstyle=\color{maroon},
+	 commentstyle=\color{black},
+	 rulecolor=\color{gray!10},
+      breakatwhitespace=true,
+	 xleftmargin=0pt,
+	 xrightmargin=5pt,
+	 aboveskip=\medskipamount,
+	 belowskip=\medskipamount,
+      backgroundcolor=\color{gray!10}, #1
+}}
+{}
+
+%% Emphasis
+\renewcommand{\ttdefault}{cmtt}			% prefer old tt font
+\newcommand\emphasis[2][red]{\lstset{emph={write,void,writeln,#2},
+   emphstyle={\ttfamily\textcolor{#1}}}}%
+\lstnewenvironment{teXXX}[1][]
+  {\lstset{language=[LaTeX]TeX}\lstset{%
+      escapeinside={{(*@}{@*)}},
+      breaklines=true,
+      framesep=5pt,
+      basicstyle=\ttfamily,
+      showstringspaces=false,
+      keywordstyle=\ttfamily\textcolor{blue},
+      stringstyle=\color{orange},
+	 commentstyle=\color{black},
+	 rulecolor=\color{gray!10},
+      breakatwhitespace=true,
+     showspaces=false,  % shows spacing symbol
+	 xleftmargin=0pt,
+	 xrightmargin=5pt,
+	 aboveskip=0pt, % compact the code looks ugly in type
+	 belowskip=0pt,  % user responsible to insert any skips
+      backgroundcolor=\color{gray!15}, #1
+}}
+{}
+
+\RequirePackage{etoolbox}
+
+\lstnewenvironment{Code}[1][]
+ {\lstset{language=[LaTeX]TeX}\lstset{%
+      escapeinside={{(*@}{@*)}},
+      breaklines=true,
+      framesep=5pt,
+      basicstyle=\ttfamily,
+      showstringspaces=false,
+      keywordstyle=\ttfamily\textcolor{blue},
+      stringstyle=\color{orange},
+	 commentstyle=\color{black},
+	 rulecolor=\color{gray!10},
+      breakatwhitespace=true,
+     showspaces=false,  % shows spacing symbol
+	 xleftmargin=0pt,
+	 xrightmargin=5pt,
+	 aboveskip=0pt, % compact the code looks ugly in type
+	 belowskip=0pt,  % user responsible to insert any skips
+      backgroundcolor=\color{gray!15}, #1
+}}
+{}
+
+%% Use IfFileExists
+
+%\newtoggle{test:multicols}
+%\newcounter{savecolnum}
+%\AtBeginEnvironment{multicols}{%
+%   \global\toggletrue{test:multicols}
+%   \global\setcounter{savecolnum}{\col@number}
+%   }
+%\AtEndEnvironment{multicols}{\global\togglefalse{test:multicols}}
+%\BeforeBeginEnvironment{Code}{
+%   \iftoggle{test:multicols}%
+%      {\def\reserveda{\end{multicols}\global\toggletrue{test:multicols}}}
+%      {\let\reserveda\relax}
+%   \reserveda
+%}
+%\AfterEndEnvironment{Code}{%
+%   \iftoggle{test:multicols}%
+%      {\def\reserveda{\begin{multicols}{\value{savecolnum}}}}
+%      {\let\reserveda\relax}
+%   \reserveda
+%}
+
+
+
+\lstnewenvironment{cCode}[1][]
+  {\lstset{language=C}\lstset{%
+   numbers=left,numberstyle=\normalsize,stepnumber=1,numbersep=5pt,
+   %firstnumber=last,
+       %frame=tblr,
+       framesep=5pt,
+       basicstyle=\normalsize\ttfamily,
+       showstringspaces=false,
+       keywordstyle=\itshape\color{blue},
+   %identifierstyle=\ttfamily,
+       stringstyle=\color{maroon},
+	commentstyle=\color{black},
+	rulecolor=\color{gray},
+	xleftmargin=5pt,
+	xrightmargin=5pt,
+	aboveskip=\bigskipamount,
+	belowskip=\bigskipamount,
+     backgroundcolor=\color{gray!15}, #1
+}}
+{}
+
+
+%
+%%% Always I forget this so I created some aliases
+\def\continueLineNumber{\lstset{firstnumber=last}}
+\def\startLineAt#1{\lstset{firstnumber=#1}}
+\let\numberLineAt\startLineAt
+
+
+%\makeatletter
+%% Hack to have one column environments for Code
+\RequirePackage{etoolbox}
+\RequirePackage{multicol}
+\def\multicols@string{multicols}
+\BeforeBeginEnvironment{Code}{%
+  \ifx\@currenvir\multicols@string
+     \xdef\resume@multicols{\noexpand\begin{multicols}{\number\col@number}}%
+    \end{multicols}%
+  \else
+    \global\let\resume@multicols\@empty
+  \fi}
+\AfterEndEnvironment{Code}{\resume@multicols}
+%\makeatother
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

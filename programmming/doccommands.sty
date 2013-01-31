@@ -1,0 +1,193 @@
+%% Backslash
+%%
+%% define backsalsh
+%% you can also use \textbackslash
+\RequirePackage{ifthen}
+\RequirePackage{etoolbox}
+\newcommand{\tuftebs}{\symbol{'134}}% a backslash in tt type in OT1/T1
+
+%% shortcut for index command. In index the @ is an active character
+%% we neutralize it by putting it in inverted commas. Needs to use patterns
+%% to neutralize it everywhere maybe use \makeatletter \makeatother
+%% ned to check if better to Declare it declareRobustCommand
+%% \indexat{<>}
+%% adds the `@' automatically
+
+\xdef\at{"@"}
+
+\newcommand{\indexat}[1]{%
+ % place it in color in the text
+\hlred{\texttt{\textbackslash @#1\relax}\xspace}% we define the marginpar part first
+\marginpar{\normalsize\hlred{\textbackslash @#1}}%
+% we place in index
+\index{\textbackslash\at#1}}%
+
+\newcommand{\doccmdnoindex}[2][]{\texttt{\tuftebs#2}}
+
+
+% command name -- adds backslash automatica%%lly (and doesn't add cmd to the index)
+
+\newcommand{\doccmddef}[2][]{%
+  \hlred{\texttt{\tuftebs#2}}\label{cmd:#2}%
+  \ifthenelse{\isempty{#1}}%
+    {% add the command to the index
+      \index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2}}% command name
+    }%
+    {% add the command and package to the index
+      \index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2} (\texttt{#1} package)}% command name
+      \index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}% package name
+    }%
+}% command name -- adds backslash automatically
+
+%% doc commands
+% % adds hem automatically to index
+
+\newcommand{\doccmd}[2][]{%
+  \texttt{\tuftebs#2}% removed the color too disturbing
+%    \ifthenelse{\isempty{#1}}%
+%    {% add the command to the index
+%      \index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2}}% command name
+%      % \marginpar{\hlred{#1}}
+%    }%
+%    {% add the command and package to the index
+      \index{#2 command@\protect\hangleft{\texttt{\tuftebs}}\texttt{#2} (\texttt{#1} package)}% command name
+   %  \index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}% package name
+    %}%
+}% command name -- adds backslash automatically
+
+
+
+%% doc options
+%
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\let\arg\docarg
+
+\newenvironment{docspec}{\begin{quotation}\ttfamily\parskip0pt\parindent0pt\ignorespaces}{\end{quotation}}% command specification environment
+
+
+\newcommand{\docenv}[1]{\texttt{#1}\index{#1 environment@\texttt{#1} environment}\index{environments!#1@\texttt{#1}}}% environment name
+
+
+\newcommand{\docenvdef}[1]{\hlred{\texttt{#1}}\label{env:#1}\index{#1 environment@\texttt{#1} environment}\index{environments!#1@\texttt{#1}}}% environment name
+
+%% Provide a  command to add packages to index
+%%  \docpck{babel}
+\newcommand{\docpkg}[1]{\hlred{\texttt{#1}}\index{#1 package@\texttt{#1} package}\index{packages!#1@\texttt{#1}}
+\marginpar{\hlred{#1~package}}
+}% package name
+
+%% Provide a command for document cls - do not add to index
+%
+\newcommand{\doccls}[1]{\texttt{{\hlred{#1}}}{\index{Classes!#1}}}% document class name
+
+\newcommand{\docclsopt}[1]{\texttt{#1}\index{#1 class option@\texttt{#1} class option}\index{class options!#1@\texttt{#1}}}% document class option name
+\newcommand{\docclsoptdef}[1]{\hlred{\texttt{#1}}\label{clsopt:#1}\index{#1 class option@\texttt{#1} class option}\index{class options!#1@\texttt{#1}}}% document class option name defined
+\newcommand{\docmsg}[2]{\bigskip\begin{fullwidth}\noindent\ttfamily#1\end{fullwidth}\medskip\par\noindent#2}
+\newcommand{\docfilehook}[2]{\texttt{#1}\index{file hooks!#2}\index{#1@\texttt{#1}}}
+\newcommand{\doccounter}[1]{\texttt{#1}\index{#1 counter@\texttt{#1} counter}}
+
+%% margin document commands
+%
+\newcommand{\margindoc}[1]{\marginpar[]{\doccmd{#1}}}
+
+\newcommand{\sidebarcolor}[1]{\textcolor{darkgray}{\sidenote[]{#1}}}
+
+%% alias of \doccmnd but puts in index as well as text and marginpar
+\newcommand{\cmd}[1]{\doccmd{#1}\xspace \marginpar[]{\hlred{\doccmd{#1}}}}
+
+
+% Some advices from Rolf Niepraschk in arrajobx package
+\newcommand{\BS}{\texttt{\symbol{`\\}}}
+\newcommand{\Macro}[1]{\texttt{\BS#1}}
+\newcommand{\Variable}[1]{\textnormal{\textit{\(\langle\)#1\,\(\rangle\)}}}
+\newcommand{\Parameter}[1]{\texttt{\symbol{`\{}#1\symbol{`\}}}}
+
+% To format TeX macro strings
+\newcommand{\FormatTeXMacro}[1]{\Macro{#1}\hfill :}
+
+% Typesets the font size, leading, and measure in the form of 10/12x26 pc.
+\newcommand{\measure}[3]{#1/#2$\times$\unit[#3]{pc}}
+
+
+%% Aliases
+
+\let\pkg\docpkg
+
+%% switches fonts
+\newcommand*\switch[2]{{\fontfamily{#1}\selectfont #2}}
+
+%% For files typeset using extension
+\newcommand{\dtx}{\texttt{.dtx}}
+\newcommand{\cls}{\texttt{.cls}}
+\newcommand{\sty}{\texttt{.sty}}
+\newcommand{\ins}{\texttt{.ins}}
+\newcommand{\txt}{\texttt{.txt}}
+
+%\let\ins\relax
+%\newcommand{\ins}{\texttt{.ins}}
+
+\newcommand\docfile[1]{\texttt{#1}}
+
+%% From stmarysrd symbols package
+%% A very convenient command to typeset symbols.
+%% Much preferable than tables
+
+
+\def\symbols{\flushleft}
+\def\endsymbols{\endflushleft}
+\def\dosymbol#1{\leavevmode\hbox to .33\textwidth{\hbox to 1.2em
+    {\hss$#1$\hfil}\footnotesize\tt\string#1\hss}\penalty10}
+
+%% The command indexes a command for a package
+%% # 1 package name
+%% # 2 command
+%% must extend to provide a definitions summary
+%% needs work
+
+\newcommand{\pmac}[2]{\index{#1 package!#2}{\hlred{\textbackslash #2}}\protect\marginpar{\protect\hlred{\textbackslash #2}}}
+
+%% We can print the layout using  the \printlayout
+%% this gives the major dimensions
+\def\printf#1{\leavevmode #1 \par}
+
+\newcommand{\printlayout}{%
+\bgroup\ttfamily
+\printf{}
+\printf{Page height and width:\the\paperheight\space by \the\paperwidth}
+\printf{Text height and width:\the\textheight\space by \the\textwidth}
+\printf{Headheight and headsep:\the\headheight\space and \the\headsep}
+\printf{Footskip: \the\footskip}
+\printf{Columnsep and columnseprule: \the\columnsep\space and \the\columnseprule}
+\printf{Marginparsep and marginparwidth: \the\marginparsep\space and \the\marginparwidth}
+\printf{}
+\egroup
+}
+
+
+\gdef\indentOn{\parindent0.5em}
+\gdef\indentOff{\noindent}
+
+
+
+\newcommand*{\mail}[1]{\href{mailto:#1}{\texttt{#1}}}
+%\newcommand*{\pkg}[1]{\textsf{#1}}
+%\newcommand*{\cls}[1]{\textsf{#1}}
+%\newcommand*{\cs}[1]{\texttt{\textbackslash#1}}
+
+%\newcommand*{\cmd}[1]{\cs{\expandafter\@gobble\string#1}}
+
+%\newcommand*{\env}[1]{\texttt{#1}}
+%\newcommand*{\opt}[1]{\texttt{#1}}
+%\newcommand*{\meta}[1]{$\langle\textsl{#1}\rangle$}
+%\newcommand*{\marg}[1]{\texttt{\{}\meta{#1}\texttt{\}}}
+%\newcommand*{\oarg}[1]{\texttt{[}\meta{#1}\texttt{]}}
+
+
+
+
+
+
+
+

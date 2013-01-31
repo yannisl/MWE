@@ -1,0 +1,29 @@
+%% Logos provides a number of standard logos
+%% Some Logos used throughtout the documentatiom
+% A unique string for TeX and LaTeX and family
+%% all are in lowercase letters to avoid typing errors and it is
+%% quicker to type, so busy bees can save a few key-strokes
+%% Modified by YL
+%% includes LuaTeX
+%% usage allow you to type in lowecase letters and the logo
+%% typesets in uppercase
+
+\ProvidesFile{morelogos}
+\RequirePackage{xspace}
+
+\newcommand{\AllTeX}{%
+{\rm(L\kern-.36em\raise.3ex\hbox{\sc a}\kern-.15em)%
+T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}\xspace}
+\newcommand{\latex}{\LaTeX\xspace}
+\newcommand{\tex}{\TeX\xspace}
+\newcommand{\texbook}{\tex\kern-0.3em book\xspace  }
+\let\alltex\AllTeX
+
+\providecommand{\XeLaTeX}{X\lower.5ex\hbox{\kern-0.15em\reflectbox{E}}\kern-0.1em\LaTeX}
+\newcommand{\tXeLaTeX}{\XeLaTeX\index{XeLaTeX@\protect\XeLaTeX}}
+\providecommand{\XeTeX}{X\lower.5ex\hbox{\kern-0.15em\reflectbox{E}}\kern-0.1em\TeX}
+\let\xetex\XeTeX
+\let\TB\texbook
+
+\def\etex{$\varepsilon$-\TeX\xspace}
+\def\Metafont{\mbox{\logo METAFONT}}

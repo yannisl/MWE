@@ -1,0 +1,81 @@
+%%
+%% Package 'ttfucs' to use Unicode through Truetype fonts
+%%
+%% Otfried Cheong
+%% 
+\ProvidesPackage{ttfucs}[2005/07/21 Using Unicode with Truetype fonts]
+
+\def\Ipe@hexnumber@#1{\ifcase\number#1
+  0\or 1\or 2\or 3\or 4\or 5\or 6\or 7\or 8\or
+  9\or a\or b\or c\or d\or e\or f\fi}
+
+%% \Ipe@family stores the current font family for Unicode characters,
+%% \Ipe@plane is the subfont number in hex.
+
+\def\Ipe@family{}
+\def\Ipe@plane{}
+
+%% The following macros are taken from the 'CJK' package
+%% by Werner Lemberg (with names changed).
+
+\def\Ipe@@empty#1{%
+  \ifx\Ipe@plane\undefined\def\mandatory@arg{cmr10}\else
+  \edef\mandatory@arg{\mandatory@arg\Ipe@plane}\fi%
+  \empty@sfcnt#1%
+  \xdef\font@name{\csname \curr@fontshape/\f@size/%
+    \ifx\Ipe@plane\undefined\else\Ipe@plane\fi\endcsname}}
+
+\DeclareSizeFunction{IpeUnicode}{\Ipe@@empty\@font@warning}
+
+%% the auxiliary macro \Ipe@numbToHex converts number #2 into a hex string
+%%     and assigns it globally to #1.
+
+\def\Ipe@numbToHex#1#2{%
+  {\count\z@ #2\relax
+   \count\tw@ \count\z@
+   \divide\count\z@ \sixt@@n
+   \count@ \count\z@
+   \multiply\count@ \sixt@@n
+   \advance\count\tw@ -\count@
+   \xdef#1{\Ipe@hexnumber@{\count\z@}\Ipe@hexnumber@{\count\tw@}}}}
+
+% \IpeTTFchar typesets a Unicode character.
+
+\def\IpeTTFchar#1{%
+  \@tempcnta #1\relax
+  \divide\@tempcnta by 256\relax
+  \Ipe@numbToHex\Ipe@plane{\@tempcnta}%
+  \multiply \@tempcnta by 256\relax
+  \@tempcntb #1\relax
+  \advance\@tempcntb by -\@tempcnta\relax
+  {\Ipe@usefont\symbol{\@tempcntb}}}
+
+\def\Ipe@usefont{\usefont{C70}{\Ipe@family}{m}{n}}
+
+\def\TruetypeFont#1{%
+  \renewcommand{\Ipe@family}{#1}%
+  \renewcommand{\unichar}[1]{\IpeTTFchar{##1}}}
+
+% The font encoding 'C70' is originally defined by the CJK package.
+
+\begingroup
+\nfss@catcodes
+\gdef\DeclareTruetypeFont#1#2{%
+  \def\Ipe@name{#1}
+  \def\Ipe@@name{#2}
+  \DeclareFontEncoding{C70}{}{}
+  \DeclareFontSubstitution{C70}{\Ipe@name}{m}{n}
+  \DeclareFontFamily{C70}{\Ipe@name}{\hyphenchar \font\m@ne}
+  \DeclareFontShape{C70}{\Ipe@name}{m}{n}{<-> IpeUnicode * \Ipe@@name}{}
+  \pdfmapfile{=#1.map}
+  \TruetypeFont{#1}}
+\gdef\DeclareTruetypeFontShape#1#2#3#4{%
+  \def\Ipe@name{#1}
+  \def\Ipe@@name{#4}
+  \DeclareFontShape{C70}{\Ipe@name}{#2}{#3}{<-> IpeUnicode * \Ipe@@name}{}
+  \def\Ipe@usefont{\usefont{C70}{\Ipe@family}{\f@series}{\f@shape}}}
+\endgroup
+
+\@onlypreamble\DeclareTruetypeFont
+
+%% --------------------------------------------------------------------

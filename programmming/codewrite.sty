@@ -1,0 +1,35 @@
+% codewrite.sty
+% codewrite.sty
+\RequirePackage{fancyvrb}
+
+\newcommand*\CodeOut{\FV@Environment{}{CodeOut}}
+
+\newwrite\@codewrite
+% Or to save an output handle:
+%\let\@codewrite\FV@OutFile
+
+\newcommand*\CodeOpenFile[1]{%
+    \immediate\openout\@codewrite #1\relax
+    \def\CodeOpen@File{#1}%
+}
+
+\def\FVB@CodeOut{%
+    \@bsphack
+    \begingroup
+    \FV@UseKeyValues
+    \FV@DefineWhiteSpace
+    \def\FV@Space{\space}%
+    \FV@DefineTabOut
+    \def\FV@ProcessLine{\immediate\write\@codewrite}%
+    \let\FV@FontScanPrep\relax
+    %% DG/SR modification begin - May. 18, 1998 (to avoid problems with ligatures)
+    \let\@noligs\relax
+    %% DG/SR modification end
+    \FV@Scan
+}
+\def\FVE@CodeOut{\endgroup\@esphack}
+
+\newcommand*\ReadCode{\immediate\closeout\@codewrite\input{\CodeOpen@File}}
+
+
+\DefineVerbatimEnvironment{CodeOut}{CodeOut}{}

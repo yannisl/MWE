@@ -1,0 +1,11 @@
+%% Now declare what environment we need:
+\NeedsTeXFormat{LaTeX2e}[1994/12/01]
+%% Load the translator package
+\RequirePackage{translator}
+\usedictionary{\fname}
+%% create a test error for package
+\def\geterror#1{\translate{Error} #1 :
+\ifcase #1\or
+    1 A general error\or
+    \ldots\translate{mother}\xspace\or
+ \fi}

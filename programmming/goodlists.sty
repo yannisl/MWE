@@ -1,0 +1,87 @@
+%% Package based on elsarticle.cls
+
+\ProvidesPackage{goodlists}
+
+\makeatletter
+
+\newtoks\@enLab  %\newtoks\@enfont
+
+\def\@enQmark{?}
+
+\def\@enLabel#1#2{%
+  \edef\@enThe{\noexpand#1{\@enumctr}}%
+  \@enLab\expandafter{\the\@enLab\csname the\@enumctr\endcsname}%
+  \@enloop}
+
+%% Hack to define a space 
+\def\@enSpace{\afterassignment\@enSp@ce\let\@tempa= }
+
+\def\@enSp@ce{\@enLab\expandafter{\the\@enLab\space}\@enloop}
+
+\def\@enGroup#1{\@enLab\expandafter{\the\@enLab{#1}}\@enloop}
+
+\def\@enOther#1{\@enLab\expandafter{\the\@enLab#1}\@enloop}
+\def\@enloop{\futurelet\@entemp\@enloop@}
+
+\def\@enloop@{%
+  \ifx A\@entemp         \def\@tempa{\@enLabel\Alph  }\else
+  \ifx a\@entemp         \def\@tempa{\@enLabel\alph  }\else
+  \ifx i\@entemp         \def\@tempa{\@enLabel\roman }\else
+  \ifx I\@entemp         \def\@tempa{\@enLabel\Roman }\else
+  \ifx 1\@entemp         \def\@tempa{\@enLabel\arabic}\else
+  \ifx \@sptoken\@entemp \let\@tempa\@enSpace         \else
+  \ifx \bgroup\@entemp   \let\@tempa\@enGroup         \else
+  \ifx \@enum@\@entemp   \let\@tempa\@gobble          \else
+                         \let\@tempa\@enOther
+             \fi\fi\fi\fi\fi\fi\fi\fi
+  \@tempa}
+
+\newlength{\@sep} \newlength{\@@sep}
+
+\setlength{\@sep}{.5\baselineskip plus.2\baselineskip
+            minus.2\baselineskip}
+
+\setlength{\@@sep}{.1\baselineskip plus.01\baselineskip
+            minus.05\baselineskip}
+
+\providecommand{\sfbc}{\rmfamily\upshape}
+
+\providecommand{\sfn}{\rmfamily\upshape}
+
+\def\@enfont{\ifnum \@enumdepth >1\let\@nxt\sfn \else\let\@nxt\sfbc \fi\@nxt}
+
+
+\def\enumerate{%
+   \ifnum \@enumdepth >3 \@toodeep\else
+      \advance\@enumdepth \@ne
+      \edef\@enumctr{enum\romannumeral\the\@enumdepth}\fi
+   \@ifnextchar[{\@@enum@}{\@enum@}}
+
+\def\@@enum@[#1]{%
+  \@enLab{}\let\@enThe\@enQmark
+  \@enloop#1\@enum@
+  \ifx\@enThe\@enQmark\@warning{The counter will not be printed.%
+   ^^J\space\@spaces\@spaces\@spaces The label is: \the\@enLab}\fi
+  \expandafter\edef\csname label\@enumctr\endcsname{\the\@enLab}%
+  \expandafter\let\csname the\@enumctr\endcsname\@enThe
+  \csname c@\@enumctr\endcsname7
+  \expandafter\settowidth
+            \csname leftmargin\romannumeral\@enumdepth\endcsname
+            {\the\@enLab\hskip\labelsep}%
+  \@enum@}
+
+\def\@enum@{\list{{\@enfont\csname label\@enumctr\endcsname}}%
+           {\usecounter{\@enumctr}\def\makelabel##1{\hss\llap{##1}}%
+     \ifnum \@enumdepth>1\setlength{\topsep}{\@@sep}\else
+           \setlength{\topsep}{\@sep}\fi
+     \ifnum \@enumdepth>1\setlength{\itemsep}{0pt plus1pt minus1pt}%
+      \else \setlength{\itemsep}{\@@sep}\fi
+     %\setlength\leftmargin{\leftMargin}%%%{1.8em}
+     \setlength{\parsep}{0pt plus1pt minus1pt}%
+     \setlength{\parskip}{0pt plus1pt minus1pt}
+                   }}
+
+\def\endenumerate{\par\ifnum \@enumdepth >1\addvspace{\@@sep}\else
+           \addvspace{\@sep}\fi \endlist}
+\makeatother
+
