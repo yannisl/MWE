@@ -1,0 +1,29 @@
+\documentclass{article}
+
+\usepackage{pgfkeys}
+
+
+\long\def\usecontent{\storecontent}
+
+
+\pgfkeys{%
+    /test/temp family/.is family,
+    /test/store/.code={\long\def\storecontent##1{##1}\storecontent{#1}},
+    /test/store/.belongs to family=/test/temp family,
+    /pgf/key filters/active families/.install key filter
+}
+
+\begin{document}
+
+\pgfkeys{/test/temp family/.activate family}
+\pgfkeys{/test/store={first \par test}}
+
+\usecontent
+
+
+
+\pgfkeysfiltered{/test/store={second \vskip0pt test}}
+
+\usecontent
+
+\end{document}

@@ -1,0 +1,9 @@
+\documentclass{minimal}
+\usepackage[english,italian]{babel}
+
+\newcommand{\encone}[1]{{\fontencoding{T1}\selectfont#1}}
+\long\def\<#1>{\encone{\guillemotleft}#1\encone{\guillemotright}}
+\begin{document}
+Lorem ipsum dolor --- sit amet --- consectetuer adipiscing elit.
+\<Lorem ipsum dolor si amet>
+\end{document}
