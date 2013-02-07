@@ -1,0 +1,31 @@
+%% Outlining a font using pdfliteral
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{dashrule}
+
+\newsavebox\myboxX
+\newsavebox\myboxx
+\newdimen\heightX
+\newdimen\heightx
+
+\newcommand{\setline}[2]{%
+    \savebox\myboxX{\scalebox{#1}{X}}%
+    \savebox\myboxx{\scalebox{#1}{x}}%
+    \heightX=\ht\myboxX
+    \heightx=\ht\myboxx
+    \noindent\ooalign{\rule[\heightX]{\textwidth}{.1pt}\cr
+    \noindent\hdashrule[\heightx]{\textwidth}{.1pt}{1mm}\cr
+    \noindent\rule{\textwidth}{.1pt}\cr
+%    \noindent\scalebox{#1}{#2}\scalebox{#1}{\pdfliteral{q 1 Tr [1 4]0 d}#2\pdfliteral{Q}}}%
+    % For Adove, use this setting rather than the one above.
+    \noindent\scalebox{#1}{#2}\scalebox{#1}{\pdfliteral{q 1 Tr [.1 .4]0 d .1 w}#2\pdfliteral{Q}}}%
+}
+
+\begin{document}
+
+\setline{5}{Water}\vspace{1cm}
+\setline{5}{De}\vspace{1cm}
+
+\end{document}
+
+%http://tex.stackexchange.com/questions/96766/writing-practice-sheets-dotted-letters
