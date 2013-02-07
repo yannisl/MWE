@@ -2,7 +2,7 @@
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{xcolor}
-\usepackage{multicol}
+\usepackage{multicol, lettrine}
 \makeatletter
 %    \begin{macrocode}
 \def\csn#1{\csname#1\endcsname}%
@@ -75,11 +75,11 @@ fig180,fig181,fig182,fig183,fig185,fig186,fig187,fig188}
 
 % Example code
 
- \addimageDB{alist}{fig145}{This is the caption\par for image fig145.\par Testing a paragraph.}{1920}
+ \addimageDB{alist}{fig145}{This is the caption for image fig145. Testing a paragraph.}{1920}
  \addimageDB{alist}{fig165}{This is the caption for image fig165.}{1942}
  \addimageDB{alist}{fig166}{This is the caption for image fig166.}{1940}
 
-\end{document}
+
  \newDB{rockwell}
  \addimageDB{rockwell}{scout}{``The American Way,'', showing soldier feeding a war orphan, is another
 Norman Rockwell best-seller.  During World War II, Norman Rockwell specialized in patriotic
@@ -89,6 +89,8 @@ calendars and posters.}{1940}
 
 
  \getfield{fig145}{caption}
+
+
 
  \getfield{fig166}{caption}
 
@@ -121,7 +123,7 @@ calendars and posters.}{1940}
 \end{center}
 \columnbreak
 
-
+\end{document}
 Consider that you are writing a document, where you may have anything up to a few hundred images. Managing these images, their captions and perhaps, having to show them in a few places under different typesetting conditions can be tedious and prone to mistakes. You may also collect or develop your own images, but you do not necessarily want to use them immediately in your book. We will develop some macros that will enable us us to store, images in a \latex database and then use them for the production of a figure such as shown in Figure\ref{fig:arizona}. First you will need to develop a number of routines. Inserting them using the subfig routines will create lengthy and verbose code.
 \begin{teXXX}
 \makeatletter

@@ -1,0 +1,26 @@
+% Random Calculations with fp
+\documentclass{article}
+\usepackage{fp}
+\begin{document}
+\def\result{-3.000000000000000000}
+
+ \FPupn\result{\result{} -1 * 0.2 + sin 2 round}
+
+  \FPeval\result{7 3 add 4 * } 
+ With
+	     \edef\result{11}
+	   and
+
+\FPeval\result{round(root(2,sin(pi 0.45 * )):10)}
+
+\FPseed=\the\time
+
+\the\time 
+
+\multiply\FPseed\the\day
+\multiply\FPseed\the\month
+\multiply\FPseed\the\year
+\FPrandom\result
+
+\result
+\end{document}

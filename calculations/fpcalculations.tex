@@ -1,0 +1,38 @@
+\documentclass{article}
+\usepackage{fp}
+\begin{document}
+\FPpow\temp{10}{0.5}
+\temp
+
+\FPpow\temp{\temp}{2}
+\FPround\temp{\temp}{15}
+\temp
+\end{document}
+
+Use fp's power function for square roots and the like. With fp's accuracy you will also minimize round off errors to near 15 decimal places.
+
+Consider the square root of 10. You write it as a power function:
+
+\FPpow\temp{10}{0.5}
+
+We get 3.162277660168379312
+
+You access the value in the varaibale \temp (it can be ny name, fp will define it on the fly).
+
+Translating this back to a power of two we geet:
+
+10.000000000000000
+
+Minimal shown below:
+
+
+\documentclass{article}
+\usepackage{fp}
+\begin{document}
+\FPpow\temp{10}{0.5}
+\temp
+
+\FPpow\temp{\temp}{2}
+\FPround\temp{\temp}{15}
+\temp
+\end{document}
