@@ -1,0 +1,61 @@
+\documentclass{article}
+\makeatletter
+% We play a merry game with dashes, providing all conceivable options
+% of breakability before and after.
+%
+
+\def\endash{--}
+\def\emdash{\endash-}
+\def\d@sh#1#2{\unskip#1\thinskip#2\thinskip\ignorespaces}
+\def\dash{\d@sh\nobreak\endash}
+\def\Dash{\d@sh\nobreak\emdash}
+\def\ldash{\d@sh\empty{\hbox{\endash}\nobreak}}
+\def\rdash{\d@sh\nobreak\endash}
+\def\Ldash{\d@sh\empty{\hbox{\emdash}\nobreak}}
+\def\Rdash{\d@sh\nobreak\emdash}
+%    \end{macrocode}
+%
+% Hacks to permit automatic hyphenation after an actual hyphen, or
+% after a slash.
+%
+
+\def\hyph{-\penalty\z@\hskip\z@skip }
+\def\slash{/\penalty\z@\hskip\z@skip }
+
+\makeatother
+\begin{document}
+\fbox{\parbox{3.8cm}{%
+refrigerator\emdash refrigerator\emdash refrigerator
+}}
+
+\noindent qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq refrigerator\emdash refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator
+
+\noindent qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq refrigerator---refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator
+
+\noindent qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq refrigerator---refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator
+
+\noindent qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq refrigerator---refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator
+
+\noindent qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq refrigerator---refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator
+
+\noindent qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq refrigerator---refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator
+
+\noindent qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq refrigerator---refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator
+
+\noindent qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq refrigerator---refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator
+
+\noindent qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq refrigerator---refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator
+
+\noindent qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq refrigerator---refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator
+
+\noindent qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq refrigerator---refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator
+
+\noindent qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq refrigerator---refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator
+
+\noindent qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq refrigerator---refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator
+
+\noindent qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq refrigerator---refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator
+
+\noindent qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq refrigerator---refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator refrigerator
+
+\end{document}
