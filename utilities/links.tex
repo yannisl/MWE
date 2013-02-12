@@ -1,0 +1,29 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{filecontents}
+
+
+\begin{filecontents*}{test.tex}
+
+\section{include}\label{sec:test}
+
+I am included text. \hypertarget{testlink}{Linktarget}
+
+\end{filecontents*}
+
+\begin{document}
+
+\input{test}
+
+\clearpage
+
+See \ref{sec:test}.
+
+Use the following link \hyperlink{testlink}{Click me}
+
+\end{document}
+
+%http://tex.stackexchange.com/questions/97755/hypertarget-within-an-embedded-tex-file
