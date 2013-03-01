@@ -1,0 +1,11 @@
+\documentclass{article}
+\def\c.{\relax\ignorespaces}
+\def\d.{\relax}%
+\begin{document}
+a\c. b
+
+a\d. b
+\end{document}
+
+spaces after the \relax control sequence are only skipped when the line is first read, not
+when it is expanded.\ignorespaces is a Tex primitive.
