@@ -1,0 +1,17 @@
+\documentclass{article}
+\usepackage{expl3}
+\ExplSyntaxOn
+\newcommand{\CsToStr}[1]{\cs_to_str:N #1\relax}
+\ExplSyntaxOff
+\begin{document}
+\tt
+\CsToStr{\LaTeX}
+
+\CsToStr{\def} 
+
+\CsToStr{\newcommand}
+
+\CsToStr{\MacroName}
+
+\CsToStr{\relax}.
+\end{document}
