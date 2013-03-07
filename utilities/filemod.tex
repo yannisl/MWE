@@ -1,0 +1,23 @@
+\documentclass{article}
+\usepackage{currfile}
+\usepackage{filemod,lipsum}
+\usepackage{fancyhdr}
+
+\renewcommand*{\thefilemoddate}[3]{#2.#3.#1}
+
+
+ \fancypagestyle{plain}{%
+  %\fancyhf{} % clear all header and footer fields
+  \fancyhead[R]{}
+  \fancyhead[L]{}
+   \fancyfoot[R]{\footnotesize{\sffamily\filemodprintdate{\currfilepath}}}
+   %\fancyfoot[R]{\footnotesize\sffamily{c. \mdyydate\today}} % compile date - lower right
+    \fancyfoot[L]{\footnotesize\sffamily{\copyright~my name (2013)}}}
+
+\begin{document}
+\thispagestyle{plain}
+
+\lipsum[1-20]
+
+
+\end{document}

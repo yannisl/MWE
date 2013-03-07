@@ -1,0 +1,22 @@
+\documentclass{article}
+\usepackage{xcolor,expl3,mdframed}
+\begin{document}
+
+\NewDocumentCommand \achtung { m }
+  {
+    \begin{mdframed}
+      [
+        linecolor        = red!50,
+        backgroundcolor  = red!5,
+        innerleftmargin  = 1em ,
+        innerrightmargin = 1em ,
+        skipbelow        = .5\baselineskip plus .5ex minus .5ex ,
+        skipabove        = .5\baselineskip plus .5ex minus .5ex ,
+        roundcorner      = 3pt
+      ]
+      #1
+    \end{mdframed}
+  }
+
+\achtung{test}
+\end{document}
