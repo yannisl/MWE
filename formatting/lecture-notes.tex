@@ -1,0 +1,11 @@
+\documentclass{book}
+\setcounter{chapter}{10}
+\renewcommand{\chaptername}{Lecture}
+\makeatletter
+\def\thechapter{\@arabic\c@chapter-\the\numexpr\@arabic\c@chapter+1\relax}
+\makeatother
+\begin{document}
+\chapter{Intro to Maths}
+\end{document}
+
+http://tex.stackexchange.com/questions/101718/changing-chapter-number-to-have-two-numbers/101727#101727
