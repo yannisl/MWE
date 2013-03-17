@@ -1,0 +1,21 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[paper=a4paper,left=30mm,right=20mm,top=25mm,bottom=30mm]{geometry}
+\usepackage[orthodox,l2tabu]{nag}
+
+\newenvironment{dedication}
+  {\clearpage           % we want a new page
+   \thispagestyle{empty}% no header and footer
+   \vspace*{\stretch{1}}% some space at the top 
+   \itshape             % the text is in italics
+   \flushright          % flush to the right margin
+  }
+  {\endflushright\par % end the paragraph
+   \vspace{\stretch{3}} % space at bottom is three times that at the top
+   \clearpage           % finish off the page
+  }
+
+\begin{document}
+\begin{dedication}
+Dedicated to google and wikipedia  
+\end{dedication}
+\end{document}

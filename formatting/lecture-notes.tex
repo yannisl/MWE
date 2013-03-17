@@ -1,11 +1,40 @@
 \documentclass{book}
-\setcounter{chapter}{10}
-\renewcommand{\chaptername}{Lecture}
+\usepackage{textcomp}
 \makeatletter
-\def\thechapter{\@arabic\c@chapter-\the\numexpr\@arabic\c@chapter+1\relax}
-\makeatother
-\begin{document}
-\chapter{Intro to Maths}
-\end{document}
+%\def\symbols{\flushleft}
+%\def\endsymbols{\endflushleft}
 
-http://tex.stackexchange.com/questions/101718/changing-chapter-number-to-have-two-numbers/101727#101727
+\newenvironment{symbols}{\flushleft}{\endflushleft}
+\def\dosymbol#1{%
+   \leavevmode\hbox to .33\textwidth{%
+    \hbox to 1.2em%
+    {\hss$#1$\hfil}%
+   \footnotesize\texttt{\string#1}\hss}%
+   \penalty10}
+
+\parindent0pt
+\begin{document}
+
+\begin{symbols}
+  \dosymbol{\alpha} 
+  \dosymbol{\beta} 
+  \dosymbol{\gamma} 
+  \dosymbol{\zeta} 
+\end{symbols}
+
+\def\listsymbols#1{%
+\@for\next:=#1\do{%
+    \expandafter\dosymbol\next%
+}}
+
+
+\long\def\printlist#1{%
+  \def\alist{#1}
+  \flushleft
+  \listsymbols\alist
+ \endflushleft
+}
+
+\printlist{\alpha,\beta,\gamma,\zeta,
+           \eta,\theta,\epsilon}
+\end{document}

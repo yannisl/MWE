@@ -1,0 +1,26 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{lipsum}
+\pagestyle{fancy}
+\title{The title}
+\author{The Author}
+\date{}
+\begin{document}
+\maketitle
+  \begin{abstract}
+  \lipsum[1]
+  \end{abstract}
+
+\section{One}
+
+\leftskip2.5em
+\rightskip\leftskip
+
+  \lipsum[3]
+\let\osection\section
+
+{\leftskip-0pt\section{two}}
+
+  \lipsum[4]
+  
+\end{document}
