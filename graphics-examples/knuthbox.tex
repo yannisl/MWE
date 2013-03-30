@@ -1,0 +1,53 @@
+\documentclass{article}
+\makeatletter
+\newcommand\startlist{\afterassignment\dodolist\let\next= }
+
+\newcommand\dodolist{\ifx\next\stoplist \let\next\relax
+  \else \elt\let\next\startlist \fi
+  \next}
+
+\newcommand\stoplist{\stoplist}
+
+\newcommand\hidehrule[2]{\kern-#1%
+  \hrule height#1 depth#2 \kern-#2 }
+
+\newcommand\hidevrule[2]{\kern-#1{\dimen0=#1
+        \advance\dimen0 by#2\vrule width\dimen0}\kern-#2 }
+
+\newcommand\makeblankbox[2]{\hbox{\lower\dp0\vbox{\hidehrule{#1}{#2}%
+       \kern-#1 % overlap the rules at the corners
+       \hbox to \wd0{\hidevrule{#1}{#2}%
+          \raise\ht0\vbox to #1{}% set the vrule height
+          \lower\dp0\vtop to #1{}% set the vrule depth
+          \hfil\hidevrule{#2}{#1}}%
+      \kern-#1\hidehrule{#2}{#1}}}}
+
+\newcommand\maketypebox{\makeblankbox{0pt}{0.4pt}}
+
+\newcommand\makelightbox{\makeblankbox{.2pt}{.2pt}}
+
+
+\newcommand\elt{\expandafter\if\space\next\
+                \else\setbox0=\hbox{\next}\maketypebox\fi}
+
+\newcommand\knuthbox[1]{%
+  \leavevmode
+  \hbox{\startlist#1\stoplist}%
+   \copy0\kern-\wd0\makelightbox}
+
+\title{\let\author\knuthbox Knuth's Demo Boxes}
+
+\let\oauthor\author
+\gdef\author#1{%
+  \oauthor{\knuthbox{#1}}
+}
+
+\author{Y Lazarides}
+
+\makeatother
+\begin{document}
+\maketitle
+
+\knuthbox{Knuth} created a demobox in order to typeset a set of boxes like this \knuthbox{a boxg}, which I like to call a knuthbox. 
+
+\end{document}
