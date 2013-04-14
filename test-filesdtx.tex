@@ -1,0 +1,57 @@
+\documentclass{book}
+\usepackage{filecontents}
+
+\makeatletter
+\def\includex#1{\relax
+  \ifnum\@auxout=\@partaux
+    \@latex@error{\string\include\space cannot be nested}\@eha
+  \else \@includex#1 \fi}
+
+\def\@includex#1{%
+   \hspace*{\pagetotal}
+  \if@filesw
+    \immediate\write\@mainaux{\string\@input{#1.aux}}%
+  \fi
+  \@tempswatrue
+  \if@partsw
+    \@tempswafalse
+    \edef\reserved@b{#1}%
+    \@for\reserved@a:=\@partlist\do
+      {\ifx\reserved@a\reserved@b\@tempswatrue\fi}%
+  \fi
+  \if@tempswa
+    \let\@auxout\@partaux
+    \if@filesw
+      \immediate\openout\@partaux #1.aux
+      \immediate\write\@partaux{\relax}%
+    \fi
+    \@input@{#1.tex}%
+     \hspace*{\pagetotal}
+    \@writeckpt{#1}%
+    \if@filesw
+      \immediate\closeout\@partaux
+    \fi
+  \else
+    \deadcycles\z@
+    \@nameuse{cp@#1}%
+  \fi
+  \let\@auxout\@mainaux
+}
+\begin{filecontents}{A.tex}
+This is file A
+This is the A file
+\end{filecontents}
+\begin{filecontents}{B.tex}
+This is the B file\label{B}
+\end{filecontents}
+\begin{filecontents}{C.tex}
+This is the C file on page \pageref{B}
+\end{filecontents}
+\includeonly{A,C}
+%\usepackage{hyperref}
+\begin{document}
+\include{A}
+\include{B}
+\include{C}
+
+\end{document}
