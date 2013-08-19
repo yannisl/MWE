@@ -1,16 +1,21 @@
 % Class diagram
 % Author: Remus Mihail Prunescu
-\documentclass{minimal}
+\documentclass{book}
 \usepackage[a4paper,margin=1cm,landscape]{geometry}
 \usepackage{tikz}
 \usetikzlibrary{positioning,shapes,shadows,arrows}
 
 \begin{document}
-\tikzstyle{abstract}=[rectangle, draw=black, rounded corners, fill=blue!40, drop shadow,
-        text centered, anchor=north, text=white, text width=3.3cm]
-\tikzstyle{comment}=[rectangle, draw=black, rounded corners, fill=gray, drop shadow,
+\tikzstyle{abstract}=[rectangle, draw=black, rounded corners, fill=orange!80, drop shadow,
         text centered, anchor=north, text=white, text width=3cm]
+
+
+\tikzstyle{comment}=[rectangle, draw=black, rounded corners, fill=lightgray!30, drop shadow,
+        text centered, anchor=north, text=black, text width=3cm]
+
 \tikzstyle{myarrow}=[<-, >=open triangle 90, thick]
+
+
 \tikzstyle{line}=[-, thick]
         
 \begin{center}
@@ -22,13 +27,14 @@
             \nodepart{second}Project Director
         };
 
-    \node (AuxNode01) [text width=4.0cm, below=of PD] {};
+    \node (AuxNode01) [text width=4.0cm, below=of PD] {AUX};
 
 
-    \node (Construction) [abstract, rectangle split, rectangle split parts=2, left=of AuxNode01]
+    \node (Construction) [abstract, rectangle split, rectangle split parts=2, 
+                                   fill= blue!40, left=of AuxNode01]
         {
-            \textbf{CONSTRUCTION}
-            \nodepart{second}nil
+            \textbf{Construction}
+            \nodepart{second} Deputy PD
         };
 
 %% Technical Office
@@ -37,34 +43,26 @@
             \textbf{Technical Office}
             \nodepart{second} Shadi Al Ashkar
         };
-    \node (AuxNode02) [text width=0.5cm, below=of Construction] {};
+    \node (AuxNode02) [text width=0.5cm, below=of Construction] {AUX2};
 
-%% Commercial
 
-\node (Commercial) [abstract, rectangle split, rectangle split parts=2, right=of System]
+
+
+
+
+
+    \node (PM) [abstract, rectangle split, rectangle split parts=2, left=of AuxNode02]
         {
-            \textbf{Commercial Manager}
-            \nodepart{second} 
-        };
-    \node (AuxNode02) [text width=0.5cm, below=of Construction] {};
-
-
-
-
-
-
-    \node (Sensor) [abstract, rectangle split, rectangle split parts=2, left=of AuxNode02]
-        {
-            \textbf{Sn. Mech. Engineer}
-            \nodepart{second}nil
+            \textbf{Mech. PM }
+            \nodepart{second}Omar
         };
     \node (Part) [abstract, rectangle split, rectangle split parts=2, right=of AuxNode02]
         {
-            \textbf{Sen. Electr. Engineer}
-            \nodepart{second}nil
+            \textbf{Elect. PM}
+            \nodepart{second} Vacant
         };
         
-    \node (AuxNode03) [below=of Sensor] {};
+    \node (AuxNode03) [text width=0.2cm, below=of PM] {AUX3};
     \node (Pressure) [abstract, rectangle split, rectangle split parts=2, left=of AuxNode03, xshift=2cm]
         {
             \textbf{Plumbing}
@@ -79,18 +77,26 @@
     \node (PressureInstants) [comment, rectangle split, rectangle split parts=2, below=0.2cm of Pressure, text justified]
         {
             \textbf{Section Eng's.}
-            \nodepart{second}W high-rise\newline W-podia\newline fw-p-loop\newline sw-p-suction\newline sw-p-delivery
-                \newline sw-p-loop
+            \nodepart{second} W high-rise\newline 
+                                       W-podia\newline 
+                                       Westdene\newline 
+                                      St. George\newline
+                                      Subs. gas, water treatment\newline
+				      Plantrooms\newline
         };
-    \node (ClOp) [abstract, rectangle split, rectangle split parts=2, below=0.4cm of PressureInstants]
+    \node (Fire) [abstract, rectangle split, rectangle split parts=2, below=0.4cm of PressureInstants]
         {
             \textbf{Fire Protection}
             \nodepart{second}nil
         };
-    \node (ClOpInstants) [comment, rectangle split, rectangle split parts=2, below=0.2cm of ClOp, text justified]
+    \node (ClOpInstants) [comment, rectangle split, rectangle split parts=2, below=0.2cm of Fire, text justified]
         {
-            \textbf{Specialties}
-            \nodepart{second}Boilers\newline Grey Water
+            \textbf{Sub. Eng.\ref{firesub}}
+            \nodepart{second}
+                         Plantroom$^1$\newline 
+                         W\newline
+                         Westene\newline
+                         St.George\newline
         };
     \node (TemperatureInstants) [comment, rectangle split, rectangle split parts=2, below=0.2cm of Temperature, text justified]
         {
@@ -99,13 +105,13 @@
         };
     \node (Level) [abstract, rectangle split, rectangle split parts=2, below=0.4cm of TemperatureInstants]
         {
-            \textbf{Level}
-            \nodepart{second}nil
+            \textbf{Plantrooms}
+            \nodepart{second}Nil
         };
     \node (LevelInstants) [comment, rectangle split, rectangle split parts=2, below=0.2cm of Level, text justified]
         {
-            \textbf{Instants}
-            \nodepart{second}fw-l-tank
+            \textbf{Sect. Eng.}
+            \nodepart{second} Towers\newline Podia
         };
     \node (Ammeter) [abstract, rectangle split, rectangle split parts=2, below=0.4cm of LevelInstants]
         {
@@ -228,19 +234,44 @@
 									\newline ELV
         };
     
+%% Commercial
+
+\node (Commercial) [abstract, rectangle split, rectangle split parts=2, right=of System]
+        {
+            \textbf{Commercial Manager}
+            \nodepart{second} 
+        };
+
+\node (Safety) [abstract, rectangle split, rectangle split parts=2, below=1.5cm of Commercial]
+        {
+            \textbf{HSE}
+            \nodepart{second} 
+        };
+
+\node (QA) [abstract, rectangle split, rectangle split parts=2, below=of Safety]
+        {
+            \textbf{QA/QC}
+            \nodepart{second} 
+        };
+
+\node (Admin) [abstract, rectangle split, rectangle split parts=2, below=of QA]
+        {
+            \textbf{Admin}
+            \nodepart{second} 
+        };
     \draw[myarrow] (Construction.north) -- ++(0,0.8) -| (PD.south);
     \draw[line] (Construction.north) -- ++(0,0.8) -| (System.north);
     
-    \draw[myarrow] (Sensor.north) -- ++(0,0.8) -| (Construction.south);
-    \draw[line] (Sensor.north) -- ++(0,0.8) -| (Part.north);
+    \draw[myarrow] (PM.north) -- ++(0,0.8) -| (Construction.south);
+    \draw[line] (PM.north) -- ++(0,0.8) -| (Part.north);
     
     \draw[line] (Pressure.west) -- ++(-0.2,0);
     \draw[line] (Temperature.east) -- ++(0.2,0);
     \draw[line] (Level.east) -- ++(0.2,0);
-    \draw[myarrow] (ClOp.west) -- ++(-0.2,0) -- ([yshift=0.5cm, xshift=-0.2cm] Pressure.north west) -|
-     ([xshift=-1cm]Sensor.south);
+    \draw[myarrow] (Fire.west) -- ++(-0.2,0) -- ([yshift=0.5cm, xshift=-0.2cm] Pressure.north west) -|
+     ([xshift=-1cm]PM.south);
     \draw[myarrow] (Ammeter.east) -- ++(0.2,0) -- ([yshift=0.5cm, xshift=0.2cm] Temperature.north east) -|
-     ([xshift=1cm]Sensor.south);
+     ([xshift=1cm]PM.south);
      
     \draw[line] (Tank.west) -- ++(-0.2,0);
     \draw[line] (HeatExchanger.west) -- ++(-0.2,0);
@@ -258,4 +289,12 @@
         
 \end{tikzpicture}
 \end{center}
+
+\chapter{Narrative}
+\section{Narrative}
+
+
+Subcontractors \label{firesub}
+
+
 \end{document}
