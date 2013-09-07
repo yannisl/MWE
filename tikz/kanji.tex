@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows, positioning}
+
+%% optional argument for frequency---default value is 4
+%% character name
+\newcommand{\drawKanji}[2][4]{\noindent%
+  \foreach  \x in {1,...,#1} 
+    {%%
+      \begin{tikzpicture}
+        \node[anchor=south west,
+              inner sep=0
+             ] (image) at (0,0) {\includegraphics[width=1in]{#2}};
+        \begin{scope}[x={(image.south east)},
+                             y={(image.north west)}
+                     ]
+          \draw[black,
+                fill opacity=0.50,
+                fill=white
+               ] (0,0) rectangle (1,1);
+      
+       	 \draw [red,dashed]  (image.south east) 	--  (image.north west);
+      	 \draw [red,dashed]  (image.south west) 	--  (image.north east);
+      	 \draw [red]             (image.south)      	--  (image.north);
+      	 \draw [red]             (image.east)       	--  (image.west);
+	\end{scope}
+      \end{tikzpicture}}}
+\begin{document}
+
+\drawKanji{takai.jpg}\\
+\drawKanji{takai.jpg}\\
+\drawKanji{takai.jpg}
+
+\end{document}
+
+
+
+%http://tex.stackexchange.com/questions/131220/copybook-for-calligraphy
