@@ -1,0 +1,14 @@
+% saves the module
+\begin{filecontents*}{apack.lua}
+  module(..., package.seeall);
+  function foo()
+    return "Hello World From My First Module!"
+  end
+  par = "\\par "
+\end{filecontents*}
+% runs the lua code
+\begin{luacode}
+  require "apack"
+  local z = apack.foo()
+  tex.sprint(z..apack.par..z)
+ \end{luacode}
