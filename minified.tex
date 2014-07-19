@@ -1,0 +1,15 @@
+\documentclass[tikz]{standalone}\usetikzlibrary{calc,intersections,
+angles,quotes}\def\c{\coordinate}\def\d{\draw}\def\p{\path}
+\def\pp#1#2#3#4#5{\p[name path=#1](#2)--+(#3);\p[name intersections={of=#1
+and #4,#5}];}\let\q\pgfmathsetmacro
+\begin{document}\def\z#1#2#3#4#5#6#7#8{\begin{tikzpicture}
+\c(A)at(0,0);\c(B)at(3,0);\c(C)at(3,2);\d[name path=#7](A#6(B#6(C#6cycle
+pic["$\alpha$",-#3,draw,#1 #4=1cm,#1 eccen#7city=1.25]{#1=B--A--C};\pp
+{#8}{0,1.4}{2.9,0}{#7}{by=P1}\p(P1#6($(P1)!.25cm!-90:(A)$)coordinate(#2);
+\pp{#82}{#2}{1.05,0}{#7}{}\d(#2)circle[#4=0.25cm];\d[dashed,gray](#2#6(#5-1);
+\d[#3-#3](3.15,2#6($(#5-1)+(.15,0)$);\d(3.1,2#6(3.2,2);\d($(#5-1)+(.1,0)$#6+
+(.1,0);\d(#2#6+(45:.25);\q{\angle}{atan(2/3)};\q{\ppi}{\angle+180}\begin
+{scope}[rotate=\angle]\clip($(#2)+(0,.4)$)rect#1($(#2)+(-.4,0)$);
+\d[name path global=rotation](#2)circle[#4=.395cm];\end{scope}\pp{#83}{#2}
+{\ppi:.4}{rotation}{by=P2}\end{tikzpicture}}\z{angle}{cylinder}{stealth}
+{radius}{intersection}{)--}{tri}{line}\end{document}

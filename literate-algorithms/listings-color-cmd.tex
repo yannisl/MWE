@@ -1,0 +1,28 @@
+\documentclass{article}
+\usepackage{xcolor,listings}
+
+\lstdefinestyle{latex}{
+  language=[LaTeX]TeX,
+  columns=fullflexible,
+  basicstyle=\ttfamily,
+  numbers=left,
+  commentstyle=\color{red},
+  backgroundcolor=\color{gray!15},
+  texcsstyle=*\color{red},
+}
+
+\begin{document}
+
+\begin{lstlisting}[style=latex,caption=Skelet.,label=skelet]
+\documentclass[10pt]{book}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+\end{document}
+\end{lstlisting}
+
+\end{document}
+
+http://tex.stackexchange.com/questions/135625/listings-package-the-symbol-isnt-colored-while-rest-of-the-macro-is
