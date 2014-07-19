@@ -1,0 +1,49 @@
+\documentclass[oneside,sffamily]{scrreprt}
+\usepackage{pgfplots, pgfplotstable}
+\usepgfplotslibrary{clickable}
+\usetikzlibrary{pgfplots.clickable}
+\begin{document}
+\pgfplotsset{bar/.style ={ybar,draw=white,fill=blue!20}}
+\pgfplotsset{/pgfplots/annot/printable=false}
+\begin{tikzpicture}[scale=1.0]
+\begin{axis}[
+    width=1.05\textwidth,
+    height=0.4\textheight,
+    bar width=25pt,
+    %nodes near coords,
+    ybar stacked,
+    ymin=0,
+    enlargelimits=0.08,
+    legend style={at={(0.5,-.30)},
+    anchor=north,legend columns=-1},
+    ylabel={Technicians},
+    symbolic x coords={Jul 14, Aug 14, Sept 14, Oct 14, 
+		Nov 14, Dec 14, Jan 15},
+    xtick = data,
+    title = {\textbf{Resource Histogram.}},
+    x tick label style={yshift=-5pt,rotate=0},
+    ]
+% Duct Erectors
+\addplot +[bar] plot coordinates {(Jul 14, 165) (Aug 14,200) 
+  (Sept 14,200) (Oct 14, 250) (Nov 14,250) (Dec 14,250) (Jan 15,200)};
+% Pipe Fitters
+\addplot+[ybar, fill=black!60, draw={white}] plot coordinates {(Jul 14,150) (Aug 14,150) 
+  (Sept 14,160) (Oct 14,200) (Nov 14, 200) (Dec 14, 250) (Jan 15,250)};
+% Insulator
+\addplot+[ybar, fill=black!30, draw=white] plot coordinates {(Jul 14,70) (Aug 14,60)
+  (Sept 14,80) (Oct 14, 80) (Nov 14, 80) (Dec 14,85) (Jan 15, 76)};
+% Plumber
+\addplot+[ybar, fill=black!20, draw=white] plot coordinates {(Jul 14, 167) (Aug 14,200) 
+  (Sept 14,200) (Oct 14,200) (Nov 14,300) (Dec 14,300) (Jan 15,300)};
+% Electricians
+\addplot+[ybar, fill=black!10, draw=white] plot coordinates {(Jul 14, 184) (Aug 14, 300) 
+  (Sept 14,350) (Oct 14, 400) (Nov 14,450) (Dec 14, 500) (Jan 15, 565)};
+% Staff
+\addplot+[ybar, fill=black!7, draw=white] plot coordinates {(Jul 14, 126) (Aug 14, 132) 
+  (Sept 14,135) (Oct 14, 140) (Nov 14,140) (Dec 14, 135) (Jan 15, 120)};
+
+% legend
+\legend{ Duct Erectors, Pipe Fitters, Insulators, Plumbers, Electricians, Staff}
+\end{axis}
+\end{tikzpicture}
+\end{document}
