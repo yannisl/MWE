@@ -1,0 +1,38 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{pgfplots}
+\usepackage{filecontents}
+\begin{filecontents*}{readme.md}
+Renders a background colour in a 
+pgfplot.
+\end{filecontents*}
+\pgfplotsset{width=7cm,compat=1.5}
+\usetikzlibrary{backgrounds}
+% background color definition from pgfmanual-en-macros.tex
+\definecolor{graphicbackground}{rgb}{0.96,0.96,0.8}
+% key to change color
+\pgfkeys{/tikz/.cd,
+  background color/.initial=graphicbackground,
+  background color/.get=\backcol,
+  background color/.store in=\backcol,
+}
+\tikzset{background rectangle/.style={
+    fill=\backcol,
+  },
+  use background/.style={    
+    show background rectangle
+  }
+}
+
+\begin{document}
+\begin{tikzpicture}[use background]
+\begin{axis}
+\addplot {sin(deg(x))};
+\end{axis}
+\end{tikzpicture}
+\begin{tikzpicture}[background color=orange!20,use background]
+\begin{axis}
+\addplot+[only marks] {sin(deg(x))};
+\end{axis}
+\end{tikzpicture}
+\input{readme.md}
+\end{document}
