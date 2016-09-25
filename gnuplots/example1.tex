@@ -1,0 +1,14 @@
+\documentclass{article}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}
+% gnuplot script inside brackets {}
+\addplot gnuplot[raw gnuplot,mark=none,color=cyan] {
+  plot [-10:10] real(sin(x)**besj0(x))*besj0(x)+2*1/x
+};
+\end{axis}
+\end{tikzpicture}
+\end{document}
