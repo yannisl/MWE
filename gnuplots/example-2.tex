@@ -1,0 +1,23 @@
+% http://tex.stackexchange.com/questions/41666/gnuplot-and-pdflatex-question?noredirect=1&lq=1
+\documentclass[a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{Arial}
+\usepackage[miktex]{gnuplottex}
+\usepackage{pgfplots}
+
+\begin{document}
+\section{GnuplotTeX}
+\begin{gnuplot}[terminal=pdf, terminaloptions={font "Arial"}]
+plot sin(x), cos(x)
+\end{gnuplot}
+
+\section{PGFPLOTS}
+Note how the tick labels match the document font.
+
+\begin{tikzpicture}
+\begin{axis}[domain=-10:10, samples=50, smooth, no markers, enlargelimits=false]
+\addplot gnuplot {sin(x)}; \addlegendentry{$\sin(x)$}
+\addplot gnuplot {cos(x)}; \addlegendentry{$\cos(x)$}
+\end{axis}
+\end{tikzpicture}
+\end{document}
